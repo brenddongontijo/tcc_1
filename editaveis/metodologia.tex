@@ -14,23 +14,23 @@ O manifesto ágil, \cite{beck2001agile}, consiste na base que fundamenta o desen
     \item Os indivíduos e suas interações acima de procedimentos e ferramentas;
     \item O funcionamento do software acima de documentação abrangente;
     \item A colaboração dos clientes acima da negociação de contratos;
-    \item A capacidade de resposta a mudanças acima de um plano pré-estabelecido;
+    \item A capacidade de resposta a mudanças acima de um plano pré-estabelecido.
 \end{itemize}
 
 Além desses valores são definidos 12 princípios de agilidade:
 
 \begin{itemize}
-    \item Nossa maior prioridade é satisfazer o cliente, através da entrega adiantada e contínua de software de valor.
-    \item Aceitar mudanças de requisitos, mesmo no fim do desenvolvimento. Processos ágeis se adequam a mudanças, para que o cliente possa tirar vantagens competitivas.
-    \item Entregar software funcionando com freqüencia, na escala de semanas até meses, com preferência aos períodos mais curtos.
-    \item Pessoas relacionadas à negócios e desenvolvedores devem trabalhar em conjunto e diariamente, durante todo o curso do projeto.
-    \item Construir projetos ao redor de indivíduos motivados. Dando a eles o ambiente e suporte necessário, e confiar que farão seu trabalho.
-    \item O Método mais eficiente e eficaz de transmitir informações para, e por dentro de um time de desenvolvimento, é através de uma conversa cara a cara.
-    \item Software funcional é a medida primária de progresso.
-    \item Processos ágeis promovem um ambiente sustentável. Os patrocinadores, desenvolvedores e usuários, devem ser capazes de manter indefinidamente, passos constantes.
-    \item Contínua atenção à excelência técnica e bom design, aumenta a agilidade.
-    \item Simplicidade: a arte de maximizar a quantidade de trabalho que não precisou ser feito.
-    \item As melhores arquiteturas, requisitos e designs emergem de times auto-organizáveis.
+    \item Nossa maior prioridade é satisfazer o cliente, através da entrega adiantada e contínua de software de valor;
+    \item Aceitar mudanças de requisitos, mesmo no fim do desenvolvimento. Processos ágeis se adequam a mudanças, para que o cliente possa tirar vantagens competitivas;
+    \item Entregar software funcionando com freqüencia, na escala de semanas até meses, com preferência aos períodos mais curtos;
+    \item Pessoas relacionadas à negócios e desenvolvedores devem trabalhar em conjunto e diariamente, durante todo o curso do projeto;
+    \item Construir projetos ao redor de indivíduos motivados. Dando a eles o ambiente e suporte necessário, e confiar que farão seu trabalho;
+    \item O Método mais eficiente e eficaz de transmitir informações para, e por dentro de um time de desenvolvimento, é através de uma conversa cara a cara;
+    \item Software funcional é a medida primária de progresso;
+    \item Processos ágeis promovem um ambiente sustentável. Os patrocinadores, desenvolvedores e usuários, devem ser capazes de manter indefinidamente, passos constantes;
+    \item Contínua atenção à excelência técnica e bom design, aumenta a agilidade;
+    \item Simplicidade: a arte de maximizar a quantidade de trabalho que não precisou ser feito;
+    \item As melhores arquiteturas, requisitos e designs emergem de times auto-organizáveis;
     \item Em intervalos regulares, o time reflete em como ficar mais efetivo, então, se ajustam e otimizam seu comportamento de acordo.
 \end{itemize}
 
@@ -42,7 +42,7 @@ em uma série de incrementos e cada incremento fornece uma nova funcionalidade a
 vantagens de se adotar uma abordagem incremental para o desenvolvimento de \textit{software} são:
 
 \begin{itemize}
-    \item Entrega acelerada dos serviços ao cliente. Os clientes poderão obter valor do sistema com incrementos iniciais.
+    \item Entrega acelerada dos serviços ao cliente. Os clientes poderão obter valor do sistema com incrementos iniciais;
     \item Engajamento do usuário com o sistema. Os usuários do sistema devem estar envolvidos no processo
     de desenvolvimento dando \textit{feedback} à equipe de desenvolvimento sobre os incrementos entregues.
 \end{itemize}
@@ -50,8 +50,11 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
 \section{\textit{Extreme Programming}}
 Segundo \cite{beck_2004}, \textit{Extreme Programming} (XP) é uma filosofia de desenvolvimento de
 \textit{software} baseada nos valores de comunicação, \textit{feedback}, simplicidade, coragem e respeito.
-Por ser um tipo de metodologia ágil de desenvolvimento de \textit{sofwtare} são defendidas \textit{releases}
+Por ser um tipo de metodologia ágil de desenvolvimento de \textit{software} são defendidas \textit{releases}
 frequentes, as quais devem possuir curtos ciclos de desenvolvimento, destinadas à aumentar a produtividade, qualidade de \textit{software} e introduzir pontos de controle para que novas necessidades dos clientes sejam atendidas.
+
+Para \cite{pressman_2009}, o \textit{Feedback} é derivado de três recursos: o \textit{software} implementado, cliente e os outros membros da equipe de \textit{software}. Além disso, outra forma de \textit{feedback} baseia-se nos resultados dos testes de \textit{software}, uma vez que é possível identificar
+lacunas que o mesmo possui. O XP utiliza o teste unitário como técnica primária para testes.
 
 Práticas do XP:
 
@@ -66,12 +69,31 @@ Práticas do XP:
     \item Programação em pares.
 \end{itemize}
 
+\section{Teste de \textit{Software}}
+Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
+
+De acordo com \citeonline{sw_test_tech}, um bom teste é o que possui uma alta probabilidade de encontrar um erro ainda não descoberto e um teste bem sucedido é o que de fato descobre erros desconhecidos.
+
+Esses testes são estruturados em níveis, cada um com um determinado objetivo dentro do conjunto de testes, de modo a garantir a qualidade do produto em desenvolvimento \cite{sw_test_tech}.
+
+    \subsection{Testes Unitários}
+    Testes unitários possuem como objetivo verificar a existência de defeitos em cada módulo do projeto. Seu alvo são os métodos desenvolvidos ou pequenos trechos específicos de código \cite{artigo_intro_teste}.
+
+    É realizado durante o desenvolvimento, pelo próprio desenvolvedor, pois testa a unidade básica de \textit{software}, que é o menor ``pedaço''  testável, por sua vez chamado de unidade, dando origem ao nome deste tipo de teste \cite{sw_test_tech}.
+
+    Um exemplo de objetivo do teste unitário é a procura pela identificação de erros de lógica e de implementação \cite{maldonado}.
+
+    \subsection{Testes de Integração}
+    Possui como objetivo averiguar a existência de falhas relacionadas a interface do \textit{software} entre seus diferentes módulos quando estes são integrados \cite{artigo_intro_teste}.
+
+    É realizado quando uma estrutura maior é formada (devido a integração de dois ou mais módulos), sendo que os módulos possuem suas especificações individuais testadas, porém olhando-se para o conjunto \cite{sw_test_tech}. A medida que essas estruturas vão sendo testadas, a estrutura de programa que foi determinada pelo projeto vai sendo construída \cite{maldonado}.
+
 \section{Scrum}
 Scrum.
 O que é sprint.
 Reunião de planejamento de sprint com orientador e cliente.
 
-\section{Sofware Livre}
+\section{Software Livre}
 
 \section{Licença de Software}
 MIT
