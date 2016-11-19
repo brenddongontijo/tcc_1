@@ -1,4 +1,4 @@
-\chapter{Metodologia}
+\chapter{Métodos Empíricos em Engenharia de \textit{Software}}
 
 \section{Métodos Ágeis}
 Os negócios atualmente operam em um ambiente global sujeito a rápidas mudanças sendo crucial
@@ -12,7 +12,7 @@ O manifesto ágil, \cite{beck2001agile}, consiste na base que fundamenta o desen
 
 \begin{itemize}
     \item Os indivíduos e suas interações acima de procedimentos e ferramentas;
-    \item O funcionamento do software acima de documentação abrangente;
+    \item O funcionamento do \textit{software} acima de documentação abrangente;
     \item A colaboração dos clientes acima da negociação de contratos;
     \item A capacidade de resposta a mudanças acima de um plano pré-estabelecido.
 \end{itemize}
@@ -20,13 +20,13 @@ O manifesto ágil, \cite{beck2001agile}, consiste na base que fundamenta o desen
 Além desses valores são definidos 12 princípios de agilidade:
 
 \begin{itemize}
-    \item Nossa maior prioridade é satisfazer o cliente, através da entrega adiantada e contínua de software de valor;
+    \item Nossa maior prioridade é satisfazer o cliente, através da entrega adiantada e contínua de \textit{software} de valor;
     \item Aceitar mudanças de requisitos, mesmo no fim do desenvolvimento. Processos ágeis se adequam a mudanças, para que o cliente possa tirar vantagens competitivas;
-    \item Entregar software funcionando com freqüencia, na escala de semanas até meses, com preferência aos períodos mais curtos;
+    \item Entregar \textit{software} funcionando com freqüencia, na escala de semanas até meses, com preferência aos períodos mais curtos;
     \item Pessoas relacionadas à negócios e desenvolvedores devem trabalhar em conjunto e diariamente, durante todo o curso do projeto;
     \item Construir projetos ao redor de indivíduos motivados. Dando a eles o ambiente e suporte necessário, e confiar que farão seu trabalho;
     \item O Método mais eficiente e eficaz de transmitir informações para, e por dentro de um time de desenvolvimento, é através de uma conversa cara a cara;
-    \item Software funcional é a medida primária de progresso;
+    \item \textit{Software} funcional é a medida primária de progresso;
     \item Processos ágeis promovem um ambiente sustentável. Os patrocinadores, desenvolvedores e usuários, devem ser capazes de manter indefinidamente, passos constantes;
     \item Contínua atenção à excelência técnica e bom design, aumenta a agilidade;
     \item Simplicidade: a arte de maximizar a quantidade de trabalho que não precisou ser feito;
@@ -47,55 +47,61 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
     de desenvolvimento dando \textit{feedback} à equipe de desenvolvimento sobre os incrementos entregues.
 \end{itemize}
 
-\section{Teste de \textit{Software}}
-Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
+    \subsection{\textit{Extreme Programming}}
+    Segundo \cite{beck_2004}, \textit{Extreme Programming} (XP) é uma filosofia de desenvolvimento de \textit{software} baseada nos valores de comunicação, simplicidade, \textit{feedback} e coragem. É designado para se trabalhar com projetos que podem ser
+    construídos por equipes de dois a dez programadores, os quais não devem possuir limitações
+    por causa do ambiente computacional e possam ser capazes de realizar testes de
+    \textit{software} em uma fração de um dia.
 
-De acordo com \citeonline{sw_test_tech}, um bom teste é o que possui uma alta probabilidade de encontrar um erro ainda não descoberto e um teste bem sucedido é o que de fato descobre erros desconhecidos.
+    No contexto deste trabalho, o projeto foi desenvolvido com a presença de apenas um
+    programador utilizando-se dos valores e princípios do XP.
 
-Esses testes são estruturados em níveis, cada um com um determinado objetivo dentro do conjunto de testes, de modo a garantir a qualidade do produto em desenvolvimento \cite{sw_test_tech}.
+    4 atividades básicas: codificar, testar, escutar e desenhar.
 
-    \subsection{Testes Unitários}
-    Testes unitários possuem como objetivo verificar a existência de defeitos em cada módulo do projeto. Seu alvo são os métodos desenvolvidos ou pequenos trechos específicos de código \cite{artigo_intro_teste}.
+    Falar sobre Práticas do XP utilizadas. (Chapter 10. A Quick Overview)
 
-    É realizado durante o desenvolvimento, pelo próprio desenvolvedor, pois testa a unidade básica de \textit{software}, que é o menor ``pedaço''  testável, por sua vez chamado de unidade, dando origem ao nome deste tipo de teste \cite{sw_test_tech}.
+    \subsection{Scrum}
+    Segundo \cite{scrum_guide}, Scrum é um \textit{framework} estrutural frexível utilizado
+    para gerenciar o desenvolvimento de produtos complexos empregando uma abordagem iterativa
+    e incremental, com o auxílio de \textit{sprints}, para aperfeiçoar a previsibilidade e o controle de riscos. O Time Scrum é composto pelo Product Owner, o Time de Desenvolvimento e o Scrum Master.
 
-    Um exemplo de objetivo do teste unitário é a procura pela identificação de erros de lógica e de implementação \cite{maldonado}.
+    O \textit{Product Owner}, ou dono do produto, é o responsável por maximizar o valor
+    do produto e do trabalho do Time de Desenvolvimento realizando o gerenciamento
+    do \textit{Backlog do Produto}.
 
-    \subsection{Testes de Integração}
-    Possui como objetivo averiguar a existência de falhas relacionadas a interface do \textit{software} entre seus diferentes módulos quando estes são integrados \cite{artigo_intro_teste}.
+    Texto sobre Loana ser o Product Owner.
 
-    É realizado quando uma estrutura maior é formada (devido a integração de dois ou mais módulos), sendo que os módulos possuem suas especificações individuais testadas, porém olhando-se para o conjunto \cite{sw_test_tech}. A medida que essas estruturas vão sendo testadas, a estrutura de programa que foi determinada pelo projeto vai sendo construída \cite{maldonado}.
+    \textit{Sprint} é um time-boxed de um mês ou menos, durante o qual
+    uma versão incremental potencialmente utilizável do produto é criado.
+    Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
 
-\section{\textit{Extreme Programming}}
-Segundo \cite{beck_2004}, \textit{Extreme Programming} (XP) é uma filosofia de desenvolvimento de
-\textit{software} baseada nos valores de comunicação, \textit{feedback}, simplicidade, coragem e respeito.
-Por ser um tipo de metodologia ágil de desenvolvimento de \textit{software} são defendidas \textit{releases}
-frequentes, as quais devem possuir curtos ciclos de desenvolvimento, destinadas à aumentar a produtividade, qualidade de \textit{software} e introduzir pontos de controle para que novas necessidades dos clientes sejam atendidas.
+    Definiu-se que a duração das \textit{sprints} seriam de 15 dias e ao fim das mesmas
+    realizariam-se duas reuniões. A primeira, com a \textit{Product Manager}, objetivaria verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
+    com o orientador, discutiria decisões arquiteturais, sugestões de implementação e realização
+    do planejamento referente à \textit{sprint} posterior.
 
-Para \cite{pressman_2009}, o \textit{Feedback} é derivado de três recursos: o \textit{software} implementado, cliente e os outros membros da equipe de \textit{software}. Além disso, outra forma de \textit{feedback} baseia-se nos resultados dos testes de \textit{software}, uma vez que é possível identificar
-lacunas que o mesmo possui. O XP utiliza o teste unitário como técnica primária para testes.
+    Backlog produto e backlog sprint.
 
-Práticas do XP:
+    \subsection{Teste de \textit{Software}}
+    Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
 
-\begin{itemize}
-    \item Testar cedo, com frequência e automação.
-    \item \textit{Design} incremental.
-    \item Implantação diária.
-    \item Envolvimento do cliente.
-    \item Integração contínua.
-    \item Ciclos de desenvolvimento curtos.
-    \item Planejamento incremental.
-    \item Programação em pares.
-\end{itemize}
+    De acordo com \citeonline{sw_test_tech}, um bom teste é o que possui uma alta probabilidade de encontrar um erro ainda não descoberto e um teste bem sucedido é o que de fato descobre erros desconhecidos.
 
-\section{Scrum}
-Scrum.
-O que é sprint.
-Reunião de planejamento de sprint com orientador e cliente.
+    Esses testes são estruturados em níveis, cada um com um determinado objetivo dentro do conjunto de testes, de modo a garantir a qualidade do produto em desenvolvimento \cite{sw_test_tech}.
 
-\section{Software Livre}
+        \subsubsection{Testes Unitários}
+        Testes unitários possuem como objetivo verificar a existência de defeitos em cada módulo do projeto. Seu alvo são os métodos desenvolvidos ou pequenos trechos específicos de código \cite{artigo_intro_teste}.
 
-\section{Licença de Software}
+        É realizado durante o desenvolvimento, pelo próprio desenvolvedor, pois testa a unidade básica de \textit{software}, que é o menor ``pedaço''  testável, por sua vez chamado de unidade, dando origem ao nome deste tipo de teste \cite{sw_test_tech}.
+
+        Um exemplo de objetivo do teste unitário é a procura pela identificação de erros de lógica e de implementação \cite{maldonado}.
+
+        \subsubsection{Testes de Integração}
+        Possui como objetivo averiguar a existência de falhas relacionadas a interface do \textit{software} entre seus diferentes módulos quando estes são integrados \cite{artigo_intro_teste}.
+
+        É realizado quando uma estrutura maior é formada (devido a integração de dois ou mais módulos), sendo que os módulos possuem suas especificações individuais testadas, porém olhando-se para o conjunto \cite{sw_test_tech}. A medida que essas estruturas vão sendo testadas, a estrutura de programa que foi determinada pelo projeto vai sendo construída \cite{maldonado}.
+
+\section{\textit{software} Livre}
+
+\section{Licença de \textit{software}}
 MIT
-
-\section{Cronograma}
