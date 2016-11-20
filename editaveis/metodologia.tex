@@ -28,7 +28,7 @@ Além desses valores são definidos 12 princípios de agilidade:
     \item Em intervalos regulares, o time reflete em como ficar mais efetivo, então, se ajustam e otimizam seu comportamento de acordo.
 \end{itemize}
 
-Nem todos os processos ágeis aplicam tais princípios de maneira igualitária e alguns modelos escolhem ignorar (ou ao menos minimar) a importância de um ou mais princípios. \cite{pressman_2009}
+Nem todos os processos ágeis aplicam tais princípios de maneira igualitária e alguns modelos escolhem ignorar (ou ao menos minimar) a importância de um ou mais princípios \cite{pressman_2009}.
 
 Segundo \cite{sommerville_2006}, processos de desenvolvimento ágeis geralmente são iterativos onde a
 especificação, projeto, desenvolvimento e teste são intercalados. O \textit{software} é desenvolvido
@@ -48,33 +48,41 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
     \textit{software} em uma fração de um dia.
 
     No contexto deste trabalho, o projeto foi desenvolvido com a presença de apenas um
-    programador utilizando-se dos valores e princípios do XP.
+    programador utilizando os valores e princípios do XP.
 
-    4 atividades básicas: codificar, testar, escutar e desenhar.
+    As práticas utilizadas para o desenvolvimento do sistema foram:
 
-    Falar sobre Práticas do XP utilizadas. (Chapter 10. A Quick Overview)
+    \begin{itemize}
+        \item Teste: escrever testes unitários, os quais devem funcionar de maneira adequada para que
+        o desenvolvimento do sistema continue.
+        \item Refatoração: reestruturação do sistema sem alteração de seu comportamento, objetivando
+        remover duplicidade, simplificação, aumento de flexibilidade e melhoramento da comunicação. As propostas de refatorações eram identificadas nas reuniões com o orientador
+        e geralmente realizadas em iterações subsequentes.
+        \item Integração Contínua: integrar e construir o sistema muitas vezes ao dia, sempre que uma tarefa
+        for concluída.
+        \item Padrões de Codificação: escrever o código de acordo com boas práticas de programação, enfatizando uma comunicação através do código.
+    \end{itemize}
 
     \subsection{Scrum}
     Segundo \cite{scrum_guide}, Scrum é um \textit{framework} estrutural frexível utilizado
     para gerenciar o desenvolvimento de produtos complexos empregando uma abordagem iterativa
     e incremental, com o auxílio de \textit{sprints}, para aperfeiçoar a previsibilidade e o controle de riscos. O Time Scrum é composto pelo Product Owner, o Time de Desenvolvimento e o Scrum Master.
 
-    O \textit{Product Owner}, ou dono do produto, é o responsável por maximizar o valor
+    O \textit{Product Owner} (PO), ou dono do produto, é o responsável por maximizar o valor
     do produto e do trabalho do Time de Desenvolvimento realizando o gerenciamento
-    do \textit{Backlog do Produto}.
-
-    Texto sobre Loana ser o Product Owner.
+    do \textit{Backlog} do Produto. No contexto do projeto, o papel de PO é realizado pela
+    Dra. Loana Nunes Velasco.
 
     \textit{Sprint} é um time-boxed de um mês ou menos, durante o qual
     uma versão incremental potencialmente utilizável do produto é criado.
-    Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
+    Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior \cite{scrum_guide}.
 
     Definiu-se que a duração das \textit{sprints} seriam de 15 dias e ao fim das mesmas
-    realizariam-se duas reuniões. A primeira, com a \textit{Product Manager}, objetivaria verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
+    realizariam-se duas reuniões. A primeira, com a \textit{Product Owner}, objetivaria verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
     com o orientador, discutiria decisões arquiteturais, sugestões de implementação e realização
     do planejamento referente à \textit{sprint} posterior.
 
-    Backlog produto e backlog sprint.
+    Texto sobre Backlog produto e backlog sprint.
 
     \subsection{Teste de \textit{Software}}
     Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
