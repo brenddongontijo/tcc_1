@@ -1,15 +1,23 @@
 \chapter{Métodos Empíricos em Engenharia de \textit{Software}}
 
 \section{Métodos Ágeis}
-O manifesto ágil, \cite{beck2001agile}, consiste na base que fundamenta o desenvolvimento ágil de
-\textit{software}, onde o mesmo é composto de quatro valores fundamentais:
+Os negócios atualmente operam em um ambiente global sujeito a rápidas mudanças sendo crucial
+estar preparado para novas oportunidades de mercado, mudanças de condições econômicas e ao surgimento
+de produtos e serviços concorrentes. O \textit{software} é um dos componentes cruciais para a realização
+de todas as operações de negócio e realizá-lo de forma rápida também é uma maneira de aproveitar novas
+oportunidades e responder às pressões competitivas \cite{sommerville_2006}.
+
+O manifesto ágil \cite{beck2001agile} consiste na base que fundamenta o desenvolvimento ágil de
+\textit{software} sendo composto de quatro valores fundamentais:
 
 \begin{itemize}
-    \item Os indivíduos e suas interações acima de procedimentos e ferramentas;
-    \item O funcionamento do \textit{software} acima de documentação abrangente;
-    \item A colaboração dos clientes acima da negociação de contratos;
-    \item A capacidade de resposta a mudanças acima de um plano pré-estabelecido.
+    \item \textbf{Os indivíduos e suas interações} acima de procedimentos e ferramentas;
+    \item \textbf{O funcionamento do \textit{software}} acima de documentação abrangente;
+    \item \textbf{A colaboração dos clientes} acima da negociação de contratos;
+    \item \textbf{A capacidade de resposta a mudanças} acima de um plano pré-estabelecido.
 \end{itemize}
+
+``Enquanto há valor nos itens à direita, valorizamos mais os itens à esquerda'' \cite{beck2001agile}.
 
 Além desses valores são definidos 12 princípios de agilidade:
 
@@ -42,15 +50,12 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
 \end{itemize}
 
     \subsection{\textit{Extreme Programming}}
-    Segundo \cite{beck_2004}, \textit{Extreme Programming} (XP) é uma filosofia de desenvolvimento de \textit{software} baseada nos valores de comunicação, simplicidade, \textit{feedback} e coragem. É designado para se trabalhar com projetos que podem ser
+    \textit{Extreme Programming} (XP) é uma filosofia de desenvolvimento de \textit{software} baseada nos valores de comunicação, simplicidade, \textit{feedback} e coragem. É designado para se trabalhar com projetos que podem ser
     construídos por equipes de dois a dez programadores, os quais não devem possuir limitações
     por causa do ambiente computacional e possam ser capazes de realizar testes de
-    \textit{software} em uma fração de um dia.
+    \textit{software} em uma fração de um dia \cite{beck_2004}.
 
-    No contexto deste trabalho, o projeto foi desenvolvido com a presença de apenas um
-    programador utilizando os valores e princípios do XP.
-
-    As práticas utilizadas para o desenvolvimento do sistema foram:
+    No contexto deste trabalho, o projeto foi desenvolvido pelo próprio autor utilizando os valores e princípios do XP. As práticas utilizadas para o desenvolvimento do sistema foram:
 
     \begin{itemize}
         \item Teste: escrever testes unitários, os quais devem funcionar de maneira adequada para que
@@ -64,18 +69,20 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
     \end{itemize}
 
     \subsection{Scrum}
-    Segundo \cite{scrum_guide}, Scrum é um \textit{framework} estrutural frexível utilizado
+    Scrum é um \textit{framework} estrutural frexível utilizado
     para gerenciar o desenvolvimento de produtos complexos empregando uma abordagem iterativa
-    e incremental, com o auxílio de \textit{sprints}, para aperfeiçoar a previsibilidade e o controle de riscos. O Time Scrum é composto pelo Product Owner, o Time de Desenvolvimento e o Scrum Master.
+    e incremental, com o auxílio de \textit{sprints}, para aperfeiçoar a previsibilidade e o controle de riscos. \#TODO diferentes papéis no SCRUM. O Time Scrum é composto pelo Product Owner, o Time de Desenvolvimento e o Scrum Master \cite{scrum_guide}.
 
     O \textit{Product Owner} (PO), ou dono do produto, é o responsável por maximizar o valor
     do produto e do trabalho do Time de Desenvolvimento realizando o gerenciamento
-    do \textit{Backlog} do Produto. No contexto do projeto, o papel de PO é realizado pela
-    Dra. Loana Nunes Velasco.
+    do \textit{Backlog} do Produto.
 
-    \textit{Sprint} é um time-boxed de um mês ou menos, durante o qual
+    No contexto do projeto, o papel de PO é realizado pela
+    Dra. Loana Nunes Velasco, \#TODO: experiencia com energia e representação o cliente.
+
+    \#TODO inspiração SCRUM. \textit{Sprint} é um \textit{time-boxed} de um mês ou menos, durante o qual
     uma versão incremental potencialmente utilizável do produto é criado.
-    Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior \cite{scrum_guide}.
+    Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
 
     Definiu-se que a duração das \textit{sprints} seriam de 15 dias e ao fim das mesmas
     realizariam-se duas reuniões. A primeira, com a \textit{Product Owner}, objetivaria verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
