@@ -1,7 +1,13 @@
-\chapter{Gerenciamento de Configuração}
+\chapter{Gerência de Configuração de Software}
+Um sistema pode ser definido como a combinação de elementos que se interagem e estão organizados para alcançar um ou mais objetivos previamente declarados, onde suas características físicas e funcionais de \textit{hardware} ou software representam sua configuração \cite{SWEBOK2014}.
 
-\section{Controle de Versão}
+Em uma definição mais formal, a ISO 24765 \cite{iso_24765} define Gerência de Configuração como ``uma disciplina aplicando direção e vigilância técnica e administrativa para: identificar e documentar as características funcionais e físicas de um item de configuração, controlar as alterações dessas características, registar e reportar o processamento de alterações e o \textit{status} de implementação, e verificar a conformidade com os requisitos especificados''
 
-\section{Política de Branchs}
+Buscando dar mais suporte ao ciclo de vida de um software definiu-se a Gerencia de Configuração de Software (SCM) como sendo um processo que beneficia o gerenciamento de projeto, desenvolvimento, manutenção e atividades referentes à garantia de qualidade \cite{SWEBOK2014}.
 
-\section{Integração Contínua}
+O CMMI-DEV \cite{cmmi_dev} define 3 objetivos para a Gerência de Configuração de Software:
+\begin{itemize}
+    \item Estabelecimento de \textit{Baselines}: para cada nova mudança implementada um incremento na evolução do projeto é gerado. Essas mudanças devem possuir um histórico bem definido e as ferramentas de controle de versão facilitam esse trabalho, além de possibilitarem uma programação concorrente. No contexto do projeto utilizou-se a ferramenta Git\footnote{\url{https://git-scm.com/}} como sistema de controle de versão.
+    \item Rastreamento e Controle de Mudanças: durante o desenvolvimento de software mudanças ocorrem com frequência, para isso é necessário que as mesmas sejam armazenadas, analisadas e agrupadas de acordo com suas prioridades. Utilizou-se o software livre GitLab CE\footnote{\url{https://gitlab.com/gitlab-org/gitlab-ce}} para realizar toda a hospedagem do projeto e o controle de mudanças.
+    \item Estabelecimento de Integridade: verificar se a contrução de um sistema atendendo suas configurações é bem sucedida a cada nova mudança registrada.
+\end{itemize}
