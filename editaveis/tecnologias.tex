@@ -9,25 +9,16 @@ arquitetura pré-definida. “\textit{Frameworks} proveem uma maneira de reutili
 \citeonline{artigo_reuso_classes}, compara “programas esqueletos” com \textit{frameworks}, os quais consistem em uma abordagem tradicional de reutilização de código e na garantia de consistência entre todos os componentes de um sistema sobre a mudança de algum requisito. O autor também realiza uma comparação entre os \textit{frameworks} do tipo “caixa-branca” e “caixa-preta”, onde o primeiro é responsável por especificar o comportamento de uma aplicação adicionando-se métodos para subclasses de uma ou mais de suas classes, ou seja, a implementação deste tipo de \textit{framework} deve ser conhecida para sua utilização, já o segundo consiste no uso de um protocolo responsável por definir uma interface entre os componentes, assim, o usuário precisaria entender apenas como funciona a interface externa dos componentes para utilizá-los.
 
 \section{\textit{Django}}
-O \textit{Django} é um \textit{framework} para desenvolvimento \textit{web} na linguagem Python.
+O \textit{Django} é um \textit{framework} para desenvolvimento \textit{web} realizado na linguagem Python\footnote{\url{https://www.python.org/}}. Sua arquitetura baseia-se no modelo MTV (\textit{Model} \textit{Template} \textit{View}), onde:
+\begin{itemize}
+    \item \textit{Model}: representa as classes que popularão as tabelas do banco de dados. Além disso, utiliza os conceitos de ORM (\textit{Object-Relational Mapping}, Mapeamento de Objeto Relacional) para realizar a manipulação dessas tabelas, não sendo necessário a escrita de consultas em SQL para a persistência das informações.
+    \item \textit{Template}: descreve como as informações serão apresentadas para o usuário.
+    \item \textit{View}: representada por uma função \textit{callback} referente à uma respectiva URL, descrevendo quais informações serão apresentadas.
+\end{itemize}
 
-\#TODO: referencias
-%\footnote{DJANGO}
-%\footnote{PYTHON}
+O Django utiliza aplicações dentro de um projeto, sendo estas responsáveis por uma funcionalidade específica do projeto. Cada aplicação possui suas próprias \textit{models}, \textit{views} e \textit{templates}.
 
-A arquitetura utilizada no \textit{Django} basea-se no MTV (Model-Template-View), a qual diferencia-se um pouco do tradicional MVC (Model, View, Controller), arquitetura na qual separam-se as regras de negócios (Controller), os dados e métodos de acessos aos mesmos (Model) e as regras de apresentação (View).
-
-No caso da arquitetura MTV, o framework \textit{Django} é o que faz as vezes de controlador da arquitetura MVC. Sendo assim, na arquitetura MTV, o Controller não é responsável pela lógica do negócio e sim pelo funcionamento do sistema.
-
-\#TO-DO Controller mistura de regras de negócio implementadas no modelo e componentes do próprio Django, como url dispatcher (EXPLICAR) e middlewares (EXPLICAR).
-
-O URL dispatcher é o componente responsável em analisar os endereços requisitados pelo cliente e redirecionar essa requisição para a aplicação correta. Já o middleware é um conjunto de componentes que realizam pré e pós filtragens nas requisições, o que possibilita funcionalidade como internacionalização de uma aplicação e gerenciamento de sessões autenticadas.
-
-No Model, são escritas as classes que designarão as tabelas no banco de dados. A manipulação dessas tabelas ocorre através do ORM (\textit{Object-Relational Mapping}, Mapeamento de Objeto Relacional) e, por isso, não é necessária a escrita de consultas em SQL para a persistência dos dados.
-
-A camada View consiste em uma função \textit{callback} para uma respectiva URL descrevendo qual informação será fornecida. Pensando em separar as informações de suas apresentações foi criado a camada de Template, a qual descreve como as informações serão apresentadas para o usuário.
-
-Dentro do \textit{Django}, um projeto é um conjunto de aplicações, onde cada aplicação consiste em uma determinada funcionalidade do projeto. Por causa disso, há a idéia de aplicações plugáveis no \textit{Django} que é uma aplicação que pode ser usada em mais de um projeto com nenhuma ou quase nenhuma alteração de código. Isso quer dizer que a aplicação deve ter seus próprios modelos, suas próprias views, seus próprios templates e encapsular o máximo possível de código que não se enquadre em um desses elementos.
+A função de \textit{Controller} é realizado pela Django misturando as regras de negócio implementadas no modelo com os componentes do \textit{framework}, como o \textit{URL dispatcher} e os \textit{Middlewares}. O URL dispatcher identifica endereços requisitados pelo usuário e realiza o redirecionamento da requisição para a aplicação correta. Já os \textit{Middlewares} são componentes responsáveis pelo processamento de requisições e respostas.
 
 A Figura \ref{django-arq} ilustra a arquitetura do \textit{Django}:
 
@@ -38,7 +29,7 @@ A Figura \ref{django-arq} ilustra a arquitetura do \textit{Django}:
     \label{django-arq}
 \end{figure}
 
-\section{Ferramentas Utilizadas}
+\section{Ferramentas \textit{Web} Utilizadas}
     \subsection{\textit{Coverage}}
     Responsável por medir a cobertura de código utilizando ferramentas de análise e rastreando quais
     linhas de teste foram/devem ser executas.
