@@ -59,37 +59,58 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
 
     \begin{itemize}
         \item Teste: escrever testes unitários, os quais devem funcionar de maneira adequada para que
-        o desenvolvimento do sistema continue.
+        o desenvolvimento do sistema continue. A cada término de uma funcionalidade eram realizados testes
+        seus testes, objetivando uma cobertura de no mínimo 90\%.
         \item Refatoração: reestruturação do sistema sem alteração de seu comportamento, objetivando
         remover duplicidade, simplificação, aumento de flexibilidade e melhoramento da comunicação. As propostas de refatorações eram identificadas nas reuniões com o orientador
         e geralmente realizadas em iterações subsequentes.
+        \item Padrões de Codificação: escrever o código de acordo com boas práticas de programação, enfatizando uma comunicação através do código. Pelo código ser escrito na linguagem \textit{python}
+        procurou-se sempre utilizar as convenções definidas pela PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}.
         \item Integração Contínua: integrar e construir o sistema muitas vezes ao dia, sempre que uma tarefa
-        for concluída.
-        \item Padrões de Codificação: escrever o código de acordo com boas práticas de programação, enfatizando uma comunicação através do código.
+        for concluída. A Integração Contínua foi realizada com auxílio da ferramenta Gitlab CI, onde para cada novo \textit{commit} no repositório é gerada uma \textit{build} verificando se os testes e as normas do PEP 8 foram realizados de forma correta.
     \end{itemize}
 
     \subsection{Scrum}
     Scrum é um \textit{framework} estrutural frexível utilizado
-    para gerenciar o desenvolvimento de produtos complexos empregando uma abordagem iterativa
-    e incremental, com o auxílio de \textit{sprints}, para aperfeiçoar a previsibilidade e o controle de riscos. \#TODO diferentes papéis no SCRUM. O Time Scrum é composto pelo Product Owner, o Time de Desenvolvimento e o Scrum Master \cite{scrum_guide}.
+    para gerenciar o desenvolvimento de produtos complexos empregando, com o auxílio de \textit{sprints}, uma abordagem iterativa
+    e incremental para aperfeiçoar a previsibilidade e o controle de riscos. Diferentes papéis são definidos pelo Scrum: Product Owner, Time de Desenvolvimento e Scrum Master \cite{scrum_guide}.
 
     O \textit{Product Owner} (PO), ou dono do produto, é o responsável por maximizar o valor
     do produto e do trabalho do Time de Desenvolvimento realizando o gerenciamento
     do \textit{Backlog} do Produto.
 
-    No contexto do projeto, o papel de PO é realizado pela
-    Dra. Loana Nunes Velasco, \#TODO: experiencia com energia e representação o cliente.
+    O Time de Desenvolvimento é responsável por realizar o desenvolvimento de \textit{software} e entregar um incremento de \textit{software} ao final de cada \textit{sprint}.
 
-    \#TODO inspiração SCRUM. \textit{Sprint} é um \textit{time-boxed} de um mês ou menos, durante o qual
+    \textit{Sprint} é um \textit{time-boxed} de um mês ou menos, durante o qual
     uma versão incremental potencialmente utilizável do produto é criado.
     Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
+
+    O Scrum Master é responsável por garantir que o Scrum seja entendido e aplicado, ou seja, que o Time Scrum siga à teoria, práticas e regras do Scrum.
+
+    A tabela \ref{equipe_scrum}, apresenta como foram definidos os papéis no contexto do projeto.
+
+    \begin{table}[!htbp]
+        \centering
+        \caption{Equipe Scrum. Fonte: autor}
+        \label{equipe_scrum}
+        \begin{tabular}{|p{5cm}|p{4cm}|}
+        \hline
+        \textbf{Membro}                                                           & \textbf{Papel}        \\\hline
+        Brenddon Gontijo Furtado                                                  & Time de Desenvolvimento \\\hline
+        Loana Nunes Valesco                                                       & \textit{Product Owner}    \\\hline
+        Fábio Macedo Mendes                                                       & Scrum Master    \\\hline
+        \end{tabular}
+    \end{table}
+
+    Vale ressaltar que devido ao fato do time de desenvolvimento ser representado por apenas uma pessoa nem todas as práticas do Scrum podem ser aplicadas de maneira efetiva, assim, o \textit{framework} foi acabou sendo utilizado como uma inspiração, buscando principalmente utilizar
+    os conceitos de \textit{sprint} e planejamento de \textit{sprint} para auxiliarem nos entregáveis de cada iteração.
 
     Definiu-se que a duração das \textit{sprints} seriam de 15 dias e ao fim das mesmas
     realizariam-se duas reuniões. A primeira, com a \textit{Product Owner}, objetivaria verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
     com o orientador, discutiria decisões arquiteturais, sugestões de implementação e realização
     do planejamento referente à \textit{sprint} posterior.
 
-    Texto sobre Backlog produto e backlog sprint.
+    \#TODO: Texto sobre Backlog produto e backlog sprint.
 
     \subsection{Teste de \textit{Software}}
     Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
@@ -111,6 +132,11 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
         É realizado quando uma estrutura maior é formada (devido a integração de dois ou mais módulos), sendo que os módulos possuem suas especificações individuais testadas, porém olhando-se para o conjunto \cite{sw_test_tech}. A medida que essas estruturas vão sendo testadas, a estrutura de programa que foi determinada pelo projeto vai sendo construída \cite{maldonado}.
 
 \section{\textit{Software} Livre}
+``O Software livre é aquele que permite aos usuários usá-lo, estudá-lo, modificá-lo e redistribui-lo, em geral, sem restrições para tal e prevenindo que não sejam impostas restrições aos futuros usuários'' \cite{meirelles2013}.
+
+Em comparação ao software restrito, o software livre apresenta algumas vantagens devido ao fato de seu código-fonte estar disponível para qualquer usuário, partindo do princípio que seu licenciamento esteja de acordo com as definições da \textit{Free Software Foundation}\footnote{\url{http://www.gnu.org/philosophy/free-sw.pt-br.html}} ou da \textit{Open Source Initiative}\footnote{\url{https://opensource.org/docs/definition.html}}. Essa disponibilidade auxilia no desenvolvimento de aplicações personalizadas, uma vez que que é possível partir de uma solução já existente ao invés de desenvolver tudo partindo do zero. Tal abordagem possui um impacto significativo na redução de custos e diminuição na duplicação de esforço \cite{meirelles2013}.
+
+\cite{raymond1999}, observando o modelo de desenvolvimento do Linux, percebeu que o compartilhamento de código possivelmente melhoraria na qualidade final de uma aplicação, uma vez que uma quantidade grande de desenvolvedores, com diferentes habilidades e conhecimentos, conseguem propor melhorias e consertar \textit{bugs} em uma pequena quantidade de tempo \cite{meirelles2013}.
 
 \section{Licença de \textit{software}}
 MIT
