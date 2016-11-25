@@ -1,5 +1,21 @@
 \chapter{Evolução do Sistema}
 
+\section{Contexto Energético}
+O crescimento no consumo de energia cada vez mais vem aumentando conforme os anos. No
+ano de 2014 o Brasil consumiu 531.1 TWh, resultando em um aumento de 2.9\% comparado à 2013. Além disso, a matriz energética brasileira é predominantemente renovável, tendo como ênfase a geração hidráulica. As fontes renováveis correspondem à 84.1\% e não renováveis 26.9\% \cite{balanco_energetico}.
+
+Uma pequena parte do consumo total de energia elétrica do Brasil é realizada por prédios públicos, sendo
+esses responsáveis pela prestação de serviços à população. Em 2014, o total de energia elétrica consumida
+pelos mesmos foi de 12.61 TWh, representando 2.4\% do total consumido pelo país \cite{balanco_energetico}.
+
+No ano de 2015 foi realizado um reajuste tarifário da energia elétrica correspondente à 33\% para clientes residenciais e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}, gerando altos gastos.
+
+Dentre as alternativas para reduzir o consumo de energia elétrica encontram-se o uso de equipamentos mais eficientes, certificações Procel\footnote{\url{www.procelinfo.com.br/selo_procel_edificacoes/}}, uso racional da energia e afins, porém, quando se trata de instalações de grande porte, como Universidades e órgãos públicos em geral, percebe-se que um dos grandes problemas enfrentado é a falta de monitoramento adequado do uso de energia elétrica.
+
+Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de gerenciamento energético da própria Universidade, objetivando que cada Campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar, com o auxílio de transdutores, seu próprio monitoramento de energia e enviar essas informações coletadas para o Campus Darcy Ribeiro. O sistema para auxiliar todo o projeto foi denominado Sistema de Monitoramento Energético - Universidade de Brasília (SME-UnB).
+
+Este trabalho contribuiu com o desenvolvimento de uma parte do SME-UnB.
+
 \section{Sprint 01 (25/07/2016 à 05/08/2016) - Coleta Inicial de Dados do Transdutor}
 Buscando realizar uma primeira análise do transdutor instalado na Universidade, verificando se a comunicação com o mesmo poderia ser realizada de maneira efetiva, realizou-se o módulo \textit{data\_reader} contendo as seguintes classes:
 \begin{itemize}
@@ -40,9 +56,9 @@ Foram realizar algumas telas, figuras \ref{dados01} e \ref{dados02}, contendo os
 \pagebreak
 
 \section{Sprint 02 (08/08/2016 à 19/08/2016) - Refatorações de \textit{Urls}/\textit{Templates} e Guia de Instalação}
-Após analisadas as \textit{urls} e \textit{templates} do projeto verificou-se que haviam muitas rotas desnecessárias e não havia um padrão para os templates, o que estava gerando confusão na hora de criar novas páginas para a aplicação. Tendo em mente tais problemas essa sprint buscou realizar uma refatoração dos mesmos.
+Após analisadas as \textit{urls} e \textit{templates} do projeto verificou-se que havia muitas rotas desnecessárias e não havia um padrão para os templates, o que estava gerando confusão na hora de criar novas páginas para a aplicação. Tendo em mente tais problemas essa sprint buscou realizar uma refatoração dos mesmos.
 
-Realizou-se um guia de instalação\footnote{\url{https://gitlab.com/brenddongontijo/SME-UnB/wikis/instalation-guide/}} para o ambiente de desenvolvimento utilizando as ferramentas Vagrant\footnote{\url{https://www.vagrantup.com/}} e Chef Solo\footnote{\url{https://docs.chef.io/chef_solo.html}}, visando auxiliar novos desenvolvedores a contribuirem com o projeto.
+Realizou-se um guia de instalação\footnote{\url{https://gitlab.com/brenddongontijo/SME-UnB/wikis/instalation-guide/}} para o ambiente de desenvolvimento utilizando as ferramentas \textit{Vagrant}\footnote{\url{https://www.vagrantup.com/}} e \textit{Chef Solo}\footnote{\url{https://docs.chef.io/chef_solo.html}}, visando auxiliar novos desenvolvedores a contribuirem com o projeto.
 
 \section{Sprint 03 (22/08/2016 à 02/09/2016) - Reestruturação Arquitetura e Primeiros Testes}
 Realizou-se uma reunião com o orientador visando reestruturar a arquitetura. Primordialmente, tendo em vista que os tradutores podem possuir diferentes tipos de medições, foram definidas duas classes abstratas: Transductor e Measurements. A partir dessas classes surgiram as especializações de transdutores de energia (EnergyTransductor) e medições de energia (EnergyMeasurements). Além disso, percebeu-se a necessidade de criação de um modelo de transdutor (TransductorModel), o qual possuiria informações específicas do mesmo, como endereço dos registradores importantes, protocolo serial e de transporte utilizados. A figura \ref{sprint03arq} ilustra a evolução da arquitetura realizada nessa sprint.
@@ -67,7 +83,7 @@ Nessa sprint foi realizado um primeiro contato com os testes e ao seu fim obtivo
 \end{figure}
 
 \section{Sprint 04 (05/09/2016 à 16/09/2016) - Documentação de Código e Estrutura \textit{Boilerplate}}
-Buscando deixar o código mais entendível, realizou-se uma documentação das principais classes utilizando os padrões de \textit{docstrings}\footnote{\url{https://www.python.org/dev/peps/pep-0257/}} definidos pelo \textit{Google Python Style}\footnote{\url{http://google.github.io/styleguide/pyguide.html}}. A figura \ref{documentacao01} ilustra um exemplo realizado no projeto.
+Buscando deixar o código mais entendível, realizou-se uma documentação das principais classes do sistema utilizando os padrões de \textit{docstrings}\footnote{\url{https://www.python.org/dev/peps/pep-0257/}} definidos pelo \textit{Google Python Style}\footnote{\url{http://google.github.io/styleguide/pyguide.html}}. A figura \ref{documentacao01} ilustra um exemplo realizado no projeto.
 
 \begin{figure}[!htpb]
     \centering
@@ -113,7 +129,7 @@ Após implementado o protocolo serial, realizou-se o desenvolvimento do protocol
 \end{figure}
 
 \section{Sprint 07 (17/10/2016 à 28/10/2016) - Gerenciador para Coleta de Dados}
-Após implementar os protocolos de tranporte e serial verificou-se a necessidade de uma classe que realizasse toda a comunicação dos mesmos, ou seja, desempenhasse a coleta das medições de cada transdutor. Essa classe foi definida como DataCollector e utiliza os princípios de \textit{threads}\footnote{\url{https://docs.python.org/2/library/threading.html}} para inicar ``simultaneamente'' a coleta de dados de todos os trandutores. A figura \ref{sprint07arq} ilustra a nova arquitetura gerada.
+Após implementar os protocolos de transporte e serial verificou-se a necessidade de uma classe que realizasse toda a comunicação dos mesmos, ou seja, desempenhasse a coleta das medições de cada transdutor. Essa classe foi definida como DataCollector e utiliza os princípios de \textit{threads}\footnote{\url{https://docs.python.org/2/library/threading.html}} para inicar ``simultaneamente'' a coleta de dados de todos os trandutores. A figura \ref{sprint07arq} ilustra a nova arquitetura gerada.
 
 \begin{figure}[!htpb]
     \centering

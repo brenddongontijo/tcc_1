@@ -3,63 +3,16 @@ A criação de novos produtos que facilitam ou substituem o trabalho manual cada
 
 Dentre os diferentes produtos existentes encontra-se o software, a IEEE \cite{ieee_glossary} o define como um ``conjunto de programas de computador, procedimentos e possível documentação, além de dados associados ao funcionamento de um sistema de computador''. Uma das diferenças do software, comparado a outros produtos, se dá pelo fato do mesmo ser um conhecimento incorporado, sendo este inicialmente disperso, tácito, latente e incompleto \cite{baetjer1997}. Para Sommerville \cite{sommerville_2006}, software, por ser abstrato e intangível, não pode ser limitado por materiais ou controlado por leis da física ou por processos de manufatura.
 
-A Engenharia de Software consiste no estabelecimento e uso de princípios de engenharia para obter-se, de maneira economica, software confiável e eficiente \cite{naur_1969}. Em uma definição mais formal, Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software; isto é, a aplicação da engenharia ao software'' \cite{ieee_glossary}.
+A Engenharia de Software consiste no estabelecimento e uso de princípios de engenharia para obter-se, de maneira econômica, software confiável e eficiente \cite{naur_1969}. Em uma definição mais formal, Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software; isto é, a aplicação da engenharia ao software'' \cite{ieee_glossary}.
 
-Dentre as áreas da Engenharia de Software existe a Gerencia de Configuração de Software, responsável por auxiliar o desenvolvimento provendo controle de versão, mudança e auditoria de configurações \cite{SWEBOK2014}. Roger Pressman \cite{pressman_2009} a define como um ``conjunto de atividades projetadas para controlar as mudanças pela identificação dos produtos do trabalho que serão alterados, estabelecendo um relacionamento entre eles, definindo o mecanismo para o gerenciamento de diferentes versões destes produtos, controlando as mudanças impostas, e auditando e relatando as mudanças realizadas''.
+Dentre as áreas da Engenharia de Software existe a Gerência de Configuração de Software, responsável por auxiliar o desenvolvimento provendo controle de versão, mudança e auditoria de configurações \cite{SWEBOK2014}. Roger Pressman \cite{pressman_2009} a define como um ``conjunto de atividades projetadas para controlar as mudanças pela identificação dos produtos do trabalho que serão alterados, estabelecendo um relacionamento entre eles, definindo o mecanismo para o gerenciamento de diferentes versões destes produtos, controlando as mudanças impostas, e auditando e relatando as mudanças realizadas''.
 
 Visando juntar a capacidade computacional com conteúdo informativo foram criados os sistemas e aplicativos baseados na \textit{web}. Com o passar dos anos, esses sistemas evoluíram em sofisticadas ferramentas de computação, as quais não forneciam apenas funções autônomas ao usuário final, mas também integrariam-se com bancos de dados corporativos e aplicativos de negócios \cite{pressman_2009}.
 
-A propota deste trabalho consiste na aplicação de conceitos, técnicas e ferramentas de Engenharia de Software em um contexto de energia.
-
-O crescimento no consumo de energia cada vez mais vem aumentando conforme os anos. No
-ano de 2014 o Brasil consumiu 531.1 TWh, resultando em um aumento de 2.9\% comparado à 2013 \cite{balanco_energetico}. O Brasil possui uma matriz energética predominantemente renovável tendo como ênfase a geração hidráulica. As fontes renováveis correspondem à 84.1\% e não renováveis 26.9\%.
-
-Uma pequena parte do consumo total de energia elétrica do Brasil é realizada por prédios públicos, sendo
-esses responsáveis pela prestação de serviços à população. Em 2014, o total de energia elétrica consumida
-pelos mesmos foi de 12.61 TWh, representando 2.4\% do total consumido pelo país \cite{balanco_energetico}.
-
-No ano de 2015 foi realizado um reajuste tarifário da energia elétrica correspondente à 33\% para clientes residenciais e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}, gerando altos gastos.
-
-Dentre as alternativas para reduzir o consumo de energia elétrica encontram-se o uso de equipamentos mais eficientes, certificações Procel\footnote{\url{www.procelinfo.com.br/selo_procel_edificacoes/}}, uso racional da energia e afins, porém, quando se trata de instalações de grande porte, como Universidades e órgãos públicos em geral, percebe-se que um dos grandes problemas enfrentado é a falta de monitoramento adequado do uso de energia elétrica.
-
-\section{Contexto}
-Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de gerenciamento energético da própria Universidade, objetivando que cada Campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar, com o auxílio de transdutores, seu próprio monitoramento de energia e enviar essas informações coletadas para o Campus Darcy Ribeiro, o qual funcionaria como uma Central. As etapas do projeto foram dividas em:
-\begin{itemize}
-    \item Determinação de pontos críticos para monitoramento;
-    \item Instalação de transdutores nos pontos críticos;
-    \item Desenvolvimento de um sistema \textit{web} capaz de comunicar-se com os transdutores e tratar os dados de energia.
-\end{itemize}
-
-Num primeiro momento foi selecionado o Campus do Gama (FGA)\footnote{\url{https://fga.unb.br/}} para que
-fossem realizadas as instalações dos transdutores. Tal escolha foi definida pela complexidade das instalações, visto que o Campus possui apenas 8 anos de funcionamento, uma menor proporção comparado ao Campus Darcy Ribeiro e pelo fato da equipe responsável pela execução do projeto, tabela \ref{equipe_projeto}, encontrar-se estabelecida no mesmo.
-
-\begin{table}[!htbp]
-    \centering
-    \caption{Equipe Execução Projeto. Fonte: autor}
-    \label{equipe_projeto}
-    \begin{tabular}{|p{5cm}|p{2cm}|p{3cm}|}
-    \hline
-    \textbf{Membro}                                                                    & \textbf{Titulação} & \textbf{Função}        \\\hline
-    Brenddon Gontijo Furtado                                                  & Estudante & Desenvolvedor \\\hline
-    Loana Nunes Valesco                                                       & Doutor    & Coordenador   \\\hline
-    Alex Reis                                                                 & Doutor    & Pesquisador   \\\hline
-    Roberto Miranda Meirelles                                                 & Doutor    & Pesquisador   \\\hline
-    \end{tabular}
-\end{table}
-
-Após realizada a instalação dos transdutores restava apenas o desenvolvimento do sistema, para isso realizaram-se reuniões com a coordenadora, das quais foram definidos o nome do sistema, SME-UnB (Sistema de Monitoramento Energético - Universidade de Brasília), e suas principais funcionalidades:
-\begin{itemize}
-    \item Geração de relatórios
-    \item Gráficos de consumo, demanda e afins
-    \item Monitoramento temporal de transdutores
-    \item Simulação de fatura
-    \item Sistema de alarme para eventos indesejados
-\end{itemize}
-
-Para o contexto deste trabalho definiu-se a realização do monitoramento de informações energéticas referente aos Campus da Universidade.
+A proposta deste trabalho consiste na aplicação de conceitos, técnicas e ferramentas de Engenharia de Software em um contexto de energia.
 
 \section{Objetivo Geral}
-Desenvolver sistema web capaz de monitorar, em tempo real, medições de energia coletadas por transdutores
+Desenvolver sistema \textit{web} capaz de monitorar, em tempo real, medições de energia coletadas por transdutores
 instalados em quadros de energia da Universidade de Brasília.
 
 \subsection{Objetivos Específicos}
@@ -72,7 +25,7 @@ O sistema deve ser capaz de:
 \end{itemize}
 
 \section{Metodologia Utilizada}
-A metodologia abordada neste trabalho teve como base o desenvolvimento de um \textit{software} livre \footnote{\url{http://www.gnu.org/philosophy/free-sw.pt-br.html}} utilizando-se dos princípios empíricos de desenvolvimento ágil \footnote{\url{http://agilemanifesto.org/}} de \textit{software} juntamente com práticas do Scrum \footnote{\url{http://www.scrumguides.org/}} e \textit{Extreme Programming} \footnote{\url{http://www.extremeprogramming.org/}}.
+A metodologia abordada neste trabalho teve como base o desenvolvimento de um \textit{software} livre \footnote{\url{http://www.gnu.org/philosophy/free-sw.pt-br.html}} utilizando-se dos princípios empíricos de desenvolvimento ágil de \textit{software}\footnote{\url{http://agilemanifesto.org/}} juntamente com algumas práticas do Scrum \footnote{\url{http://www.scrumguides.org/}} e \textit{Extreme Programming} \footnote{\url{http://www.extremeprogramming.org/}}.
 
 \section{Estruturação do Trabalho}
 O trabalho encontra-se estruturado da seguinte maneira:
