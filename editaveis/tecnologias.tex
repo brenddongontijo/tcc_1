@@ -45,3 +45,29 @@ A Figura \ref{django-arq} ilustra a arquitetura do \textit{Django}:
     e outras linguagens. Utiliza \textit{reStructuredText} como sua linguagem de marcação e converte toda a documentação para formato html, pdf, epub ou man.
 
 \section{Protocolos Utilizados}
+    \subsection{\textit{Modbus RTU}}
+    \textit{Modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam os princípios de mestre-escravo, figura \ref{mestre_escravo}, onde o dispositivo requisitando a informação é chamado de mestre e os dispositivos fornecendo informações chamados de escravos. \cite{modbus}.
+    \begin{figure}[!htpb]
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.8]{figuras/mestre_escravo.eps}
+        \caption{Comunicação Mestre-Escravo \textit{Modbus}. Fonte: \cite{modbus}}
+        \label{mestre_escravo}
+    \end{figure}
+
+    Quando controladores são configurados para se comunicarem em uma rede Modbus usando o modo RTU (\textit{Remote Terminal Unit}, Unidade de Terminal Remoto) cada \textit{byte} contém duplas hexadecimais de 4 \textit{bits}. A maior vantagem de utilizar este modo é que sua grande densidade de caracteres permite uma maior taxa de transferência comparado ao modo ASCII, tendo a mesma taxa de transmissão \cite{modbus}.
+
+    O cabeçalho de uma mensagem em Modbus RTU, figura \ref{modbusrtuheader}, possui 16 \textit{bytes} e é definido da seguinte maneira:
+    \begin{itemize}
+        \item Identificador do Aparelho: 2 \textit{bytes}.
+        \item Código de Função: 2 \textit{bytes}, define qual tipo de operação o equipamento irá realizar.
+        \item Campo de Dados: 8 \textit{bytes}, sendo 4 \textit{bytes} para indicar o endereço do primeiro registrador requisitado e 4 \textit{bytes} para indicar a quantidade de registradores que serão lidos.
+        \item CRC (\textit{Cyclic Redundancy Check}, Verificação de Redundância Cíclica): 4 \textit{bytes} para verificação de erros.
+    \end{itemize}
+
+    \begin{figure}[!htpb]
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.8]{figuras/modbusrtuheader.eps}
+        \caption{Cabeçalho de uma Mensagem \textit{Modbus RTU}. Fonte: \cite{modbus_online}}
+        \label{modbusrtuheader}
+    \end{figure}
+
