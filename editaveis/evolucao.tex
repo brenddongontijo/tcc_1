@@ -147,7 +147,14 @@ A cobertura total de código obtida ao fim da sprint foi de 95\%, figura \ref{co
 \end{figure}
 
 \section{Sprint 08 - \textit{Cron Job} e Integração Contínua}
-Objetivando executar a coleta de dados de maneira temporizada, realizou-se a classe DataCollectCronJob, a qual foi programada para ser executado a cada 1 minuto. A arquitetura e cobertura de código finais da aplicação encontram-se nas figura \ref{sprint08arq} e \ref{cobertura05}.
+Objetivando executar a coleta de dados de maneira temporizada, realizou-se a classe DataCollectCronJob, a qual foi programada para ser executada a cada 1 minuto. Além disso, foi configurado o serviço de integração contínua do \textit{Gitlab CI}, figura \ref{gitlabci}, que basicamente cria um ambiente do zero, instala as dependências do projeto, realiza a suíte de testes e verifica se o código está devidamente de acordo com as normas da PEP 8. A arquitetura e cobertura de código finais da aplicação encontram-se nas figura \ref{sprint08arq} e \ref{cobertura05}.
+\begin{figure}[!htpb]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.6]{figuras/gitlabci.eps}
+    \caption{\textit{Script} de Integração Contínua. Fonte: autor}
+    \label{gitlabci}
+\end{figure}
+
 \begin{figure}[!htpb]
     \centering
     \includegraphics[scale=0.4,angle=90]{figuras/sprint08arq.eps}
