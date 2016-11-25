@@ -1,6 +1,6 @@
 \chapter{Evolução do Sistema}
 
-\section{Sprint 01 (25/07/2016 à 05/08/2016) - Coleta Inicial de Dados Transdutor}
+\section{Sprint 01 (25/07/2016 à 05/08/2016) - Coleta Inicial de Dados do Transdutor}
 Buscando realizar uma primeira análise do transdutor instalado na Universidade, verificando se a comunicação com o mesmo poderia ser realizada de maneira efetiva, realizou-se o módulo \textit{data\_reader} contendo as seguintes classes:
 \begin{itemize}
     \item Transductor: representação de um transdutor.
@@ -95,7 +95,7 @@ Além das mudanças arquiteturais, foram implementadas e testadas as classes Ser
     \label{cobertura02}
 \end{figure}
 
-\section{Sprint 06 (03/10/2016 à 14/10/2016) - Protocolo de Transporte e Testes com Mock}
+\section{Sprint 06 (03/10/2016 à 14/10/2016) - Protocolo de Transporte e Testes com \textit{Mock}}
 Após implementado o protocolo serial, realizou-se o desenvolvimento do protocolo de transporte. Sua principal função é comunicar-se com o transdutor e tratar as questões referentes à \textit{timeout} e tentativas consecutivas de envio de requisições. Além disso, foram refatorados os testes do sistema utilizando \textit{Mocks}\footnote{\url{https://docs.python.org/3/library/unittest.mock.html}}, objetivando maior desempenho e unitariedade dos métodos. A figura \ref{exemplo_mock} ilustra um exemplo de teste da classe UdpProtocol utilizando \textit{Mock}. A cobertura de código, figura \ref{cobertura03}, não se alterou comparado à sprint anterior.
 
 \begin{figure}[!htpb]

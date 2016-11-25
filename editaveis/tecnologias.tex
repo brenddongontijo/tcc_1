@@ -46,7 +46,7 @@ A Figura \ref{django-arq} ilustra a arquitetura do \textit{Django}:
 
 \section{Protocolos Utilizados}
     \subsection{\textit{Modbus RTU}}
-    \textit{Modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam os princípios de mestre-escravo, figura \ref{mestre_escravo}, onde o dispositivo requisitando a informação é chamado de mestre e os dispositivos fornecendo informações chamados de escravos. \cite{modbus}.
+    \textit{Modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam os princípios de mestre-escravo, figura \ref{mestre_escravo}, onde o dispositivo requisitando a informação é chamado de mestre e os dispositivos fornecendo informações de escravos. \cite{modbus}.
     \begin{figure}[!htpb]
         \centering
         \includegraphics[keepaspectratio=true,scale=0.8]{figuras/mestre_escravo.eps}
@@ -71,3 +71,12 @@ A Figura \ref{django-arq} ilustra a arquitetura do \textit{Django}:
         \label{modbusrtuheader}
     \end{figure}
 
+    \subsection{UDP}
+    O protocolo UDP (\textit{User Datagram Protocol}, Protocolo de Datagrama do Usuário) é um protocolo da camada de transporte e não orientado a conexões. Seu cabeçalho, figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
+
+    \begin{figure}[!htpb]
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.8]{figuras/udp_header.eps}
+        \caption{Cabeçalho do UDP. Fonte: \cite{tanenbaum_2002}}
+        \label{udp_header}
+    \end{figure}
