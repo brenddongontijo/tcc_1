@@ -1,6 +1,6 @@
 \chapter{Evolução do Sistema}
 
-\section{Sprint 01 - Coleta Inicial de Dados Transdutor}
+\section{Sprint 01 (25/07/2016 à 05/08/2016) - Coleta Inicial de Dados Transdutor}
 Buscando realizar uma primeira análise do transdutor instalado na Universidade, verificando se a comunicação com o mesmo poderia ser realizada de maneira efetiva, realizou-se o módulo \textit{data\_reader} contendo as seguintes classes:
 \begin{itemize}
     \item Transductor: representação de um transdutor.
@@ -39,12 +39,12 @@ Foram realizar algumas telas, figuras \ref{dados01} e \ref{dados02}, contendo os
 \vfill
 \pagebreak
 
-\section{Sprint 02 - Refatorações de Urls/Templates e Guia de Instalação}
+\section{Sprint 02 (08/08/2016 à 19/08/2016) - Refatorações de Urls/Templates e Guia de Instalação}
 Após analisadas as urls e templates do projeto verificou-se que haviam muitas rotas desnecessárias e não havia um padrão para os templates, o que estava gerando confusão na hora de criar novas páginas para a aplicação. Tendo em mente tais problemas essa sprint buscou realizar uma refatoração dos mesmos.
 
 Realizou-se um guia de instalação\footnote{\url{https://gitlab.com/brenddongontijo/SME-UnB/wikis/instalation-guide/}} para o ambiente de desenvolvimento utilizando as ferramentas Vagrant\footnote{\url{https://www.vagrantup.com/}} e Chef Solo\footnote{\url{https://docs.chef.io/chef_solo.html}}, visando auxiliar novos desenvolvedores a contribuirem com o projeto.
 
-\section{Sprint 03}
+\section{Sprint 03 (22/08/2016 à 02/09/2016) - Reestruturação Arquitetura e Primeiros Testes}
 Realizou-se uma reunião com o orientador visando reestruturar a arquitetura. Primordialmente, tendo em vista que os tradutores podem possuir diferentes tipos de medições, foram definidas duas classes abstratas: Transductor e Measurements. A partir dessas classes surgiram as especializações de transdutores de energia (EnergyTransductor) e medições de energia (EnergyMeasurements). Além disso, percebeu-se a necessidade de criação de um modelo de transdutor (TransductorModel), o qual possuiria informações específicas do mesmo, como endereço e tipo dos registradores, protocolo serial e de transporte utilizados. A figura \ref{sprint03arq} ilustra a evolução da arquitetura realizada nessa sprint.
 
 \begin{figure}[!htpb]
@@ -66,7 +66,7 @@ Nessa sprint foi realizado um primeiro contato com os testes e ao seu fim foi ob
     \label{cobertura01}
 \end{figure}
 
-\section{Sprint 04 - Documentação de Código e Estrutura \textit{Boilerplate}}
+\section{Sprint 04 (05/09/2016 à 16/09/2016) - Documentação de Código e Estrutura \textit{Boilerplate}}
 Buscando deixar o código mais entendível realizou-se uma documentação geral utilizando os padrões de \textit{docstrings}\footnote{\url{https://www.python.org/dev/peps/pep-0257/}} definidos pelo \textit{Google Python Style}\footnote{\url{http://google.github.io/styleguide/pyguide.html}}. A figura \ref{documentacao01} ilustra um exemplo realizado no projeto.
 
 \begin{figure}[!htpb]
@@ -78,7 +78,7 @@ Buscando deixar o código mais entendível realizou-se uma documentação geral 
 
 A estrutura \textit{Boilerplate}\footnote{\url{https://github.com/fabiommendes/python-boilerplate}} foi adicionada ao projeto com o objetivo de realizar uma melhor estruturação dos módulos e realizar pré-configurações para ambientes de desenvolvimendo/produção, assim como no auxílio para utilização das ferramentas Sphinx e Coverage.
 
-\section{Sprint 05 - Refatoração Arquitetura e Protocolo Serial}
+\section{Sprint 05 (19/09/2016 à 30/09/2016) - Refatoração Arquitetural e Protocolo Serial}
 Tendo em vista o forte acoplamento gerado pela classe CommunicationProtocol realizou-se uma mudança na arquitetura, onde a classe em questão foi dividia em duas classes abstratas: TransportProtocol e SerialProtocol. A partir dessas classes foram definidas as especializações referentes ao UdpProtol e ModbusRTU, protocolos os quais são utilizados especificamente pelo modelo de transdutor instalado na Universidade. Além dessas mudanças criou-se uma nova classe chamada EnergyOperations, responsável por realizar cálculos matemáticos com os dados de energia coletados. A figura \ref{sprint05arq} ilustra a evolução arquitetural realizado nessa sprint.
 \begin{figure}[!htpb]
     \centering
@@ -95,7 +95,7 @@ Além das mudanças arquiteturais, foram implementadas e testadas as classes Ser
     \label{cobertura02}
 \end{figure}
 
-\section{Sprint 06 - Protocolo de Transporte e Testes com Mock}
+\section{Sprint 06 (03/10/2016 à 14/10/2016) - Protocolo de Transporte e Testes com Mock}
 Após implementado o protocolo serial, realizou-se o desenvolvimento do protocolo de transporte. Sua principal função é comunicar-se com o transdutor utilizando o protocolo utilizado pelo mesmo e tratar as questões referentes à \textit{timeout} e tentativas consecutivas de envio de requisições. Além disso, foram refatorados os testes do sistema utilizando \textit{Mocks}\footnote{\url{https://docs.python.org/3/library/unittest.mock.html}}, objetivando maior desempenho e efetivamente testar unitariamente os métodos. A figura \ref{exemplo_mock} ilustra um exemplo de teste da classe UdpProtocol utilizando \textit{Mock}. A cobertura de código, figura \ref{cobertura03}, não se alterou comparado à sprint anterior.
 
 \begin{figure}[!htpb]
@@ -112,7 +112,15 @@ Após implementado o protocolo serial, realizou-se o desenvolvimento do protocol
     \label{cobertura03}
 \end{figure}
 
-\section{Sprint 07}
+\section{Sprint 07 (17/10/2016 à 28/10/2016)}
+Após implementar os protocolos de tranporte e serial verificou-se a necessidade de uma classe que realizasse toda a comunicação dos mesmos, ou seja, desempenhasse a coleta das medições de cada transdutor. Essa classe foi definida como DataCollector e utiliza os princípios de \textit{threads} para inicar ``simultaneamente'' a coleta de dados de todos os trandutores. A figura \ref{sprint07arq} ilustra a nova arquitetura gerada.
+
+\begin{figure}[!htpb]
+    \centering
+    \includegraphics[scale=0.4,angle=90]{figuras/sprint07arq.eps}
+    \caption{Arquitetura SME-UnB Sprint 07. Fonte: autor}
+    \label{sprint07arq}
+\end{figure}
 
 \section{Sprint 08}
 
