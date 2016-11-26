@@ -4,7 +4,7 @@
 Os negócios atualmente operam em um ambiente global sujeito a rápidas mudanças sendo crucial
 estar preparado para novas oportunidades de mercado, mudanças de condições econômicas e ao surgimento
 de produtos e serviços concorrentes. O \textit{software} é um dos componentes cruciais para a realização
-de todas as operações de negócio e realizá-lo de forma rápida também é uma maneira de aproveitar novas
+de várias operações de negócio e realizá-lo de forma rápida também é uma maneira de aproveitar novas
 oportunidades e responder às pressões competitivas \cite{sommerville_2006}.
 
 O manifesto ágil \cite{beck2001agile} consiste na base que fundamenta o desenvolvimento ágil de
@@ -17,7 +17,7 @@ O manifesto ágil \cite{beck2001agile} consiste na base que fundamenta o desenvo
     \item \textbf{A capacidade de resposta a mudanças} acima de um plano pré-estabelecido.
 \end{itemize}
 
-``Enquanto há valor nos itens à direita, valorizamos mais os itens à esquerda'' \cite{beck2001agile}.
+\textit{``Enquanto há valor nos itens à direita, valorizamos mais os itens à esquerda''} \cite{beck2001agile}.
 
 Além desses valores são definidos 12 princípios de agilidade:
 
@@ -25,7 +25,7 @@ Além desses valores são definidos 12 princípios de agilidade:
     \item Nossa maior prioridade é satisfazer o cliente, através da entrega adiantada e contínua de \textit{software} de valor;
     \item Aceitar mudanças de requisitos, mesmo no fim do desenvolvimento. Processos ágeis se adequam a mudanças, para que o cliente possa tirar vantagens competitivas;
     \item Entregar \textit{software} funcionando com freqüencia, na escala de semanas até meses, com preferência aos períodos mais curtos;
-    \item Pessoas relacionadas à negócios e desenvolvedores devem trabalhar em conjunto e diariamente, durante todo o curso do projeto;
+    \item Pessoas relacionadas a negócios e desenvolvedores devem trabalhar em conjunto e diariamente, durante todo o curso do projeto;
     \item Construir projetos ao redor de indivíduos motivados. Dando a eles o ambiente e suporte necessário, e confiar que farão seu trabalho;
     \item O Método mais eficiente e eficaz de transmitir informações para, e por dentro de um time de desenvolvimento, é através de uma conversa cara a cara;
     \item \textit{Software} funcional é a medida primária de progresso;
@@ -44,7 +44,7 @@ em uma série de incrementos e cada incremento fornece uma nova funcionalidade a
 vantagens de se adotar uma abordagem incremental para o desenvolvimento de \textit{software} são:
 
 \begin{itemize}
-    \item Entrega acelerada dos serviços ao cliente. Os clientes poderão obter valor do sistema com incrementos iniciais;
+    \item Entrega acelerada dos serviços ao cliente. Os clientes poderão obter valor do sistema já nos incrementos iniciais;
     \item Engajamento do usuário com o sistema. Os usuários do sistema devem estar envolvidos no processo
     de desenvolvimento dando \textit{feedback} à equipe de desenvolvimento sobre os incrementos entregues.
 \end{itemize}
@@ -58,14 +58,13 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
     No contexto deste trabalho, o projeto foi desenvolvido pelo próprio autor utilizando os valores e princípios do XP. As práticas utilizadas para o desenvolvimento do sistema foram:
 
     \begin{itemize}
-        \item Teste: escrever testes unitários, os quais devem funcionar de maneira adequada para que
-        o desenvolvimento do sistema continue. A cada término de uma funcionalidade eram realizados
-        seus respectivos testes, objetivando uma cobertura de no mínimo 90\%.
+        \item Teste: escrever testes unitários, que devem funcionar de maneira adequada para que
+        o desenvolvimento do sistema continue. A cada término de funcionalidade escrevia-se os respectivos testes, objetivando uma cobertura de no mínimo 90\%.
         \item Refatoração: reestruturação do sistema sem alteração de seu comportamento, objetivando
-        remover duplicidade, simplificação, aumento de flexibilidade e melhoramento da comunicação. As propostas de refatorações eram identificadas nas reuniões com o orientador
+        remover duplicidade, simplificação de código, aumento de flexibilidade e melhoramento da comunicação. As propostas de refatorações eram identificadas nas reuniões com o orientador
         e geralmente realizadas em iterações subsequentes.
-        \item Padrões de Codificação: escrever o código de acordo com boas práticas de programação, enfatizando uma comunicação através do código. Pelo código ser escrito na linguagem \textit{python}
-        procurou-se sempre utilizar as convenções definidas pela PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}.
+        \item Padrões de Codificação: escrever o código de acordo com boas práticas de programação, enfatizando uma comunicação através do código. Uma vez que o código é ser escrito na linguagem \textit{python}
+        procurou-se sempre utilizar as convenções definidas pelo PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}.
         \item Integração Contínua: integrar e construir o sistema muitas vezes ao dia, sempre que uma tarefa
         for concluída. A Integração Contínua foi realizada com auxílio da ferramenta Gitlab CI, onde para cada novo \textit{commit} no repositório é gerada uma \textit{build} verificando se os testes e as normas do PEP 8 foram realizados de forma correta.
     \end{itemize}
@@ -82,7 +81,7 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
     O Time de Desenvolvimento é responsável por realizar o desenvolvimento de \textit{software} e entregar um incremento de \textit{software} ao final de cada \textit{sprint}.
 
     \textit{Sprint} é um \textit{time-boxed} de um mês ou menos, durante o qual
-    uma versão incremental potencialmente utilizável do produto é criado.
+    uma versão incremental potencialmente utilizável do produto é criada.
     Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
 
     O Scrum Master é responsável por garantir que o Scrum seja entendido e aplicado, ou seja, que o Time Scrum siga à teoria, práticas e regras do Scrum.
@@ -91,8 +90,6 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
 
     \begin{table}[!htbp]
         \centering
-        \caption{Equipe Scrum. Fonte: autor}
-        \label{equipe_scrum}
         \begin{tabular}{|p{5cm}|p{4cm}|}
         \hline
         \textbf{Membro}                                                           & \textbf{Papel}        \\\hline
@@ -100,13 +97,15 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
         Loana Nunes Valesco                                                       & \textit{Product Owner}    \\\hline
         Fábio Macedo Mendes                                                       & Scrum Master    \\\hline
         \end{tabular}
+        \caption{Equipe Scrum. }
+        \label{equipe_scrum}
     \end{table}
 
-    Vale ressaltar que devido ao fato do time de desenvolvimento ser representado por apenas uma pessoa nem todas as práticas do Scrum podem ser aplicadas de maneira efetiva, assim, o \textit{framework} foi acabou sendo utilizado como uma inspiração, buscando principalmente utilizar
+    Vale ressaltar que devido ao fato do time de desenvolvimento ser representado por apenas uma pessoa nem todas as práticas do Scrum puderam ser aplicadas de maneira efetiva. Deste modo, o \textit{framework} foi utilizado como uma inspiração, buscando principalmente utilizar
     os conceitos de \textit{sprint} e planejamento de \textit{sprint} para auxiliarem nos entregáveis de cada iteração.
 
-    Definiu-se que a duração das \textit{sprints} seriam de 15 dias e ao fim das mesmas seriam realizadas duas reuniões. A primeira, com a \textit{Product Owner}, objetivaria verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
-    com o orientador, discutiria decisões arquiteturais, sugestões de implementação e realização
+    Definiu-se que a duração das \textit{sprints} seriam de 15 dias e ao fim das mesmas seriam realizadas duas reuniões. A primeira, com a \textit{Product Owner}, objetiva verificar mudanças de escopo, sugestões de melhorias e se o incremento de \textit{software} produzido atendeu as expectativas desejadas. A segunda,
+    com o orientador, discute decisões arquiteturais, sugestões de implementação e realização
     do planejamento referente à \textit{sprint} posterior.
 
     Os conceitos e artefatos referentes ao \textit{Backlogs} de produto e \textit{sprint} não foram utilizados de maneira rigorosa, sendo estes registrados de maneira simplificada no arquivo \textit{README}\footnote{\url{https://gitlab.com/brenddongontijo/SME-UnB/blob/master/README.rst}} do repositório hospedeiro do projeto e na ferramenta Gantter\footnote{\url{http://gantter.com/}}.
@@ -135,9 +134,9 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
 
 Em comparação ao software restrito, o software livre apresenta algumas vantagens devido ao fato de seu código-fonte estar disponível para qualquer usuário, partindo do princípio que seu licenciamento esteja de acordo com as definições da \textit{Free Software Foundation}\footnote{\url{http://www.gnu.org/philosophy/free-sw.pt-br.html}} ou da \textit{Open Source Initiative}\footnote{\url{https://opensource.org/docs/definition.html}}. Essa disponibilidade auxilia no desenvolvimento de aplicações personalizadas, uma vez que que é possível partir de uma solução já existente ao invés de desenvolver tudo partindo do zero. Tal abordagem possui um impacto significativo na redução de custos e diminuição na duplicação de esforço \cite{meirelles2013}.
 
-Raymond \cite{raymond1999}, observando o modelo de desenvolvimento do Linux, percebeu que o compartilhamento de código possivelmente melhoraria na qualidade final de uma aplicação, uma vez que uma quantidade grande de desenvolvedores, com diferentes habilidades e conhecimentos, conseguem propor melhorias e consertar \textit{bugs} em uma pequena quantidade de tempo \cite{meirelles2013}.
+Raymond \cite{raymond1999}, observando o modelo de desenvolvimento do Linux, percebeu que o compartilhamento de código possivelmente melhoraria a qualidade final de uma aplicação, uma vez que uma quantidade grande de desenvolvedores, com diferentes habilidades e conhecimentos, conseguem propor melhorias e consertar \textit{bugs} em uma pequena quantidade de tempo \cite{meirelles2013}.
 
 \section{Licença de \textit{software}}
-Software é um produto do intelecto humano e consequentemente um tipo de propriedade intelectual, possui um valor de interesse e a lei permite o dono possuí-lo e controlá-lo. Além disso, o dono pode exercer domínio sobre esse software e fornecê-lo, vendê-lo, ou licenciá-lo para que outras pessoas o usem. \cite{rosen_2004}.
+Software é um produto sujeito à noção de propriedade intelectual. A lei brasileira e internacional permite ao dono possuí-lo e controlá-lo. Além disso, o dono pode exercer domínio sobre esse software e fornecê-lo, vendê-lo, ou licenciá-lo para que outras pessoas o usem. \cite{rosen_2004}.
 
-A licença utilizada no sistema deste trabalho foi a MIT\footnote{\url{https://opensource.org/licenses/MIT}}. A mesma consiste em uma licença permissiva de software, permitindo o uso comercial, modificação, distribuição e sublicenciamento. Para ser utilizada basta que a mesma esteja incluída junto ao código-fonte \cite{mit_license}.
+A licença utilizada no sistema deste trabalho foi a MIT\footnote{\url{https://opensource.org/licenses/MIT}}. Ela consiste em uma licença permissiva, autorizando o uso comercial, modificação, distribuição e sublicenciamento. Para ser utilizada basta que a mesma esteja incluída junto ao código-fonte \cite{mit_license}.

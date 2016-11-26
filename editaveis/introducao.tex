@@ -1,15 +1,16 @@
 \chapter{Introdução}
-A criação de novos produtos que facilitam ou substituem o trabalho manual cada vez mais vem auxiliando na vida dos seres humanos. A Engenharia de Produto surgiu para conduzir a inovação de produtos partindo de sua ideia inicial até todo seu ciclo de vida (\textit{design}, desenvolvimento, fabricação, uso e reciclagem) \cite{ortloff2014}.
+O crescimento no consumo de energia elétrica vem aumentando com o passar dos anos. No
+ano de 2014, o Brasil consumiu 531.1 TWh, o que corresponde a um aumento de 2.9\% comparado à 2013. Cerca de 2.4\% deste total é consumido por prédios públicos \cite{balanco_energetico}. No ano de 2015, foi realizado um reajuste tarifário da energia elétrica correspondente à 33\% para clientes residenciais e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}. Tendo em vista este cenário, é interessante a administração pública viabilizar políticas para o uso mais racional da energia elétrica.
 
-Dentre os diferentes produtos existentes encontra-se o software, a IEEE \cite{ieee_glossary} o define como um ``conjunto de programas de computador, procedimentos e possível documentação, além de dados associados ao funcionamento de um sistema de computador''. Uma das diferenças do software, comparado a outros produtos, se dá pelo fato do mesmo ser um conhecimento incorporado, sendo este inicialmente disperso, tácito, latente e incompleto \cite{baetjer1997}. Para Sommerville \cite{sommerville_2006}, software, por ser abstrato e intangível, não pode ser limitado por materiais ou controlado por leis da física ou por processos de manufatura.
+Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de gerenciamento energético da própria Universidade, objetivando que cada Campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar seu próprio monitoramento de energia e enviar essas informações coletadas para a administração central. O objetivo do presente trabalho é desenvolver um Sistema de Monitoramento Energético (SME-UnB) utilizando tecnologias \textit{web} e disponibilizado sobre uma licença livre. Tal sistema criaria subsídios para a administração gerenciar a energia utilizada com o intuito de reduzir gastos e promover a sustentabilidade.
 
-A Engenharia de Software consiste no estabelecimento e uso de princípios de engenharia para obter-se, de maneira econômica, software confiável e eficiente \cite{naur_1969}. Em uma definição mais formal, Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software; isto é, a aplicação da engenharia ao software'' \cite{ieee_glossary}.
+O desenvolvimento do sistema deve se basear nos princípios estabelecidos pela Engenharia de Software para obter, de maneira econômica e sustentável, software confiável e eficiente \cite{naur_1969}. Em uma definição mais formal, Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software'' \cite{ieee_glossary}.
 
-Dentre as áreas da Engenharia de Software existe a Gerência de Configuração de Software, responsável por auxiliar o desenvolvimento provendo controle de versão, mudança e auditoria de configurações \cite{SWEBOK2014}. Roger Pressman \cite{pressman_2009} a define como um ``conjunto de atividades projetadas para controlar as mudanças pela identificação dos produtos do trabalho que serão alterados, estabelecendo um relacionamento entre eles, definindo o mecanismo para o gerenciamento de diferentes versões destes produtos, controlando as mudanças impostas, e auditando e relatando as mudanças realizadas''.
+Este trabalho inspira-se na filosofia e em procedimentos dos denominados métodos ágeis \cite{beck2001agile} e entende que estas metodologias seriam as mais eficazes para a solução de software proposta. Dentre as práticas de desenvolvimento adotadas utilizou-se alguns princípios empíricos de \textit{Extreme Programming} \cite{beck_2004} e \textit{Scrum} \cite{scrum_guide}.
 
-Visando juntar a capacidade computacional com conteúdo informativo foram criados os sistemas e aplicativos baseados na \textit{web}. Com o passar dos anos, esses sistemas evoluíram em sofisticadas ferramentas de computação, as quais não forneciam apenas funções autônomas ao usuário final, mas também integrariam-se com bancos de dados corporativos e aplicativos de negócios \cite{pressman_2009}.
+Tendo em vista o curto período para desenvolvimento e requisitos inicialmente difusos, foi necessário utilizar boas práticas de Gerência de Configuração de Software \cite{SWEBOK2014} para garantir a manutenibilidade, confiabilidade e qualidade do sistema.
 
-A proposta deste trabalho consiste na aplicação de conceitos, técnicas e ferramentas de Engenharia de Software em um contexto de energia.
+Finalmente, adotou-se uma implementação \textit{web}, pois esses sistemas oferecem diversos benefícios ao cliente \cite{pressman_2009}. O fato dos equipamentos eletrônicos, responsáveis por realizar a leitura dos dados de energia, estarem conectados na rede da Universidade pressupõem conectividade. Sistemas \textit{web} não necessitam de instalação por parte do usuário final facilitando bastante o processo de implantação e podem ser acessados a partir de qualquer lugar e em qualquer plataforma. Com o passar dos anos, sistemas web evoluíram em sofisticadas ferramentas de computação, as quais fornecem não apenas funções autônomas ao usuário final, mas também integram-se com bancos de dados corporativos e aplicativos de negócios.
 
 \section{Objetivo Geral}
 Desenvolver sistema \textit{web} capaz de monitorar, em tempo real, medições de energia coletadas por transdutores\footnote{Dispositivo capaz de converter um tipo de energia de entrada em outro de saída.}
@@ -31,10 +32,10 @@ A metodologia abordada neste trabalho teve como base o desenvolvimento de um \te
 O trabalho encontra-se estruturado da seguinte maneira:
 
 \begin{itemize}
-    \item Capítulo 2: abordará os métodos empíricos em engenharia de \textit{software} utilizados para
+    \item Capítulo 2: aborda os métodos empíricos em engenharia de \textit{software} utilizados para
     auxiliar no desenvolvimento do sistema.
-    \item Capítulo 3: abordará como estruturou-se a gerência de configuração.
-    \item Capítulo 4: abordará as princípais tecnologias \textit{web} e protocolos de comunicação utilizados.
-    \item Capítulo 5: abordará a evolução do desenvolvimento do sistema, relatando o que foi realizado durante cada \textit{sprint}.
-    \item Capitulo 6: abordará possíveis trabalhos futuros.
+    \item Capítulo 3: aborda como estruturou-se a gerência de configuração.
+    \item Capítulo 4: aborda as princípais tecnologias \textit{web} e protocolos de comunicação utilizados.
+    \item Capítulo 5: aborda a evolução do desenvolvimento do sistema, relatando o que foi realizado durante cada \textit{sprint}.
+    \item Capitulo 6: aborda possíveis trabalhos futuros.
 \end{itemize}
