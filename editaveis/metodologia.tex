@@ -1,32 +1,8 @@
 \chapter{Métodos Empíricos em Engenharia de \textit{Software}}
 
-\section{Requisitos de \textit{Software}}
-    Os negócios atualmente operam em um ambiente global sujeito a rápidas mudanças sendo crucial
-    estar preparado para novas oportunidades de mercado, mudanças de condições econômicas e ao surgimento
-    de produtos e serviços concorrentes. O \textit{software} é um dos componentes cruciais para a realização
-    de várias operações de negócio e realizá-lo de forma rápida também é uma maneira de aproveitar novas
-    oportunidades e responder às pressões competitivas \cite{sommerville_2006}.
-
-    Entender os requisitos de um problema é uma das difíceis missões
-    que são encaradas na Engenharia de \textit{Software}. Em muitos casos, o cliente não sabe o que realmente quer ou até mesmo
-    suas acaba mudando suas necessidades com o decorrer do projeto.   Sommerville \cite{sommerville_2006} define os requisitos de um projeto como ``requisitos do usuário'' e ``requisitos do sistema''. Os requisitos de usuários consistem de declarações, em
-    linguagem natural, que o sistema deve fornecer e restrições que o mesmo deve
-    operar. Os requisitos de sistema estabelecem de maneira detalhada as
-    funções e restrições do sistema. Além disso, os requisitos de sistema
-    classificam-se em funcionais e não funcionais:
-
-    \begin{itemize}
-        \item Requisitos Funcionais: declaração de funções que o sistema deve fornecer, como o mesmo irá reagir com certas entradas e como deve se comportar para certas situaçoes.
-        \item Requisitos Não Funcionais: restrições sobre serviços ou funções oferecidas pelo sistema.
-    \end{itemize}
-
-    O levantamento adequado de requisitos de \textit{software} é crucial para que possa ser feito um mapeamento das reais necessidades do cliente com funcionalidades que um sistema deve atender. Para Sommerville \cite{sommerville_2006}, após de ser realizado um estudo de viabilidade do problema que será enfrentado, realiza-se a atividade de elicitação de requisitos. Na elicitação de requisitos os engenheiros de \textit{software} trabalham com os clientes e usuários finais do sistema para aprender sobre o domínio da aplicação, os serviços que serão necessários, desempenho esperado, restrições de \textit{hardware} etc. Thayer \cite{thayer_1997} define a Engenharia de Requisitos como um processo que provê os mecanismos apropriados para o entendimento do que o cliente quer, analisando a necessidade, avaliando a viabilidade, negociando uma solução inteligente, especificando a solução de maneira não ambígua, validando a especificação e gerenciando os requisitos conforme os mesmos são transformados em um sistema operacional.
-
-    Dentre as atividades da Engenharia de Requisitos encontra-se a elicitação de requisitos, a qual, para Leite \cite{leite_1994}, é reponsável por identificar todos os fatos que irão fazer parte dos requisitos do sistema, buscando fornecer todo o entendimento que o \textit{software} deve possuir. Uma das técnicas comumente utilizadas para a elicitação de requisitos é a entrevista com questionários \cite{goguen_1994}.
-
-    CASO DE USO E USER STORY
-
 \section{Métodos Ágeis}
+Os negócios atualmente operam em um ambiente global sujeito a rápidas mudanças sendo crucial estar preparado para novas oportunidades de mercado, mudanças de condições econômicas e ao surgimento de produtos e serviços concorrentes. O \textit{software} é um dos componentes cruciais para a realização de várias operações de negócio e realizá-lo de forma rápida também é uma maneira de aproveitar novas oportunidades e responder às pressões competitivas \cite{sommerville_2006}.
+
 O manifesto ágil \cite{beck2001agile} consiste na base que fundamenta o desenvolvimento ágil de
 \textit{software} sendo composto de quatro valores fundamentais:
 
@@ -103,23 +79,39 @@ vantagens de se adotar uma abordagem incremental para o desenvolvimento de \text
         \item Versões Pequenas: colocar rapidamente um sistema simples e funcional em produção, para que posteriormente sejam lançadas novas versões do mesmo em um curto período de tempo.
     \end{itemize}
 
-    USER STORY
+\section{Requisitos de \textit{Software}}
+Entender os requisitos de um problema é uma das difíceis missões
+que são encaradas na Engenharia de \textit{Software}. Em muitos casos, o cliente não sabe o que realmente quer ou até mesmo
+suas acaba mudando suas necessidades com o decorrer do projeto.   Sommerville \cite{sommerville_2006} define os requisitos de um projeto como ``requisitos do usuário'' e ``requisitos do sistema''. Os requisitos de usuários consistem de declarações, em
+linguagem natural, que o sistema deve fornecer e restrições que o mesmo deve
+operar. Os requisitos de sistema estabelecem de maneira detalhada as
+funções e restrições do sistema. Além disso, os requisitos de sistema
+classificam-se em funcionais e não funcionais:
 
-    No caso do XP, são utilizadas estórias de usuários, ou semelhantes, como pontapé inicial para que possa ser iniciado o processo de coleta e desenvolvimento de um \textit{software}
+\begin{itemize}
+    \item Requisitos Funcionais: declaração de funções que o sistema deve fornecer, como o mesmo irá reagir com certas entradas e como deve se comportar para certas situaçoes.
+    \item Requisitos não Funcionais: restrições sobre serviços ou funções oferecidas pelo sistema.
+\end{itemize}
 
-    \subsection{Teste de \textit{Software}}
-    Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
+O levantamento adequado de requisitos de \textit{software} é crucial para que possa ser feito um mapeamento das reais necessidades do cliente com funcionalidades que um sistema deve atender. Thayer \cite{thayer_1997} define a Engenharia de Requisitos como um processo que provê os mecanismos apropriados para o entendimento do que o cliente quer, analisando a necessidade, avaliando a viabilidade, negociando uma solução inteligente, especificando a solução de maneira não ambígua, validando a especificação e gerenciando os requisitos conforme os mesmos são transformados em um sistema operacional.
 
-    De acordo com \citeonline{sw_test_tech}, um bom teste é o que possui uma alta probabilidade de encontrar um erro ainda não descoberto e um teste bem sucedido é o que de fato descobre erros desconhecidos.
+Dentre as atividades da Engenharia de Requisitos encontra-se a elicitação de requisitos, a qual, para Leite \cite{leite_1994}, é reponsável por identificar todos os fatos que irão fazer parte dos requisitos do sistema, buscando fornecer todo o entendimento que o \textit{software} deve possuir.
 
-    Esses testes são estruturados em níveis, cada um com um determinado objetivo dentro do conjunto de testes, de modo a garantir a qualidade do produto em desenvolvimento \cite{sw_test_tech}.
+Com os requisito do sistema em mãos é possível identificar os seus casos de usos, que são de narrativas ou modelos de texto que descrevem uma função ou recurso do sistema do ponto de vista do usuário \cite{pressman_2009}. Em um contexto ágil, como por exemplo o XP, o propósito do caso de uso é mapeado na estória de usuário. Estórias de usuário são escritas pelos clientes como coisas que o sistema precisa fazer por eles, servem para propor estimativas para uma \textit{release} e seus tempos de realização devem ser curtos, entre uma a três semanas de desenvolvimento \cite{beck_2004}.
 
-        \subsubsection{Testes Unitários}
-        Testes unitários possuem como objetivo verificar a existência de defeitos em cada módulo do projeto. Seu alvo são os métodos desenvolvidos ou pequenos trechos específicos de código \cite{artigo_intro_teste}.
+\section{Teste de \textit{Software}}
+Teste de \textit{software} é o processo de execução de um produto para averiguar se ele atingiu suas especificações e funciona corretamente em seu ambiente alvo \cite{artigo_intro_teste}.
 
-        É realizado durante o desenvolvimento, pelo próprio desenvolvedor, pois testa a unidade básica de \textit{software}, que é o menor ``pedaço''  testável, por sua vez chamado de unidade, dando origem ao nome deste tipo de teste \cite{sw_test_tech}.
+De acordo com \citeonline{sw_test_tech}, um bom teste é o que possui uma alta probabilidade de encontrar um erro ainda não descoberto e um teste bem sucedido é o que de fato descobre erros desconhecidos.
 
-        Um exemplo de objetivo do teste unitário é a procura pela identificação de erros de lógica e de implementação \cite{maldonado}.
+Esses testes são estruturados em níveis, cada um com um determinado objetivo dentro do conjunto de testes, de modo a garantir a qualidade do produto em desenvolvimento \cite{sw_test_tech}.
+
+    \subsubsection{Testes Unitários}
+    Testes unitários possuem como objetivo verificar a existência de defeitos em cada módulo do projeto. Seu alvo são os métodos desenvolvidos ou pequenos trechos específicos de código \cite{artigo_intro_teste}.
+
+    É realizado durante o desenvolvimento, pelo próprio desenvolvedor, pois testa a unidade básica de \textit{software}, que é o menor ``pedaço''  testável, por sua vez chamado de unidade, dando origem ao nome deste tipo de teste \cite{sw_test_tech}.
+
+    Um exemplo de objetivo do teste unitário é a procura pela identificação de erros de lógica e de implementação \cite{maldonado}.
 
 \section{Gerência de Configuração de \textit{Software}}
 Um sistema pode ser definido como a combinação de elementos que entre si interagem e estão organizados para alcançar um ou mais objetivos previamente declarados, onde suas características físicas e funcionais de \textit{hardware} ou software representam sua configuração \cite{SWEBOK2014}.
@@ -158,4 +150,9 @@ Segundo a ISO 9126 \cite{iso9126}, o conceito de usabilidade, em um contexto de 
     \item Seguraça: refere-se a prevenção para que o usuário não cometa erros. Uma aplicação deve conter botões de desfazer, botões de edição, pedidos de confirmação de ação antes da mesma ser realizada e dicas de como proceder em determinadas situações.
 \end{itemize}
 
-\section{Métricas de \textit{Software}}
+\section{Qualidade de \textit{Software}}
+
+\subsection{Métricas de \textit{Software}}
+% Developing or selecting high quality software products is therefore of prime importance. Comprehensive specification and evaluation of software product quality is a key factor in ensuring adequate quality. This can be achieved by defining appropriate quality characteristics, taking account of the purpose of usage of the software product. It is important that every relevant software product quality characteristic is specified and evaluated, whenever possible using validated or widely accepted metrics.
+
+% As quality characteristics and associated metrics can be useful not only for evaluating a software product but also for defining quality requirements and other usage, ISO/IEC 9126 (1991) has been replaced by two related multipart standards: ISO/IEC 9126 (Software product quality) and ISO/IEC 14598 (Software product evaluation). The software product quality characteristics defined in this part of ISO/IEC 9126 can be used to specify both functional and non-functional customer and user requirements.
