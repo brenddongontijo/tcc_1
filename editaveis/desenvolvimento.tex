@@ -13,7 +13,7 @@ Dois professores doutores, Alex Reis e Loana Nunes Valesco, do campus UnB Gama, 
 
 Tendo como problema a falta de monitoramento energético adequado na Universidade de Brasília, foi realizado um estudo mais aprofundado sobre o contexto para identificar as necessidades do cliente. Tal estudo abordava o entendimento de fatores energéticos cruciais, como por exemplo energia trifásica, horários de ponta e fora de ponta, tensão, corrente, resistência e afins.
 
-A energia elétrica trifásica é dos métodos mais comuns para se gerar, transmitir e distribuir corrente elétrica alternada. Baseia-se em um sistema denominado polifásico e empresas elétrics de todo o mundo o utilizam como meio de transmissão de energia \cite{stevenson_1962}.
+A energia elétrica trifásica é dos métodos mais comuns para se gerar, transmitir e distribuir corrente elétrica alternada. Baseia-se em um sistema denominado polifásico e empresas elétricas de todo o mundo o utilizam como meio de transmissão de energia \cite{stevenson_1962}.
 
 A Tarifa Branca sinaliza a variação do valor da energia conforme o dia e o horário do consumo. Nos dias úteis, o valor Tarifa Branca varia em três horários: ponta, intermediário e fora de ponta. Na ponta e no intermediário, a energia é mais cara. Fora de ponta, é mais barata. Nos feriados nacionais e nos fins de semana, o valor é sempre fora de ponta \cite{aneel}.
 
@@ -25,27 +25,30 @@ Com um entendimento melhor do contexto e reuniões com os professores, as seguin
     \item O registro das medições realizadas deve ser realizado.
 \end{itemize}
 
-Buscando atender toda a conectividade esperada pelo projeto e trazer benefícios ao cliente, definiu-se que sistema teria uma implementação \textit{web}. Sistemas \textit{web} não necessitam de instalação por parte do usuário final, facilitando bastante o processo de implantação e podem ser acessados a partir de qualquer lugar e em qualquer plataforma \cite{pressman_2009}.
-
-Um dos pontos levantados nas reuniões foi o de um possível monitoramento, no futuro, de medições de água. Tendo em vista esses recursos que seriam monitorados e de possíveis outros, definiu-se o nome do projeto como Sistema de Monitoramento de Insumos - Universidade de Brasília (SMI-UnB). Definiu-se, também, que para o contexto inicial seriam enfatizados os dados de energia e que seriam entregues duas \textit{releases}, de aproximadamente 80 dias, sendo essas:
+Um dos pontos levantados nas reuniões foi o de um possível monitoramento, no futuro, de medições de água. Tendo em vista esses recursos que seriam monitorados, definiu-se o nome do projeto como Sistema de Monitoramento de Insumos - Universidade de Brasília (SMI-UnB). Definiu-se, também, que para o contexto inicial seriam enfatizados os dados de energia e que seriam entregues duas \textit{releases}, de aproximadamente 80 dias, sendo essas:
 
 \begin{itemize}
     \item Release 1: coleta dos dados de energia.
-    \item Release 2: apresentação dos dados e prorótipo de comunicação inter-campi.
+    \item Release 2: apresentação dos dados e protótipo de comunicação inter-campi.
 \end{itemize}
 
-Deginiu-se que a hospedagem do código/documentação do projeto e o controle de mudanças seriam realizados utilizando-se o software livre GitLab CE\footnote{\url{https://gitlab.com/gitlab-org/gitlab-ce}} e para controlamento de versão, a ferramenta Git\footnote{\url{https://git-scm.com/}}.
+Foi escolhido o software livre GitLab CE\footnote{\url{https://gitlab.com/gitlab-org/gitlab-ce}} para realiazar a hospedagem do código/documentação do projeto e o controle de mudanças. Já para o controlamento de versão, definiu-se a utilização da ferramenta Git\footnote{\url{https://git-scm.com/}}.
 
 A escolha do GitLab CE se deve pela cultura de software livre, pois o projeto teria um âmbito acadêmico, o compartilhamento de conhecimento poderia ser realizado de maneira mais fácil e a qualidade final não seria comprometida \cite{raymond1999}.
 
-A licença escolhida para o projeto foi a MIT. Ela consiste em uma licença permissiva, autorizando o uso comercial, modificação, distribuição e sublicenciamento \cite{mit_license}
+A licença escolhida para o projeto foi a MIT, visto que a UnB não possuía um modelo de referência para software livre e a possibilidade de se realizar um sublicenciamento, no futuro, seria possível.
 
-Grande uso meio academico, desenvolvida por uma universidade importante. A unb nao tem um modelo de refêrencia para software livre. o sublicenciamento seria necessário para a unb poder mudar a licença depois.
+Criada pelo \textit{Massachusetts Institute of Technology}, a licença MIT é bastante utilizada pelo meio acadêmico por sua facilidade de implantação e permissividade, autorizando o uso comercial, modificação, distribuição e sublicenciamento \cite{mit_license}.
 
 \section{Requisitos}
-Com as necessidades em mãos e o repositório do projeto criado, utilizou-se o propósito das estórias de usuário \cite{beck_2004}, de uma maneira mais simplificada, em \textit{milestones} no repositório, as quais possuiriam diversas \textit{issues} e essas \textit{issues} apresentariam uma terminologia mais técnica da solução em si. Uma \textit{milestone} pode possuir uma data início/fim e é composta por um aglomerado de problemas, comumente chamados de \textit{issues} \cite{gitlab}.
+Os requisitos do projeto eram adquiridos através das reuniões e eram mapeados, de maneira mais simplificada, em \textit{milestones} \cite{gitlab} no repositório. Cada \textit{milestone} possuía um conjunto de \textit{issues} associadas, as quais apresentariam uma terminologia mais técnica da solução em si.
 
-Vale ressaltar que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, era avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar uma nova \textit{milestone} etc.
+Uma \textit{milestone} funciona como um quadro Kanban, tendo as colunas \textit{To Do}, \textit{Doing} e \textit{Done}. Pode possuir uma data início/fim e é composta por um aglomerado de problemas, comumente chamados de \textit{issues}, os quais ficam transitando pelas colunas, conforme necessário.
+
+Vale ressaltar que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, era avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone} etc.
+
+\section{Desenvolvimento}
+Será explicado depois
 
 \section{Implantação - Devops}
 Contínuo, desenvolvimento com implantação.
@@ -55,6 +58,3 @@ Filosofia, nível de automatização alto.
 Tasks
 
 Containers utilizados.
-
-\section{Desenvolvimento}
-Será explicado depois
