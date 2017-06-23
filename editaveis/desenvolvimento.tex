@@ -1,32 +1,29 @@
 \chapter{Ciclo de Vida do Sistema}
 \section{Definição da Abordagem e Metodologia}
-Como a parte inicial do projeto, com um período de aproximadamente 6 meses, seria realizada pelo próprio autor, a disponibilidade do cliente ser mais abrangente, o projeto for evoluido conforme o tempo e novas necessidades forem surgindo, definiu-se a utilização de uma abordagem de desenvolvimento ágil \cite{beck2001agile}.
+Definiu-se a utilização de uma abordagem de desenvolvimento ágil \cite{beck2001agile} para o contexto inicial do projeto, levando em conta que o o processo de desenvolvimento seria realizado pelo próprio autor, a disponibilidade do cliente ser mais abrangente e o projeto for evoluido aos poucos, com entregas contínuas de pequenos incrementos.
 
-
-A metodologia utilizada baseou-se no Kanban \cite{radigan_2015} com algumas práticas do \textit{Extreme Programming}.
-
-A metodologia definida foi o  \cite{beck_2004}, visando sempre estar evoluindo o sistema com \textit{feedbacks} do cliente, produzindo código com padrões de codificação e simples para possíveis manuntenções no futuro.
-
-
-
-Matheus Faria. Canbam. Produto nao finalizado, crescendo aos poucos, Sutherland. ciclo de desenvolvimento sem ter fim, pois projeto é grande.
+A metodologia utilizada baseou-se no Kanban \cite{radigan_2015} com algumas práticas do \textit{Extreme Programming}, visto que ambos atendiam de maneira adequada o fluxo de trabalho contínuo previsto pela abordagem escolhida.
 
 Para auxiliar nas \textit{releases} do projeto, utilizou-se o conceito de \textit{sprints}, provinda do \textit{Scrum} \cite{scrum_guide}. As \textit{sprints} são pequenos intervalos de tempo, de um mês ou menos, durante o qual uma versão incremental potencialmente utilizável do produto é criada. Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
 
 \section{Contexto e Necessidades}
-Tendo como problema a falta de monitoramento energético adequado na Universidade de Brasília, foi realizado um estudo sobre o contexto para identificar as necessidades do cliente. Tal estudo abordava o entendimento de fatores energéticos cruciais, como por exemplo sistemas trifásicos, horários de ponta e fora de ponta, tensão, corrente, resistência e afins.
+Por questões de disponibilizade e quantidade de equipamentos de medição adquiridos, definiu-se o campus UnB Gama como ambiente de teste para a primeira parte do projeto.
 
-Explicar as grandezas, energia custa dinheiro, etc. redirecionar um gasto em ponta para fora de ponta.
+Dois professores doutores, Alex Reis e Loana Nunes Valesco, do campus UnB Gama, foram designados pela Prefeitura de Campus a darem suporte às necessidades energéticas que o sistema deveria atender.
 
-Com um entendimento melhor do contexto, algumas reuniões foram feitas com o cliente e foram obtidas as seguintes necessidades:
+Tendo como problema a falta de monitoramento energético adequado na Universidade de Brasília, foi realizado um estudo mais aprofundado sobre o contexto para identificar as necessidades do cliente. Tal estudo abordava o entendimento de fatores energéticos cruciais, como por exemplo energia trifásica, horários de ponta e fora de ponta, tensão, corrente, resistência e afins.
+
+A energia elétrica trifásica é dos métodos mais comuns para se gerar, transmitir e distribuir corrente elétrica alternada. Baseia-se em um sistema denominado polifásico e empresas elétrics de todo o mundo o utilizam como meio de transmissão de energia \cite{stevenson_1962}.
+
+A Tarifa Branca sinaliza a variação do valor da energia conforme o dia e o horário do consumo. Nos dias úteis, o valor Tarifa Branca varia em três horários: ponta, intermediário e fora de ponta. Na ponta e no intermediário, a energia é mais cara. Fora de ponta, é mais barata. Nos feriados nacionais e nos fins de semana, o valor é sempre fora de ponta \cite{aneel}.
+
+Com um entendimento melhor do contexto e reuniões com os professores, as seguintes necessidade foram encontradas:
 
 \begin{itemize}
     \item Cada campus da Universidade de Brasília deve ser responsável por realizar seu próprio monitoramento energético.
     \item O campus Darcy Ribeiro deve funcionar como uma espécie de administração central.
-    \item As medições devem ser registradas e poderão ser resgatadas, conforme um período de tempo especificado.
+    \item O registro das medições realizadas deve ser realizado.
 \end{itemize}
-
-Cliente loana e alex representando unb, como cliente.
 
 Buscando atender toda a conectividade esperada pelo projeto e trazer benefícios ao cliente, definiu-se que sistema teria uma implementação \textit{web}. Sistemas \textit{web} não necessitam de instalação por parte do usuário final, facilitando bastante o processo de implantação e podem ser acessados a partir de qualquer lugar e em qualquer plataforma \cite{pressman_2009}.
 
