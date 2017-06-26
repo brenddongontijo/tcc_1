@@ -1,13 +1,12 @@
 \chapter{Características do SMI-UnB}
 
 \section{Tecnologias Escolhidas}
+Definiu-se a utilização do \textit{framework} Django \cite{django_project} como estrutura base do SMI-UnB, visto que o sistema consistiria de uma aplicação \textit{web} e que o período para desenvolvimento seria curto.
 
-
-Definiu-se utilizar o \textit{framework} \textit{web} Django, por o mesmo realizar facilmente a integralização, desde a comunicação com o banco de dados até a apresentação de dados para o usuário final. Além disso, o banco de dados escolhido foi PostgreSQL, que assim como o Django, também trata-se de um software livre.
+O banco de dados PostgreSQL foi escolhido como um serviço necessário para SMI-UnB, visto que o volume de informações armazenadas seria alto e que o mesmo seria capaz de atender essa demanda. Além disso, pelo Django e o PostgreSQL se tratarem de softwares livres, suas escolhas foram mais adequadas ao projeto, que por sua vez, também é livre.
 
     \subsection{Django}
-
-    O Django \cite{django_project} é um \textit{framework} para desenvolvimento \textit{web} implementado na linguagem Python\footnote{\url{https://www.python.org/}}. Sua arquitetura inspira-se no modelo tradicional MVC(\textit{Model} \textit{View} \textit{Controller}), porém, com algumas especificidades. A comunidade \textit{Django} adota o acrônimo MTV (\textit{Model} \textit{Template} \textit{View}), onde os papéis de \textit{model}, \textit{view} e \textit{controller} são redefinidos como:
+    O Django  é um \textit{framework} para desenvolvimento \textit{web} implementado na linguagem Python\footnote{\url{https://www.python.org/}}. Sua arquitetura inspira-se no modelo tradicional MVC(\textit{Model} \textit{View} \textit{Controller}), porém, com algumas especificidades. A comunidade \textit{Django} adota o acrônimo MTV (\textit{Model} \textit{Template} \textit{View}), onde os papéis de \textit{model}, \textit{view} e \textit{controller} são redefinidos como:
     \begin{itemize}
         \item \textit{Model}: corresponde à \textit{model} do MVC tradicional e representa as classes que popularão as tabelas do banco de dados. O \textit{Django} possui um ORM (\textit{Object-Relational Mapping}, Mapeamento de Objeto Relacional) para realizar a manipulação dessas tabelas, não sendo necessário a escrita de consultas em SQL para a persistência das informações.
         \item \textit{Template}: corresponde aproximadamente à \textit{view} do MVC tradicional e descreve como as informações serão apresentadas para o usuário.
@@ -28,9 +27,9 @@ Definiu-se utilizar o \textit{framework} \textit{web} Django, por o mesmo realiz
 \section{Protocolos Utilizados}
 Antes de começar o desenvolvimento, foi necessário realizar um profundo estudo sobre o equipamento para medição de dados de energia, comumente chamado de transdutor, visto que esse já havia sido pré-designado para utilização, devido a contratos realizados anteriormente pela Universidade de Brasília.
 
-O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul\footnote{\url{http://www.embrasul.com.br/}}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU com velocidade de 10M/100Mbps em sistemas Ethernet utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs - RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
+O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul\footnote{\url{http://www.embrasul.com.br/}}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidade de 10M/100Mbps em sistemas Ethernet utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs - RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
 
-\begin{figure}[h]
+\begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.5]{figuras/tr4020.eps}
     \caption{Transdutor TR4020}
@@ -69,12 +68,6 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
     \end{itemize}
 
     \subsection{UDP}
-    A camada de transporte é...
-
-    Ethernet é...
-
-    IP é...
-
     O protocolo UDP (\textit{User Datagram Protocol}, Protocolo de Datagrama do Usuário) é um protocolo da camada de transporte e não orientado a conexões. Seu cabeçalho, figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
 
     \begin{figure}[!htpb]
@@ -84,24 +77,151 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
         \label{udp_header}
     \end{figure}
 
-\section{Coleta e Sincronia de Dados}
-Data reader
+    Para Tanembaum, a camada de transporte é o núcleo de toda a hierarquia de protocolos. Sua função é promover uma transferência de dados confiável e econômica entre a máquina de origem e a máquina de destino, independente das redes físicas em uso no momento.
 
-Cronjob
+    Nas redes de acesso empresarial, uma rede de área local (LAN) é usada para conectar um sistema final a um roteador de borda. Existem muitos tipos diferentes de tecnologias LAN. No entanto, a Ethernet é a tecnologia de acesso mais prevalente nas redes corporativas. A Ethernet opera 10 Mbps ou 100Mbps e utiliza cabos par trançado para conectar uma série de sistemas finais uns com os outros e com um roteador de borda. O roteador de borda é responsável por rotear pacotes que tenham destinos fora dessa LAN. A Ethernet usa um meio compartilhado, para que os usuários finais compartilhem a taxa de transmissão da LAN \cite{kurose_2002}.
 
-Protótipo API
+    O protocolo de camada de rede da Internet chama-se "Protocolo da Internet", ou IP. O IP fornece comunicação lógica entre hosts, possuindo um modelo de entrega de melhor esforço. Isso significa que o IP realiza seu "melhor esforço" para fornecer segmentos entre hosts comunicantes, mas não oferece garantias. Em particular, não garante a entrega do segmento, não garante a entrega ordenada de segmentos e garante a integridade dos dados nos segmentos \cite{kurose_2002}.
+
+\section{Armazenamento das Informações}
+Definiu-se que os câmpus da UnB seriam divididos por região administrativa, cada câmpus teria um conjunto de edifícios, cada edifício poderia possuir diversos transdutores e os transdutores teriam diversas medições. Para que isso fosse possível, criaram-se os \textit{apps} campuses, buildings e transductor.
+
+No \textit{app} campuses, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os câmpus em si.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/campuses.eps}
+    \caption{Diagrama de Classes para \textit{app} campuses.}
+    \label{campuses}
+\end{figure}
+
+Seguindo o mesmo princípio, o \textit{app} buildings, Figura \ref{buildings}, define um modelo para os edifícios e possui um \textit{manager}, buscando auxiliar a manipulação de seus \textit{querysets}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/buildings.eps}
+    \caption{Diagrama de Classes para \textit{app} buildings.}
+    \label{buildings}
+\end{figure}
+
+Os transdutores e suas medições são definidos no \textit{app} transductor, Figura \ref{transductor}. Uma das peculariedas presentes nos transdutores é a necessidade de um modelo de transdutor. Esses modelos, definidos pela classe TransductorModel, possuem toda a informação necessária para que seja possível realizar a coleta de dados, definindo o endereço e o tipo (\textit{int} ou \textit{float}) dos registradores que serão lidos, além dos protocolos seriais e de transporte utilizados.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.7]{figuras/transductor.eps}
+    \caption{Diagrama de classes para \textit{app} transductor.}
+    \label{transductor}
+\end{figure}
+
+As classes Transductor e Measurements são \textit{Polymorphic Models}\footnote{\url{https://django-polymorphic.readthedocs.io/en/stable/}} e possuem alguns métodos base. Com essas classes é possível extrair com mais facilidade e rapidez todas suas classes filhas, que no caso seriam as representações dos recursos monitorados pela UnB. As especializações criadas foram referentes aos transdutores de energia e medições de energia, representados pelas classes EnergyTransductor e Energymeasurements. Além disso, existe uma classe auxiliar chamada EnergyOperations, responsável por realizar cálculos matemáticos com os dados de energia coletados.
+
+As medições de energia iriam seguir o esquema de um sistema trifásico, onde suas fases foram designadas de A, B e C. As grandezas energéticas definidas para serem coletadas foram:
+
+\begin{itemize}
+    \item Tensão.
+    \item Corrente.
+    \item Potência Ativa.
+    \item Potência Reativa.
+    \item Potência Aparente.
+\end{itemize}
+
+\section{Coleta de dados}
+Definiu-se que existirão dois tipos de servidores para ser possível realizar a coleta de dados inter-campi: mestre e escravo. O servidor mestre seria a representação da administração central presente no Darcy Ribeiro e os servidores escravos seriam prédios, espalhados pelos câmpus da UnB, que realizariam a coleta de dados de seus transdutores, presentes na sua mesma rede.
+
+O tempo para coleta das informações foi definido da seguinte maneira:
+
+\begin{itemize}
+    \item A cada 1 hora o servidor mestre realizaria uma sincronia com todas as medições realizadas pelos escravos.
+    \item A cada 1 minuto os servidores escravos realizariam uma coleta de dados.
+\end{itemize}
+
+Para realizar a coleta de dados de maneira temporizada foi utilizado o django-cron.
+
+A sincronia de dados, realizada pelo servidor mestre, é feita via API.
+
+A coleta de dados, realizada por um servidor escravo, é feita com o auxílio do app \textit{data\_reader}, utilizando a classe DataCollector. Em linhas gerais, essa classe verifica se o prédio está habilidado e quais são os transdutores presentes no mesmo. Para cada transdutor identificado é criada uma Thread, que será responsável por realizar a sua coleta de dados. Em cada Thread é verificado qual o modelo que o transdutor possui, visando identificar os protocolos seriais e de transportes que serão utilizados na comunicação. Tendo conhecimento de como será realizada a comunicação, a mesma é iniciada. Caso tudo ocorra corretamente, as medições são devidamente salvas. Caso ocorram problemas, por padrão, são realizadas 2 outras tentativas.
+
 \section{Segurança}
-Autenticaçao por email
+Realizou-se um sistema de login por meio de email, para facilitar os usuários na hora de se autenticarem no sistema. O django já possui um módulo de autenticação bem definido, que realiza tanto a autenticação quanto a autorização de um usuário. Como esse módulo realizava login por meio do nome de usuário, algumas mudanças foram implementadas para ser possível o login por meio de email. Para isso, criou-se o \textit{app} authentication, Figura \ref{authentication}, o qual define a classe EmailBackend, que por sua vez realiza a autenticação por email.
 
-Senhas incriptadas no banco de dados (pelo django)
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/authentication.eps}
+    \caption{\textit{App} authentication}
+    \label{authentication}
+\end{figure}
+
+Vale ressaltar que o Django realiza. TERMINAR TEXTO sobre segurana de passwords no django.
+
+\begin{python}[caption={Corpo do método authenticate, classe EmailBackend.}, captionpos=b]
+class EmailBackend(ModelBackend):
+    def authenticate(self, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        try:
+            user = UserModel.objects.get(email=username)
+        except UserModel.DoesNotExist:
+            return None
+        else:
+            if getattr(
+                user, 'is_active', False
+            ) and user.check_password(password):
+                return user
+        return None
+\end{python}
+
+Os transdutores e prédios presentes no sistema não podem ser excluídos, tendo em vista a importância de se deixar registrado suas medições realizadas. Para isso acontecer, alguns botões de habilitar e desabilitar foram adicionados à aplicação e um atributo referente a ativo foi adicionado aos seus modelos.
+
+O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre tenta comunicar-se com o escravo, por meio de uma requisição Http, utilizando o método GET. Vale ressaltar que esta solução ainda deve ser aperfeiçoada, buscando aceitar, também, requisições Https.
+
+\begin{python}[caption={Corpo do método is\_valid, classe EnergyForm.}, captionpos=b]
+class EnergyForm(forms.ModelForm):
+    ...
+
+    def is_valid(self):
+        ...
+
+        url = 'http://' + self.instance.building.server_ip_address
+        try:
+            request = requests.get(url, timeout=3)
+        except:
+            self.add_error(
+                None,
+                _('Unable to communicate with Building server.')
+            )
+            return False
+\end{python}
+
+Definiram-se, inicialmente, duas permissões para os usuários: gerencia de prédios e de transdutores. Cada uma dessas permite ao usuário os direitos de incluir, modificar e habilitar/desabilitar. A gerência de usuários e definição das permissões são realizadas pelo \textit{app} users, Figura \ref{app_users}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/app_users.eps}
+    \caption{Diagrama de classes para \textit{App} users.}
+    \label{app_users}
+\end{figure}
+
+\begin{python}[caption={Permissões presentes na classe UserPermissions.}, captionpos=b]
+class UserPermissions(models.Model):
+    ...
+
+    class Meta:
+        permissions = (
+            ("manager_buildings", "Manager Buildings"),
+            ("manager_transductors", "Manager Transductors"),
+        )
+\end{python}
 
 Secret key gerada automaticamente
 
-Permissões do sistema
-
-Nao pode excluir transdutores ou prédios
 \section{Gerência de Configuração}
-Runner do Gitlab-CI (Interação Contínua)
+O script de integração contínua do projeto, Figura \ref{integracao}, utilizava como base um ambiente com o sistema operacional Ubuntu 14.04, um serviço para o banco de dados Postgresql e era responsável por realizar a instação dos pacotes necessários para se criar um ambiente de desenvolvimento para o SMI-UnB. Após a instação dos pacotes, era executado uma verificação das normas da PEP8, com a ferramenta flake8, e por fim executado todos os testes do sistema. Caso qualquer problema fosse encontrado durante qualquer parte do processo, a integração contínua iria falhar informando aonde ocorreu o problema, para que posteriormente fossem realizados as correções necessárias.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.65]{figuras/integracao.eps}
+    \caption{\textit{Script} para integração contínua do projeto.}
+    \label{integracao}
+\end{figure}
 
 Tasks
 
@@ -111,11 +231,9 @@ Docker
     ambiente de produção
     Docker-compose (Nginx, gunicorn, postgresql, redis)
 \section{Apresentação das Informações}
-Bootstrap
+O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Os ícones utilizados foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre os mesmos.
 
 Javascripts usados
-
-Gráficos
 
 Imagens da aplicação
 \section{Métricas}
@@ -124,7 +242,7 @@ Codeclimate
 sloccount
 
 \section{Visão Geral do Sistema}
-    \subsection{Diagrama de Classes}
+    \subsection{Diagrama de Classes por \textit{App}}
     Interessante para quem quer entender o sistema (Software livre)
 
     Apresentar diagrama

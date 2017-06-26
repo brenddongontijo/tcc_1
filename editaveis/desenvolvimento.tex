@@ -47,8 +47,59 @@ Uma \textit{milestone} funciona como um quadro Kanban, tendo as colunas \textit{
 
 Vale ressaltar que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, era avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone} etc.
 
-\section{Desenvolvimento}
-Será explicado depois
+\section{Visão Geral do Desenvolvimento}
+O desenvolvimento do projeto foi marcado por duas \textit{releases}, sendo essas:
+
+\begin{itemize}
+    \item \textit{Release} 1: 20/07/2016 a 25/11/2016.
+    \item \textit{Release} 2: 06/03/2017 a 23/06/2017.
+\end{itemize}
+
+Vale ressaltar que mesmo após o período de desenvolvimento ter sido finalizado, muitos incrementos de software ainda precisam ser realizados. O sistema ainda não está pronto para ser utilizado em produção, porém, algumas de suas funções importantes foram implementadas com sucesso.
+
+\subsection{Primeira \textit{Release}}
+A primeira \textit{release} teve início com um estudo aprofundado sobre o equipamento de medição de energia que seria utilizado. Após o estudo, foi definida a arquitetura inicial do projeto e realizado um pequeno protótipo funcional, Figuras \ref{dados02} e \ref{dados01}, que conseguia efetivamente coletar os dados de energia.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/coleta_dados_02.eps}
+    \caption{Protótipo para apresentação dos transdutores \textit{release} 1.}
+    \label{dados02}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/coleta_dados_01.eps}
+    \caption{Protótipo para apresentação medições de energia \textit{release} 1.}
+    \label{dados01}
+\end{figure}
+
+Foi realizado um guia de instação para o ambiente de desenvolvimento no repositório, utilizando a ferramenta Vagrant\footnote{\url{https://www.vagrantup.com/}}. Este guia objetivava tornar mais acessível o projeto a programadores que estivessem dispostos a realizarem novas contribuições.
+
+Uma vez que o código foi escrito na linguagem Python 2.7, procurou-se sempre utilizar suas convenções para boas práticas de programação, definidas pela PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}. A ferramenta utilizada para realizar a verificação dessas normas foi o flake8\footnote{\url{https://pypi.python.org/pypi/flake8}}.
+
+Diversos testes unitários foram realizados a cada término de uma funcionalidade, objetivando uma cobertura de no mínimo 90\%. Os testes foram escritos com base no um módulo de biblioteca padrão Python \textit{unittest}.
+
+Pequenos erros eram encontrados nas funcionalidades conforme seus testes unitários eram escritos. Após identificado o motivo desses erros, os mesmos eram corrigidos.
+
+Utilizou-se a biblioteca \textit{mock}, do \textit{unittest}, para que fosse possível definir determinados comportamentos em métodos que utilizassem outro método, objetivando um maior desempenho na hora de executar a suíte de testes e unitariedade dos métodos.
+
+Com o auxílio do serviço Gitlab CI, foi possível realizar de maneira fácil a integração contínua do projeto. Esse serviço utiliza como princípio um \textit{Runner}, que basicamente baseia-se em uma máquina virtual isolada, responsável por realizar um \textit{Job}. Um \textit{Job} consiste na execução de comandos pré-definidos no arquivo padrão \textit{.gitlab-ci.yml}.
+
+Diversas decisões arquiteturas foram realizas conforme o decorrer da \textit{release} e conforme as necessidades de implementação iam surgindo, objetivando cada vez mais modularizar a coleta de dados e trazer maior robustez ao sistema.
+
+Com o auxílio da ferramenta \textit{crontab}, foi possível realizar a coleta de dados de forma temporizada.
+
+Um ponto importante a se destacar foi o da colaboração, em conjunto com o desenvolvimento da primeira \textit{release}, provinda por alunos de duas disciplinas aplicadas pelo curso de Engenharia de Software no campus UnB-Gama: Gestão de Projetos e Portfólio de Software e Métodos de Desenvolvimento de Software. As disciplinas em questão eram includentes e realizadas em conjunto. Os incrementos de software providenciados ao projeto foram, em sua grande parte, referentes à gerência de usuários e autenticação.
+
+\subsection{Segunda \textit{Release}}
+A segunda \textit{release} teve início com uma forte refatoração sobre os incrementos de software provindos das equipes de GPP e MDS. Em conjunto, visto que o projeto estava em Python 2.7, definiu-se realizar uma mudança para Python 3.5.
+
+Com o código em Python 3.5, os sistemas de autenticação e usuários foram corrigidos.
+
+Foi realizado uma grande mudança no layout do sistema, visto que o anterior não estava esteticamente agradável.
+
+
 
 \section{Implantação - Devops}
 Contínuo, desenvolvimento com implantação.
