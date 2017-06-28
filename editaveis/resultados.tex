@@ -38,7 +38,7 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
 
     \subsection{\textit{Modbus RTU}}
 
-    \textit{Modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam a arquitetura de mestre-escravo, como mostrado na figura \ref{mestre_escravo} \cite{modbus}. Nesta arquitetura, o papél de mestre é designado ao dispositivo que envia as requisições e escravo ao que responde passivamente às mesmas.
+    \textit{Modbus} \cite{modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam a arquitetura de mestre-escravo, como mostrado na figura \ref{mestre_escravo}. Nesta arquitetura, o papél de mestre é designado ao dispositivo que envia as requisições e escravo ao que responde passivamente às mesmas.
 
     \begin{figure}[!htpb]
         \centering
@@ -214,7 +214,92 @@ class UserPermissions(models.Model):
 Secret key gerada automaticamente
 
 \section{Gerência de Configuração}
-O script de integração contínua do projeto, Figura \ref{integracao}, utilizava como base um ambiente com o sistema operacional Ubuntu 14.04, um serviço para o banco de dados Postgresql e era responsável por realizar a instação dos pacotes necessários para se criar um ambiente de desenvolvimento para o SMI-UnB. Após a instação dos pacotes, era executado uma verificação das normas da PEP8, com a ferramenta flake8, e por fim executado todos os testes do sistema. Caso qualquer problema fosse encontrado durante qualquer parte do processo, a integração contínua iria falhar informando aonde ocorreu o problema, para que posteriormente fossem realizados as correções necessárias.
+Utilizou-se o Docker \cite{docker} para que fosse possível criar um ambiente unificado para o sistema, visando evitar futuros problemas de implantação.
+
+O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \ref{container}, possui empacotado tudo que é necessário para se executar um software completo ou parte dele. Diferente das máquinas virtuais, os contêiners são executados em uma mesma máquina, compartilhando o kernel do seu sistema operacional, sendo que cada um terá seu processo isolado no espaço de usuário.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/container.eps}
+    \caption{Exemplo de contêiners providos pelo Docker. Fonte: \cite{docker} }
+    \label{container}
+\end{figure}
+
+Para Tanenbaum \cite{tanenbaum_2007}, o sistema operacional é a peça mais básica de software e opera em modo núcleo, possuindo acesso completo a todo o hardware e ao conjunto de instruções oferecidos pela máquina. O resto do software opera em modo usuário, onde é disponível para execução apenas um conjunto de instruções da máquina.
+
+Criaram-se duas configurações para os ambientes referêntes ao mestre e escravo, onde suas diferenciações baseavam-se basicamente no cron que seria executado em cada um. Para realizar essas configurações utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners. Definiram-se os serviços da aplicação, Algoritmo \ref{services}, como sendo:
+
+\begin{itemize}
+    \item nginx: fornecimento dos arquivos estáticos.
+    \item web: fornecimento da aplicação em Django.
+    \item postgres: armazenamento das informações.
+    \item redis: \textit{cache} da aplicação.
+    \item data: armazenamento do banco de dados.
+\end{itemize}
+
+\begin{python}[caption={Serviços Utilizados pelo SMI-UnB.}, captionpos=b, label={services}]
+version: '2'
+services:
+  nginx:
+    restart: always
+    build: ./docker/nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/collect/static/:/var/www/static/
+    volumes_from:
+      - web
+    links:
+      - web:web
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.master
+    expose:
+      - "8000"
+    links:
+      - postgres:postgres
+      - redis:redis
+    env_file: ./docker/env
+    volumes:
+      - ./src/:/app/src/
+
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes_from:
+      - data
+    volumes:
+      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+    env_file:
+      - ./docker/env
+    expose:
+      - "5432"
+
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
+
+  data:
+    restart: always
+    image: alpine
+    volumes:
+      - /var/lib/postgresql
+    command: "true"
+\end{python}
+
+O serviço nginx
+
+Http
+
+WSGI
+
+Linkar os containers.
+
+O script de integração contínua do projeto, Figura \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do Postgresql, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}.
 
 \begin{figure}[!h]
     \centering
@@ -227,9 +312,6 @@ Tasks
 
 Fixtures
 
-Docker
-    ambiente de produção
-    Docker-compose (Nginx, gunicorn, postgresql, redis)
 \section{Apresentação das Informações}
 O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Os ícones utilizados foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre os mesmos.
 

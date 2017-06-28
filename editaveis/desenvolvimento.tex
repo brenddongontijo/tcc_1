@@ -25,7 +25,9 @@ Com um entendimento melhor do contexto e reuniões com os professores, as seguin
     \item O registro das medições realizadas deve ser realizado.
 \end{itemize}
 
-Um dos pontos levantados nas reuniões foi o de um possível monitoramento, no futuro, de medições de água. Tendo em vista esses recursos que seriam monitorados, definiu-se o nome do projeto como Sistema de Monitoramento de Insumos - Universidade de Brasília (SMI-UnB). Definiu-se, também, que para o contexto inicial seriam enfatizados os dados de energia e que seriam entregues duas \textit{releases}, de aproximadamente 80 dias, sendo essas:
+Inicialmente, o nome do projeto foi definido como Sistema de Monitoramento Energético - Universidade de Brasília (SME-UnB), porém, com algumas reuniões realizadas, percebeu-se a possiblidade de monitoramento, no futuro, de medições de água. Tendo em vista os recursos que seriam monitorados, o nome do projeto foi modificado para Sistema de Monitoramento de Insumos - Universidade de Brasília (SMI-UnB).
+
+Foi definido que para o contexto inicial do projeto, seriam enfatizados os dados de energia e que seriam entregues duas \textit{releases}, de aproximadamente 80 dias, sendo essas:
 
 \begin{itemize}
     \item Release 1: coleta dos dados de energia.
@@ -48,16 +50,14 @@ Uma \textit{milestone} funciona como um quadro Kanban, tendo as colunas \textit{
 Vale ressaltar que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, era avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone} etc.
 
 \section{Visão Geral do Desenvolvimento}
-O desenvolvimento do projeto foi marcado por duas \textit{releases}, sendo essas:
+O desenvolvimento da parte inicial do projeto foi marcado por duas \textit{releases}, sendo essas:
 
 \begin{itemize}
     \item \textit{Release} 1: 20/07/2016 a 25/11/2016.
     \item \textit{Release} 2: 06/03/2017 a 23/06/2017.
 \end{itemize}
 
-Vale ressaltar que mesmo após o período de desenvolvimento ter sido finalizado, muitos incrementos de software ainda precisam ser realizados. O sistema ainda não está pronto para ser utilizado em produção, porém, algumas de suas funções importantes foram implementadas com sucesso.
-
-\subsection{Primeira \textit{Release}}
+\subsection{\textit{Release} 1}
 A primeira \textit{release} teve início com um estudo aprofundado sobre o equipamento de medição de energia que seria utilizado. Após o estudo, foi definida a arquitetura inicial do projeto e realizado um pequeno protótipo funcional, Figuras \ref{dados02} e \ref{dados01}, que conseguia efetivamente coletar os dados de energia.
 
 \begin{figure}[!htb]
@@ -76,32 +76,40 @@ A primeira \textit{release} teve início com um estudo aprofundado sobre o equip
 
 Foi realizado um guia de instação para o ambiente de desenvolvimento no repositório, utilizando a ferramenta Vagrant\footnote{\url{https://www.vagrantup.com/}}. Este guia objetivava tornar mais acessível o projeto a programadores que estivessem dispostos a realizarem novas contribuições.
 
-Uma vez que o código foi escrito na linguagem Python 2.7, procurou-se sempre utilizar suas convenções para boas práticas de programação, definidas pela PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}. A ferramenta utilizada para realizar a verificação dessas normas foi o flake8\footnote{\url{https://pypi.python.org/pypi/flake8}}.
+Uma vez que o código estava sendo escrito na linguagem Python 2.7, procurou-se sempre utilizar suas convenções para boas práticas de programação, definidas pela PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}. A ferramenta utilizada para realizar a verificação dessas normas foi o flake8\footnote{\url{https://pypi.python.org/pypi/flake8}}.
 
-Diversos testes unitários foram realizados a cada término de uma funcionalidade, objetivando uma cobertura de no mínimo 90\%. Os testes foram escritos com base no um módulo de biblioteca padrão Python \textit{unittest}.
+Diversos testes unitários foram realizados a cada término de uma funcionalidade, objetivando uma cobertura de no mínimo 90\%. Os testes foram escritos utilizando o módulo \textit{unittest} do próprio Python.
 
-Pequenos erros eram encontrados nas funcionalidades conforme seus testes unitários eram escritos. Após identificado o motivo desses erros, os mesmos eram corrigidos.
+Pequenos erros eram encontrados nas funcionalidades conforme seus testes unitários eram escritos. Após identificado os motivos desses erros, os mesmos eram corrigidos.
 
-Utilizou-se a biblioteca \textit{mock}, do \textit{unittest}, para que fosse possível definir determinados comportamentos em métodos que utilizassem outro método, objetivando um maior desempenho na hora de executar a suíte de testes e unitariedade dos métodos.
+Utilizou-se a biblioteca \textit{mock}, do \textit{unittest}, para que fosse possível definir determinados comportamentos em métodos que utilizassem um outro método, objetivando um maior desempenho na hora de executar a suíte de testes e unitariedade dos métodos.
 
 Com o auxílio do serviço Gitlab CI, foi possível realizar de maneira fácil a integração contínua do projeto. Esse serviço utiliza como princípio um \textit{Runner}, que basicamente baseia-se em uma máquina virtual isolada, responsável por realizar um \textit{Job}. Um \textit{Job} consiste na execução de comandos pré-definidos no arquivo padrão \textit{.gitlab-ci.yml}.
 
-Diversas decisões arquiteturas foram realizas conforme o decorrer da \textit{release} e conforme as necessidades de implementação iam surgindo, objetivando cada vez mais modularizar a coleta de dados e trazer maior robustez ao sistema.
+Diversas decisões arquiteturas foram realizas conforme o decorrer da \textit{release} e conforme as necessidades de implementação iam surgindo, objetivando cada vez mais modularizar e trazer maior robustez ao sistema.
 
 Com o auxílio da ferramenta \textit{crontab}, foi possível realizar a coleta de dados de forma temporizada.
 
-Um ponto importante a se destacar foi o da colaboração, em conjunto com o desenvolvimento da primeira \textit{release}, provinda por alunos de duas disciplinas aplicadas pelo curso de Engenharia de Software no campus UnB-Gama: Gestão de Projetos e Portfólio de Software e Métodos de Desenvolvimento de Software. As disciplinas em questão eram includentes e realizadas em conjunto. Os incrementos de software providenciados ao projeto foram, em sua grande parte, referentes à gerência de usuários e autenticação.
+Um ponto importante a se destacar, referente a primeira \textit{release}, foi o da colaboração provinda por alunos de duas disciplinas aplicadas pelo curso de Engenharia de Software no campus UnB-Gama: Gestão de Projetos e Portfólio de Software e Métodos de Desenvolvimento de Software. As disciplinas em questão eram includentes e realizadas em conjunto. Os incrementos de software providenciados ao projeto foram, em sua grande parte, referentes à gerência de usuários e autenticação.
 
-\subsection{Segunda \textit{Release}}
+\subsection{\textit{Release} 2}
 A segunda \textit{release} teve início com uma forte refatoração sobre os incrementos de software provindos das equipes de GPP e MDS. Em conjunto, visto que o projeto estava em Python 2.7, definiu-se realizar uma mudança para Python 3.5.
 
-Com o código em Python 3.5, os sistemas de autenticação e usuários foram corrigidos.
+Com o projeto em Python 3.5, a autenticação do sistema foi modificada para ser realizada por email, ao invés de nome de usuário.
 
-Foi realizado uma grande mudança no layout do sistema, visto que o anterior não estava esteticamente agradável.
+Realizou-se um novo \textit{layout} para o sistema, visto que o anterior não estava esteticamente agradável.
 
+Um gráfico de linhas foi realizado, utilizando a biblioteca Matplotlib\footnote{\url{https://matplotlib.org/}}, para que fosse possível visualizar as medições, de um período específico, de maneira mais fácil.
 
+A gerência de usuários foi aprimorada, com a adição de algumas permissões, para que fosse possível ter diferentes níveis de acesso na aplicação.
+
+Por fim, foi realizado um protótipo de API para que fosse possível realizar a comunição inter-campi e adicionado o conceito de containerização ao projeto, por meio do Docker.
 
 \section{Implantação - Devops}
+Mesmo após finalizada a fase inicial desenvolvimento, muitas partes do sistema ainda precisavam ser implementadas, para que fosse possível colocá-lo em produção.
+
+Vale ressaltar que mesmo após o período de desenvolvimento ter sido finalizado, muitos incrementos de software ainda precisam ser realizados. O sistema ainda não está pronto para ser utilizado em produção, porém, algumas de suas funções importantes foram implementadas com sucesso.
+
 Contínuo, desenvolvimento com implantação.
 
 Filosofia, nível de automatização alto.
