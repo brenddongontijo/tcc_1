@@ -67,6 +67,8 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
         \item CRC (\textit{Cyclic Redundancy Check}, Verificação de Redundância Cíclica): 4 \textit{bytes} para verificação de erros.
     \end{itemize}
 
+    EXEMPLO DE MENSAGEM MODBUSRTU.
+
     \subsection{UDP}
     O protocolo UDP (\textit{User Datagram Protocol}, Protocolo de Datagrama do Usuário) é um protocolo da camada de transporte e não orientado a conexões. Seu cabeçalho, figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
 
@@ -86,7 +88,7 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
 \section{Armazenamento das Informações}
 Definiu-se que os câmpus da UnB seriam divididos por região administrativa, cada câmpus teria um conjunto de edifícios, cada edifício poderia possuir diversos transdutores e os transdutores teriam diversas medições. Para que isso fosse possível, criaram-se os \textit{apps} campuses, buildings e transductor.
 
-No \textit{app} campuses, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os câmpus em si.
+No \textit{app} campuses, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os câmpus em si. A ferramenta utilizada para realizar o diagrama de classes foi a StarUML\footnote{\url{http://staruml.io/}}
 
 \begin{figure}[!h]
     \centering
@@ -95,7 +97,7 @@ No \textit{app} campuses, Figura \ref{campuses}, são definidos os modelos para 
     \label{campuses}
 \end{figure}
 
-Seguindo o mesmo princípio, o \textit{app} buildings, Figura \ref{buildings}, define um modelo para os edifícios e possui um \textit{manager}, buscando auxiliar a manipulação de seus \textit{querysets}.
+Seguindo o mesmo princípio, o \textit{app} buildings, Figura \ref{buildings}, define um modelo para os edifícios e possui um \textit{manager}, buscando auxiliar a manipulação de seus \textit{querysets}. Um \textit{queryset} representa uma coleção de objetos do banco de dados \cite{django_project}.
 
 \begin{figure}[!h]
     \centering
@@ -103,6 +105,16 @@ Seguindo o mesmo princípio, o \textit{app} buildings, Figura \ref{buildings}, d
     \caption{Diagrama de Classes para \textit{app} buildings.}
     \label{buildings}
 \end{figure}
+
+As medições de energia iriam seguir o esquema de um sistema trifásico, onde suas fases foram representadas como A, B e C. As grandezas energéticas definidas para serem coletadas foram:
+
+\begin{itemize}
+    \item Tensão.
+    \item Corrente.
+    \item Potência Ativa.
+    \item Potência Reativa.
+    \item Potência Aparente.
+\end{itemize}
 
 Os transdutores e suas medições são definidos no \textit{app} transductor, Figura \ref{transductor}. Uma das peculariedas presentes nos transdutores é a necessidade de um modelo de transdutor. Esses modelos, definidos pela classe TransductorModel, possuem toda a informação necessária para que seja possível realizar a coleta de dados, definindo o endereço e o tipo (\textit{int} ou \textit{float}) dos registradores que serão lidos, além dos protocolos seriais e de transporte utilizados.
 
@@ -113,33 +125,49 @@ Os transdutores e suas medições são definidos no \textit{app} transductor, Fi
     \label{transductor}
 \end{figure}
 
-As classes Transductor e Measurements são \textit{Polymorphic Models}\footnote{\url{https://django-polymorphic.readthedocs.io/en/stable/}} e possuem alguns métodos base. Com essas classes é possível extrair com mais facilidade e rapidez todas suas classes filhas, que no caso seriam as representações dos recursos monitorados pela UnB. As especializações criadas foram referentes aos transdutores de energia e medições de energia, representados pelas classes EnergyTransductor e Energymeasurements. Além disso, existe uma classe auxiliar chamada EnergyOperations, responsável por realizar cálculos matemáticos com os dados de energia coletados.
-
-As medições de energia iriam seguir o esquema de um sistema trifásico, onde suas fases foram designadas de A, B e C. As grandezas energéticas definidas para serem coletadas foram:
-
-\begin{itemize}
-    \item Tensão.
-    \item Corrente.
-    \item Potência Ativa.
-    \item Potência Reativa.
-    \item Potência Aparente.
-\end{itemize}
+As classes Transductor e Measurements são \textit{Polymorphic Models}\footnote{\url{https://django-polymorphic.readthedocs.io/en/stable/}} e possuem alguns métodos base. Com essas classes é possível extrair com mais facilidade e rapidez todas suas classes filhas, que no caso seriam as representações dos recursos monitorados pela UnB. As especializações criadas foram referentes aos transdutores de energia e medições de energia, representados pelas classes EnergyTransductor e Energymeasurements. Além disso, existe uma classe auxiliar, chamada EnergyOperations, responsável por realizar cálculos matemáticos com os dados de energia coletados.
 
 \section{Coleta de dados}
-Definiu-se que existirão dois tipos de servidores para ser possível realizar a coleta de dados inter-campi: mestre e escravo. O servidor mestre seria a representação da administração central presente no Darcy Ribeiro e os servidores escravos seriam prédios, espalhados pelos câmpus da UnB, que realizariam a coleta de dados de seus transdutores, presentes na sua mesma rede.
+Definiu-se que existirão dois tipos de servidores para ser possível realizar a coleta de dados inter-campi: mestre e escravo. O servidor mestre seria a representação da administração central e os escravos seriam prédios, espalhados pelos câmpus da UnB, que realizariam a coleta de dados de seus transdutores, presentes na sua mesma rede.
 
 O tempo para coleta das informações foi definido da seguinte maneira:
 
 \begin{itemize}
-    \item A cada 1 hora o servidor mestre realizaria uma sincronia com todas as medições realizadas pelos escravos.
-    \item A cada 1 minuto os servidores escravos realizariam uma coleta de dados.
+    \item A cada 1 hora, o servidor mestre seria responsável por realizar uma sincronia com todas as medições realizadas pelos escravos.
+    \item A cada 1 minuto, os servidores escravos seriam responsáveis por realizarem suas coletas de dados.
 \end{itemize}
 
-Para realizar a coleta de dados de maneira temporizada foi utilizado o django-cron.
+\subsection{Servidor Escravo}
+A coleta de dados, realizada por um prédio (servidor escravo), é feita com o auxílio do app \textit{data\_reader}, Figura \ref{data_reader}.
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.7]{figuras/data_reader.eps}
+    \caption{Diagrama de classes para \textit{app} data\_reader.}
+    \label{data_reader}
+\end{figure}
+
+A classe SerialProtocol e TransportProtocol são abstratas e possuem alguns métodos base, para que possa ser possível criar diferentes tipos de especializações, conforme a aplicação necessite. As duas, inicialmente criadas, foram referentes aos protocolos Modbus-RTU e UDP.
+
+A coleta de dados para cada prédio, com base no equipamento TR4020, é ilustrada pela Figura \ref{process_1}. Foi utilizada a ferramenta Bizagi\footnote{\url{https://www.bizagi.com/}} para a realização da modelagem.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=1.0]{figuras/process_1.eps}
+    \caption{Coleta de dados energéticos utilizando TR4020.}
+    \label{process_1}
+\end{figure}
+
+Inicialmente, a classe DataCollector identifica todos os transdutores que estão no prédio e cria uma \textit{thread} para cada um, objetivando paralelismo na coleta de dados. Segundo Tanembaum \cite{tanenbaum_2007}, as \textit{threads} são entidades escalonadas para a execução sobre a CPU, permitindo que múltiplas execuções ocorram no mesmo ambiente de um processo, com um grande grau de independência uma da outra.
+
+Em cada \textit{thread} é identificado o modelo TR4020 para o transdutor, o qual possui as informações sobre os protocolos Modbus-RTU e UDP. A classe ModbusRTU prepara todas as mensagens que deverão ser lidas pelo equipamento, uma para cada grandeza energética e para cada fase. As mensagens seriais criadas são recebidas pela classe UdpProtocol, que irá tentar realizar a comunicação com o aparelho. Os pacotes são enviados e recebidos, um por um, até que todos sejam recebidos corretamente. Com os pacotes recebidos, são extraídas suas cargas úteis, que basicamente correspondem às medições de cada grandeza, logo após, as mesmas são lidas, utilizando a classe ModbusRTU. Por fim, a classe DataCollector recebe as medições e as salva.
+
+A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios é realizada pela ferramenta \textit{cron} \cite{paul_cron}, presente em sistemas UNIX. O \textit{cron} é \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é programa que é executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \textit{cron} utiliza o \textit{crontab} para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário.
+
+django-cron
+
+\subsection{Servidor Mestre}
 A sincronia de dados, realizada pelo servidor mestre, é feita via API.
-
-A coleta de dados, realizada por um servidor escravo, é feita com o auxílio do app \textit{data\_reader}, utilizando a classe DataCollector. Em linhas gerais, essa classe verifica se o prédio está habilidado e quais são os transdutores presentes no mesmo. Para cada transdutor identificado é criada uma Thread, que será responsável por realizar a sua coleta de dados. Em cada Thread é verificado qual o modelo que o transdutor possui, visando identificar os protocolos seriais e de transportes que serão utilizados na comunicação. Tendo conhecimento de como será realizada a comunicação, a mesma é iniciada. Caso tudo ocorra corretamente, as medições são devidamente salvas. Caso ocorram problemas, por padrão, são realizadas 2 outras tentativas.
 
 \section{Segurança}
 Realizou-se um sistema de login por meio de email, para facilitar os usuários na hora de se autenticarem no sistema. O django já possui um módulo de autenticação bem definido, que realiza tanto a autenticação quanto a autorização de um usuário. Como esse módulo realizava login por meio do nome de usuário, algumas mudanças foram implementadas para ser possível o login por meio de email. Para isso, criou-se o \textit{app} authentication, Figura \ref{authentication}, o qual define a classe EmailBackend, que por sua vez realiza a autenticação por email.
@@ -227,7 +255,9 @@ O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \re
 
 Para Tanenbaum \cite{tanenbaum_2007}, o sistema operacional é a peça mais básica de software e opera em modo núcleo, possuindo acesso completo a todo o hardware e ao conjunto de instruções oferecidos pela máquina. O resto do software opera em modo usuário, onde é disponível para execução apenas um conjunto de instruções da máquina.
 
-Criaram-se duas configurações para os ambientes referêntes ao mestre e escravo, onde suas diferenciações baseavam-se basicamente no cron que seria executado em cada um. Para realizar essas configurações utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners. Definiram-se os serviços da aplicação, Algoritmo \ref{services}, como sendo:
+Criaram-se duas configurações para os ambientes referêntes ao mestre e escravo, onde suas diferenciações baseavam-se basicamente no cron que seria executado em cada um. Para realizar essas configurações utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners. Os serviços definidos para a aplicação foram:
+
+Linkar os containers.
 
 \begin{itemize}
     \item nginx: fornecimento dos arquivos estáticos.
@@ -237,67 +267,11 @@ Criaram-se duas configurações para os ambientes referêntes ao mestre e escrav
     \item data: armazenamento do banco de dados.
 \end{itemize}
 
-\begin{python}[caption={Serviços Utilizados pelo SMI-UnB.}, captionpos=b, label={services}]
-version: '2'
-services:
-  nginx:
-    restart: always
-    build: ./docker/nginx/
-    ports:
-      - "80:80"
-    volumes:
-      - ./docker/nginx/collect/static/:/var/www/static/
-    volumes_from:
-      - web
-    links:
-      - web:web
-
-  web:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile.master
-    expose:
-      - "8000"
-    links:
-      - postgres:postgres
-      - redis:redis
-    env_file: ./docker/env
-    volumes:
-      - ./src/:/app/src/
-
-  postgres:
-    restart: always
-    image: postgres:latest
-    volumes_from:
-      - data
-    volumes:
-      - ./docker/postgres/initdb.d:/docker-entrypoint-initdb.d
-    env_file:
-      - ./docker/env
-    expose:
-      - "5432"
-
-  redis:
-    restart: always
-    image: redis:latest
-    expose:
-      - "6379"
-
-  data:
-    restart: always
-    image: alpine
-    volumes:
-      - /var/lib/postgresql
-    command: "true"
-\end{python}
-
 O serviço nginx
 
 Http
 
 WSGI
-
-Linkar os containers.
 
 O script de integração contínua do projeto, Figura \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do Postgresql, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}.
 
