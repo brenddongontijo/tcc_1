@@ -27,12 +27,12 @@ O banco de dados PostgreSQL foi escolhido como um serviço necessário para SMI-
 \section{Protocolos Utilizados}
 Antes de começar o desenvolvimento, foi necessário realizar um profundo estudo sobre o equipamento para medição de dados de energia, comumente chamado de transdutor, visto que esse já havia sido pré-designado para utilização, devido a contratos realizados anteriormente pela Universidade de Brasília.
 
-O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul\footnote{\url{http://www.embrasul.com.br/}}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidade de 10M/100Mbps em sistemas Ethernet utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs - RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
+O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul \cite{embrasul}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidade de 10M/100Mbps em sistemas Ethernet utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs - RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.5]{figuras/tr4020.eps}
-    \caption{Transdutor TR4020}
+    \caption{Transdutor TR4020. Fonte: \cite{embrasul}}
     \label{tr4020}
 \end{figure}
 
@@ -47,7 +47,7 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
         \label{mestre_escravo}
     \end{figure}
 
-    Quando controladores são configurados para se comunicarem em uma rede Modbus usando o modo RTU (\textit{Remote Terminal Unit}, Unidade de Terminal Remoto) cada \textit{byte} contém duplas hexadecimais de 4 \textit{bits}. A maior vantagem de utilizar este modo é que sua grande densidade de caracteres permite uma maior taxa de transferência comparado ao modo ASCII em uma mesma taxa de transmissão \cite{modbus}.
+    Quando controladores são configurados para se comunicarem em uma rede Modbus usando o modo RTU (\textit{Remote Terminal Unit}, Unidade de Terminal Remoto) cada \textit{byte} contém duplas hexadecimais de 4 \textit{bits}. A maior vantagem de utilizar este modo é que sua grande densidade de caracteres permite uma maior taxa de transferência comparado ao modo ASCII, em uma mesma taxa de transmissão \cite{modbus}.
 
     Uma mensagem em Modbus RTU possui 16 \textit{bytes} e é definida da seguinte maneira:
     \begin{itemize}
@@ -162,12 +162,90 @@ Inicialmente, a classe DataCollector identifica todos os transdutores que estão
 
 Em cada \textit{thread} é identificado o modelo TR4020 para o transdutor, o qual possui as informações sobre os protocolos Modbus-RTU e UDP. A classe ModbusRTU prepara todas as mensagens que deverão ser lidas pelo equipamento, uma para cada grandeza energética e para cada fase. As mensagens seriais criadas são recebidas pela classe UdpProtocol, que irá tentar realizar a comunicação com o aparelho. Os pacotes são enviados e recebidos, um por um, até que todos sejam recebidos corretamente. Com os pacotes recebidos, são extraídas suas cargas úteis, que basicamente correspondem às medições de cada grandeza, logo após, as mesmas são lidas, utilizando a classe ModbusRTU. Por fim, a classe DataCollector recebe as medições e as salva.
 
-A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios é realizada pela ferramenta \textit{cron} \cite{paul_cron}, presente em sistemas UNIX. O \textit{cron} é \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é programa que é executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \textit{cron} utiliza o \textit{crontab} para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário.
+A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios é realizada pela ferramenta \textit{cron} \cite{paul_cron}, presente em sistemas UNIX. O \textit{cron} é \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é programa que é executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \textit{cron} utiliza o \textit{crontab} para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário. Um arquivo mantido pelo \textit{crontab} deve seguir a estrutura do Algoritmo \ref{crontab}
 
-django-cron
+\begin{python}[caption={Estrutura de um arquivo mantido pelo \textit{crontab}.}, captionpos=b, label={crontab}]
+minuto hora dia_mes mes dia_semana comando_para_execucao
+# Linha em banco para deixar cron valido
+\end{python}
+
+Adicionou-se um novo comando para aplicação, chamado \textit{runcrons}. Esse comando é definido pela ferramenta django-cron\footnote{\url{http://django-cron.readthedocs.io/en/latest/}} e basicamente executa um código que possua como base a classe \textit{CronJobBase}. Esse código, após ser executado, é bloqueado até que o tempo de espera para outra execução seja atingido, como uma espécie de cronômetro.
+
+Criou-se a classe DataCollectCronJob, Algoritmo \ref{data_collect}, objetivando invocar o DataCollector para realizar a coleta de dados. O arquivo mantido pelo crontab para realizar a coleta, periodicamente a cada 1 minuto, foi definido conforme o Algoritmo \ref{cron_slave}.
+
+\begin{python}[caption={Classe DataCollectCronJob.}, captionpos=b, label={data_collect}]
+class DataCollectCronJob(CronJobBase):
+    RUN_EVERY_MINS = 0
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    code = 'smi_unb.data_reader.cronjob.DataCollectCronJob'
+
+    def do(self):
+        data_collector = DataCollector()
+        data_collector.perform_all_data_collection()
+\end{python}
+
+\begin{python}[caption={\textit{Cron} para execução da coleta dos dados de energia.}, captionpos=b, label={cron_slave}]
+* * * * * python3 /SMI-UnB/manage.py runcrons \
+smi_unb.data_reader.cronjob.DataCollectCronJob
+# Necessary line at end of file to make cron valid
+\end{python}
 
 \subsection{Servidor Mestre}
-A sincronia de dados, realizada pelo servidor mestre, é feita via API.
+O servidor mestre não realiza nenhuma coleta de dados, sendo esse responsável por realizar uma sincronização com os dados coletados pelos servidores escravos por meio de uma API \textit{web}.
+
+\textit{Application Programming Interface} (API) é um conjunto de requisitos que regem como um aplicativo pode conversar com outro. As APIs realizam isso expondo algumas das funções internas de um programa para o mundo exterior de forma limitada, possibilitando que os aplicativos compartilhem dados e tomem ações em nome do outro, sem exigir que os desenvolvedores compartilhem todo o código do software \cite{brian_api}.
+
+Quando usado no contexto do desenvolvimento \textit{web}, uma API é tipicamente definida como um conjunto de requisições do protocolo HTTP, juntamente com uma definição da estrutura de mensagens de resposta, geralmente utilizando as linguagens \textit{Extensible Markup Language} (XML) ou \textit{JavaScript Object Notation} (JSON) \cite{benslimane_2008}.
+
+O \textit{Hypertext Transfer Protocol} (HTTP), é um protocolo \textit{web} presente na camada de aplicação do modelo OSI e é implementado por dois programas: um cliente e outro servidor. Os programas cliente e servidor conversam entre si, trocando mensagens HTTP, sendo que o protocolo define como o cliente (por exemplo, um navegador) solicitará páginas \textit{web} de um servidor (por exemplo, o Django) e como o servidor irá transferir essas páginas para o cliente \cite{kurose_2002}.
+
+A API utilizada no projeto baseou-se no Django REST Framework \cite{django_rest}. O \textit{Representational State Transfer} (REST) \cite{fielding_2000} é um estilo arquitetural para projetar sistemas distribuídos e apresenta as seguintes características:
+
+\begin{itemize}
+    \item Estado e funcionalidade são divididos em recursos distribuídos.
+    \item Todo recurso é exclusivamente endereçável, usando um conjunto uniforme e mínimo de comandos.
+    \item O protocolo é cliente/servidor, sem estado, em camadas e suporta armazenamento em \textit{cache}.
+\end{itemize}
+
+O Django REST Framework utiliza alguns métodos HTTP para mapear as operações CRUD (criar, resgatar, atualizar e deletar) nas requisições HTTP, sendo esses:
+
+\begin{itemize}
+    \item GET: recuperar informações de uma entidade.
+    \item POST: criar ou atualizar uma entidade.
+    \item PUT: criar ou atualizar uma entidade. O método PUT é idempotente, ou seja, se uma operação for realizada duas vezes sobre o mesmo objetivo, não haverá efeito.
+    \item PATCH: modificar parcialmente uma entidade.
+    \item DELETE: deletar uma entidade.
+\end{itemize}
+
+O conceito de \textit{endpoints} é utilizado pelo Django REST Framework, objetivando a interação com a API do lado do servidor, pois especificam onde os recursos podem ser acessados, por meio da classe padrão ModelViewSet.
+
+A sincronia de dados é realizada pela classe EnergyMeasurementSynchronizer, presente no \textit{app} \textit{api}, Figura \ref{api}. Em linhas gerais, essa classe realiza duas requisições HTTP para cada servidor escravo. Na primeira requisição são consumidas as medições de energia mais recentes de cada transdutor, via API. Com as medições resgatadas, atualiza-se o horário da última coleta de dados de cada transdutor, no servidor mestre. Após atualizados os horários no mestre, realiza-se a segunda requisição, que atualiza o horário de todos os transdutores presentes no escravo.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.55]{figuras/api.eps}
+    \caption{Diagrama de classes para \textit{app} api.}
+    \label{api}
+\end{figure}
+
+O \textit{cron} para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe MeasurementsSyncCronJob, Algoritmo \ref{measu_sync}.
+
+\begin{python}[caption={\textit{Cron} para execução da sincronia dos dados de energia.}, captionpos=b, label={cron_master}]
+0 * * * * python3 /SMI-UnB/manage.py runcrons \
+smi_unb.api.cronjob.MeasurementsSyncCronJob
+# Necessary line at end of file to make cron valid
+\end{python}
+
+\begin{python}[caption={Classe MeasurementsSyncCronJob.}, captionpos=b, label={measu_sync}]
+class MeasurementsSyncCronJob(CronJobBase):
+    RUN_EVERY_MINS = 59
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    code = 'smi_unb.api.cronjob.MeasurementsSyncCronJob'
+
+    def do(self):
+        e_synchronizer = EnergyMeasurementSynchronizer()
+        e_synchronizer.perform_all_measurements_sync()
+\end{python}
 
 \section{Segurança}
 Realizou-se um sistema de login por meio de email, para facilitar os usuários na hora de se autenticarem no sistema. O django já possui um módulo de autenticação bem definido, que realiza tanto a autenticação quanto a autorização de um usuário. Como esse módulo realizava login por meio do nome de usuário, algumas mudanças foram implementadas para ser possível o login por meio de email. Para isso, criou-se o \textit{app} authentication, Figura \ref{authentication}, o qual define a classe EmailBackend, que por sua vez realiza a autenticação por email.
@@ -199,7 +277,9 @@ class EmailBackend(ModelBackend):
 
 Os transdutores e prédios presentes no sistema não podem ser excluídos, tendo em vista a importância de se deixar registrado suas medições realizadas. Para isso acontecer, alguns botões de habilitar e desabilitar foram adicionados à aplicação e um atributo referente a ativo foi adicionado aos seus modelos.
 
-O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre tenta comunicar-se com o escravo, por meio de uma requisição Http, utilizando o método GET. Vale ressaltar que esta solução ainda deve ser aperfeiçoada, buscando aceitar, também, requisições Https.
+Sincronia
+
+O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre tenta comunicar-se com o escravo, por meio de uma requisição HTTP, utilizando o método GET. Vale ressaltar que esta solução ainda deve ser aperfeiçoada, buscando aceitar, também, requisições Https.
 
 \begin{python}[caption={Corpo do método is\_valid, classe EnergyForm.}, captionpos=b]
 class EnergyForm(forms.ModelForm):
