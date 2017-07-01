@@ -1,33 +1,33 @@
 \chapter{Características do SMI-UnB}
 
 \section{Tecnologias Escolhidas}
-Definiu-se a utilização do \textit{framework} Django \cite{django_project} como estrutura base do SMI-UnB, visto que o sistema consistiria de uma aplicação \textit{web} e que o período para desenvolvimento seria curto.
+Definiu-se a utilização do \textit{framework} Django \cite{django_project} como estrutura base do SMI-UnB, visto que o sistema consistiria em uma aplicação \textit{web} e que o período para desenvolvimento seria curto.
 
-O banco de dados PostgreSQL foi escolhido como um serviço necessário para SMI-UnB, visto que o volume de informações armazenadas seria alto e que o mesmo seria capaz de atender essa demanda. Além disso, pelo Django e o PostgreSQL se tratarem de softwares livres, suas escolhas foram mais adequadas ao projeto, que por sua vez, também é livre.
+O banco de dados PostgreSQL foi escolhido como um serviço necessário para SMI-UnB, visto que ele seria capaz de atender o alto volume de informações armazenadas. Além disso, pelo Django e o PostgreSQL se tratarem de softwares livres, suas escolhas foram mais adequadas ao projeto, que por sua vez, também é livre.
 
     \subsection{Django}
-    O Django  é um \textit{framework} para desenvolvimento \textit{web} implementado na linguagem Python\footnote{\url{https://www.python.org/}}. Sua arquitetura inspira-se no modelo tradicional MVC(\textit{Model} \textit{View} \textit{Controller}), porém, com algumas especificidades. A comunidade \textit{Django} adota o acrônimo MTV (\textit{Model} \textit{Template} \textit{View}), onde os papéis de \textit{model}, \textit{view} e \textit{controller} são redefinidos como:
+    O Django é um \textit{framework} para desenvolvimento \textit{web} implementado na linguagem Python\footnote{\url{https://www.python.org/}}. Sua arquitetura se inspira no modelo tradicional MVC (\textit{Model} \textit{View} \textit{Controller}), porém, com algumas especificidades. A comunidade \textit{Django} adota o acrônimo MTV (\textit{Model} \textit{Template} \textit{View}), onde os papéis de \textit{model}, \textit{view} e \textit{controller} são redefinidos como:
     \begin{itemize}
-        \item \textit{Model}: corresponde à \textit{model} do MVC tradicional e representa as classes que popularão as tabelas do banco de dados. O \textit{Django} possui um ORM (\textit{Object-Relational Mapping}, Mapeamento de Objeto Relacional) para realizar a manipulação dessas tabelas, não sendo necessário a escrita de consultas em SQL para a persistência das informações.
-        \item \textit{Template}: corresponde aproximadamente à \textit{view} do MVC tradicional e descreve como as informações serão apresentadas para o usuário.
-        \item \textit{View}: representada por uma função \textit{callback} referente à uma classe de URLs, descrevendo quais informações serão apresentadas e como elas serão enviadas para o \textit{template}. Alguns autores defendem que a view corresponde ao \textit{controller} do MVC tradicional, mas os próprios desenvolvedores do \textit{Django} a \textit{view} deve ser minimalista e boa parte do papel do \textit{controller} deve ser implementado nas próprias classes dos modelos.
+        \item \textit{Model}: corresponde à \textit{model} do MVC tradicional e representa as classes que popularão as tabelas do banco de dados. O \textit{Django} possui um \textit{Object-Relational Mapping} (ORM), para realizar a manipulação dessas tabelas, não sendo necessária a escrita de consultas em SQL para a persistência das informações;
+        \item \textit{Template}: corresponde aproximadamente à \textit{view} do MVC tradicional e descreve como as informações serão apresentadas para o usuário;
+        \item \textit{View}: representada por uma função \textit{callback} referente a uma classe de URLs, descrevendo quais informações serão apresentadas e como elas serão enviadas para o \textit{template}. Alguns autores defendem que a view corresponde ao \textit{controller} do MVC tradicional, mas para os próprios desenvolvedores do \textit{Django}, a \textit{view} deve ser minimalista e boa parte do papel do \textit{controller} deve ser implementado nas próprias classes dos modelos.
     \end{itemize}
 
-    Na nomenclatura do \textit{Django}, um conjunto de funcionalidades pode ser agrupado em aplicação. Cada aplicação possui suas próprias \textit{models}, \textit{views} e \textit{templates}.
+    Na nomenclatura do \textit{Django}, um conjunto de funcionalidades pode ser agrupado em uma aplicação, chamada de \textit{app}. Cada aplicação possui suas próprias \textit{models}, \textit{views} e \textit{templates}.
 
     A Figura \ref{django-arq} mostra a arquitetura do \textit{Django}, apresentando as camadas do MTV durante a comunicação com o navegador até o acesso ao banco de dados. O \textit{URL dispatcher} identifica endereços requisitados pelo usuário e realiza o redirecionamento da requisição para a aplicação correta. A coordenação de requisições entre o \textit{URL dispatcher} e a \textit{view} e da \textit{view} até o \textit{template} é feita pelos chamados \textit{Middlewares}. Os \textit{Middlewares} realizam a persistência de informações entre as diferentes camadas.
 
     \begin{figure}[h]
         \centering
         \includegraphics[keepaspectratio=true,scale=0.5]{figuras/django-arquitetura.eps}
-        \caption{Arquitetura MTV \textit{Django}}
+        \caption{Arquitetura MTV \textit{Django}.}
         \label{django-arq}
     \end{figure}
 
 \section{Protocolos Utilizados}
 Antes de começar o desenvolvimento, foi necessário realizar um profundo estudo sobre o equipamento para medição de dados de energia, comumente chamado de transdutor, visto que esse já havia sido pré-designado para utilização, devido a contratos realizados anteriormente pela Universidade de Brasília.
 
-O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul \cite{embrasul}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidade de 10M/100Mbps em sistemas Ethernet utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs - RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
+O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul \cite{embrasul}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidades de 10M/100Mbps em sistemas Ethernet, utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs-RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
 
 \begin{figure}[!h]
     \centering
@@ -36,41 +36,41 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
     \label{tr4020}
 \end{figure}
 
-    \subsection{\textit{Modbus RTU}}
+    \subsection{\textit{Modbus-RTU}}
 
-    \textit{Modbus} \cite{modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam a arquitetura de mestre-escravo, como mostrado na figura \ref{mestre_escravo}. Nesta arquitetura, o papél de mestre é designado ao dispositivo que envia as requisições e escravo ao que responde passivamente às mesmas.
+    \textit{Modbus} \cite{modbus} é um protocolo serial utilizado para transmitir informações entre dispositivos eletrônicos. Suas mensagens utilizam a arquitetura de mestre-escravo, como mostra a Figura \ref{mestre_escravo}. Nesta arquitetura, o papel de mestre é designado ao dispositivo que envia as requisições e de escravo ao que responde passivamente a elas.
 
-    \begin{figure}[!htpb]
+    \begin{figure}[!htb]
         \centering
         \includegraphics[keepaspectratio=true,scale=0.8]{figuras/mestre_escravo.eps}
         \caption{Comunicação Mestre-Escravo \textit{Modbus}. Fonte: \cite{modbus}}
         \label{mestre_escravo}
     \end{figure}
 
-    Quando controladores são configurados para se comunicarem em uma rede Modbus usando o modo RTU (\textit{Remote Terminal Unit}, Unidade de Terminal Remoto) cada \textit{byte} contém duplas hexadecimais de 4 \textit{bits}. A maior vantagem de utilizar este modo é que sua grande densidade de caracteres permite uma maior taxa de transferência comparado ao modo ASCII, em uma mesma taxa de transmissão \cite{modbus}.
+    Quando controladores são configurados para se comunicarem em uma rede Modbus, usando o modo \textit{Remote Terminal Unit} (RTU), cada \textit{byte} contem duplas hexadecimais de 4 \textit{bits}. A maior vantagem em se utilizar esse modo é que sua grande densidade de caracteres permite uma maior taxa de transferência comparado ao modo ASCII, em uma mesma taxa de transmissão \cite{modbus}.
 
     Uma mensagem em Modbus RTU possui 16 \textit{bytes} e é definida da seguinte maneira:
     \begin{itemize}
-        \item Identificador do Aparelho: 2 \textit{bytes}.
-        \item Código de Função: 2 \textit{bytes}, define qual tipo de operação o equipamento irá realizar.
-        \item Campo de Dados: 8 \textit{bytes}, sendo 4 \textit{bytes} para indicar o endereço do primeiro registrador requisitado e 4 \textit{bytes} para indicar a quantidade de registradores que serão lidos.
-        \item CRC (\textit{Cyclic Redundancy Check}, Verificação de Redundância Cíclica): 4 \textit{bytes} para verificação de erros.
+        \item Identificador do Aparelho: 2 \textit{bytes};
+        \item Código de Função: 2 \textit{bytes}, define qual tipo de operação o equipamento irá realizar;
+        \item Campo de Dados: 8 \textit{bytes}, sendo 4 \textit{bytes} para indicar o endereço do primeiro registrador requisitado e 4 \textit{bytes} para indicar a quantidade de registradores que serão lidos;
+        \item \textit{Cyclic Redundancy Check} (CRC): 4 \textit{bytes} para verificação de erros.
     \end{itemize}
 
     A resposta do escravo possui a seguinte estrutura:
 
     \begin{itemize}
-        \item Identificador do Aparelho: 2 \textit{bytes}.
-        \item Código de Função: 2 \textit{bytes}, define qual tipo de operação o equipamento irá realizar.
-        \item Tamanho do{payload}: 2 \textit{bytes}, define o tamanho do campo de dados em \textit{bytes}.
-        \item Campo de dados: possui tamanho variável, de acordo com o valor do campo anterior.
-        \item CRC (\textit{Cyclic Redundancy Check}, Verificação de Redundância Cíclica): 4 \textit{bytes} para verificação de erros.
+        \item Identificador do Aparelho: 2 \textit{bytes};
+        \item Código de Função: 2 \textit{bytes}, define qual tipo de operação o equipamento irá realizar;
+        \item Tamanho do \textit{Payload}: 2 \textit{bytes}, define o tamanho do campo de dados em \textit{bytes};
+        \item Campo de Dados: possui tamanho variável, de acordo com o valor do campo anterior;
+        \item \textit{Cyclic Redundancy Check} (CRC): 4 \textit{bytes} para verificação de erros.
     \end{itemize}
 
     EXEMPLO DE MENSAGEM MODBUSRTU.
 
     \subsection{UDP}
-    O protocolo UDP (\textit{User Datagram Protocol}, Protocolo de Datagrama do Usuário) é um protocolo da camada de transporte e não orientado a conexões. Seu cabeçalho, figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
+    O protocolo \textit{User Datagram Protocol} (UDP) é um protocolo da camada de transporte, não orientado a conexões. Seu cabeçalho, Figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
 
     \begin{figure}[!htpb]
         \centering
@@ -81,51 +81,53 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
 
     Para Tanembaum, a camada de transporte é o núcleo de toda a hierarquia de protocolos. Sua função é promover uma transferência de dados confiável e econômica entre a máquina de origem e a máquina de destino, independente das redes físicas em uso no momento.
 
-    Nas redes de acesso empresarial, uma rede de área local (LAN) é usada para conectar um sistema final a um roteador de borda. Existem muitos tipos diferentes de tecnologias LAN. No entanto, a Ethernet é a tecnologia de acesso mais prevalente nas redes corporativas. A Ethernet opera 10 Mbps ou 100Mbps e utiliza cabos par trançado para conectar uma série de sistemas finais uns com os outros e com um roteador de borda. O roteador de borda é responsável por rotear pacotes que tenham destinos fora dessa LAN. A Ethernet usa um meio compartilhado, para que os usuários finais compartilhem a taxa de transmissão da LAN \cite{kurose_2002}.
+    Nas redes de acesso empresarial, uma rede de área local (LAN) é usada para conectar um sistema final a um roteador de borda. Existem muitos tipos diferentes de tecnologias LAN. No entanto, a \textit{Ethernet} é a tecnologia de acesso mais prevalente nas redes corporativas. A \textit{Ethernet} opera 10 Mbps ou 100Mbps e utiliza cabos par trançado para conectar uma série de sistemas finais uns com os outros e com um roteador de borda. O roteador de borda é responsável por rotear pacotes que tenham destinos fora dessa LAN. A \textit{Ethernet} usa um meio compartilhado para que os usuários finais compartilhem a taxa de transmissão da LAN \cite{kurose_2002}.
 
-    O protocolo de camada de rede da Internet chama-se "Protocolo da Internet", ou IP. O IP fornece comunicação lógica entre hosts, possuindo um modelo de entrega de melhor esforço. Isso significa que o IP realiza seu "melhor esforço" para fornecer segmentos entre hosts comunicantes, mas não oferece garantias. Em particular, não garante a entrega do segmento, não garante a entrega ordenada de segmentos e garante a integridade dos dados nos segmentos \cite{kurose_2002}.
+    O protocolo de camada de rede da Internet se chama ``Protocolo da Internet'', ou IP. O IP fornece comunicação lógica entre hosts, possuindo um modelo de entrega de melhor esforço. Isso significa que o IP realiza seu ``melhor esforço'' para fornecer segmentos entre hosts comunicantes, mas não oferece garantias. Em particular, não garante a entrega do segmento, não garante a entrega ordenada de segmentos e garante a integridade dos dados nos segmentos \cite{kurose_2002}.
 
 \section{Armazenamento das Informações}
-Definiu-se que os câmpus da UnB seriam divididos por região administrativa, cada câmpus teria um conjunto de edifícios, cada edifício poderia possuir diversos transdutores e os transdutores teriam diversas medições. Para que isso fosse possível, criaram-se os \textit{apps} campuses, buildings e transductor.
+Definiu-se que os câmpus da UnB seriam divididos por região administrativa, cada campus teria um conjunto de edifícios, cada edifício poderia possuir diversos transdutores e os transdutores teriam diversas medições. Para que isso fosse possível, criaram-se os \textit{apps} \textit{campuses}, \textit{buildings} e \textit{transductor}.
 
-No \textit{app} campuses, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os câmpus em si. A ferramenta utilizada para realizar o diagrama de classes foi a StarUML\footnote{\url{http://staruml.io/}}
+A ferramenta utilizada para realizar os diagramas de classes dos \textit{apps} do SMI-UnB foi a StarUML\footnote{\url{http://staruml.io/}}. Além disso, não foram expressas nos diagramas as classes referentes as \textit{views} e \textit{forms}, objetivando uma menor poluição visual.
+
+No \textit{app} \textit{campuses}, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os câmpus em si.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.8]{figuras/campuses.eps}
-    \caption{Diagrama de Classes para \textit{app} campuses.}
+    \caption{Diagrama de Classes para \textit{app} \textit{campuses}.}
     \label{campuses}
 \end{figure}
 
-Seguindo o mesmo princípio, o \textit{app} buildings, Figura \ref{buildings}, define um modelo para os edifícios e possui um \textit{manager}, buscando auxiliar a manipulação de seus \textit{querysets}. Um \textit{queryset} representa uma coleção de objetos do banco de dados \cite{django_project}.
+Seguindo o mesmo princípio, o \textit{app} \textit{buildings}, Figura \ref{buildings}, define um modelo para os edifícios e possui um \textit{manager}, buscando auxiliar a manipulação de seus \textit{querysets}. Um \textit{queryset} representa uma coleção de objetos do banco de dados \cite{django_project}.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.8]{figuras/buildings.eps}
-    \caption{Diagrama de Classes para \textit{app} buildings.}
+    \caption{Diagrama de Classes para \textit{app} \textit{buildings}.}
     \label{buildings}
 \end{figure}
 
 As medições de energia iriam seguir o esquema de um sistema trifásico, onde suas fases foram representadas como A, B e C. As grandezas energéticas definidas para serem coletadas foram:
 
 \begin{itemize}
-    \item Tensão.
-    \item Corrente.
-    \item Potência Ativa.
-    \item Potência Reativa.
+    \item Tensão;
+    \item Corrente;
+    \item Potência Ativa;
+    \item Potência Reativa;
     \item Potência Aparente.
 \end{itemize}
 
-Os transdutores e suas medições são definidos no \textit{app} transductor, Figura \ref{transductor}. Uma das peculariedas presentes nos transdutores é a necessidade de um modelo de transdutor. Esses modelos, definidos pela classe TransductorModel, possuem toda a informação necessária para que seja possível realizar a coleta de dados, definindo o endereço e o tipo (\textit{int} ou \textit{float}) dos registradores que serão lidos, além dos protocolos seriais e de transporte utilizados.
+Os transdutores e suas medições são definidos no \textit{app} \textit{transductor}, Figura \ref{transductor}. Uma das peculariedas presente nos transdutores é a necessidade de um modelo de transdutor. Esses modelos, definidos pela classe \textit{TransductorModel}, possuem toda a informação necessária para que seja possível realizar a coleta de dados, definindo o endereço e o tipo (\textit{int} ou \textit{float}) dos registradores que serão lidos, além dos protocolos seriais e de transporte utilizados.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.7]{figuras/transductor.eps}
-    \caption{Diagrama de classes para \textit{app} transductor.}
+    \caption{Diagrama de Classes para \textit{app} \textit{transductor}.}
     \label{transductor}
 \end{figure}
 
-As classes Transductor e Measurements são \textit{Polymorphic Models}\footnote{\url{https://django-polymorphic.readthedocs.io/en/stable/}} e possuem alguns métodos base. Com essas classes é possível extrair com mais facilidade e rapidez todas suas classes filhas, que no caso seriam as representações dos recursos monitorados pela UnB. As especializações criadas foram referentes aos transdutores de energia e medições de energia, representados pelas classes EnergyTransductor e Energymeasurements. Além disso, existe uma classe auxiliar, chamada EnergyOperations, responsável por realizar cálculos matemáticos com os dados de energia coletados.
+As classes \textit{Transductor} e \textit{Measurements} são \textit{Polymorphic Models}\footnote{\url{https://django-polymorphic.readthedocs.io/en/stable/}} e possuem alguns métodos base. Com essas classes é possível extrair com mais facilidade e rapidez todas as suas classes filhas, que no caso seriam as representações dos recursos monitorados pela UnB. As especializações criadas foram referentes aos transdutores de energia e medições de energia, representados pelas classes \textit{EnergyTransductor} e \textit{Energymeasurements}. Além disso, existe uma classe auxiliar, chamada \textit{EnergyOperations}, responsável por realizar cálculos matemáticos com os dados de energia coletados.
 
 \section{Coleta de dados}
 Definiu-se que existirão dois tipos de servidores para ser possível realizar a coleta de dados inter-campi: mestre e escravo. O servidor mestre seria a representação da administração central e os escravos seriam prédios, espalhados pelos câmpus da UnB, que realizariam a coleta de dados de seus transdutores, presentes na sua mesma rede.
@@ -133,7 +135,7 @@ Definiu-se que existirão dois tipos de servidores para ser possível realizar a
 O tempo para coleta das informações foi definido da seguinte maneira:
 
 \begin{itemize}
-    \item A cada 1 hora, o servidor mestre seria responsável por realizar uma sincronia com todas as medições realizadas pelos escravos.
+    \item A cada 1 hora, o servidor mestre seria responsável por realizar uma sincronia com todas as medições realizadas pelos escravos;
     \item A cada 1 minuto, os servidores escravos seriam responsáveis por realizarem suas coletas de dados.
 \end{itemize}
 
@@ -143,11 +145,11 @@ A coleta de dados, realizada por um prédio (servidor escravo), é feita com o a
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.7]{figuras/data_reader.eps}
-    \caption{Diagrama de classes para \textit{app} data\_reader.}
+    \caption{Diagrama de Classes para \textit{app} \textit{data\_reader}.}
     \label{data_reader}
 \end{figure}
 
-A classe SerialProtocol e TransportProtocol são abstratas e possuem alguns métodos base, para que possa ser possível criar diferentes tipos de especializações, conforme a aplicação necessite. As duas, inicialmente criadas, foram referentes aos protocolos Modbus-RTU e UDP.
+A classe \textit{SerialProtocol} e \textit{TransportProtocol} são abstratas e possuem alguns métodos base, para que possa ser possível criar diferentes tipos de especializações, conforme a aplicação necessite. As duas inicialmente criadas, foram referentes aos protocolos Modbus-RTU e UDP.
 
 A coleta de dados para cada prédio, com base no equipamento TR4020, é ilustrada pela Figura \ref{process_1}. Foi utilizada a ferramenta Bizagi\footnote{\url{https://www.bizagi.com/}} para a realização da modelagem.
 
@@ -158,22 +160,22 @@ A coleta de dados para cada prédio, com base no equipamento TR4020, é ilustrad
     \label{process_1}
 \end{figure}
 
-Inicialmente, a classe DataCollector identifica todos os transdutores que estão no prédio e cria uma \textit{thread} para cada um, objetivando paralelismo na coleta de dados. Segundo Tanembaum \cite{tanenbaum_2007}, as \textit{threads} são entidades escalonadas para a execução sobre a CPU, permitindo que múltiplas execuções ocorram no mesmo ambiente de um processo, com um grande grau de independência uma da outra.
+Inicialmente, a classe \textit{DataCollector} identifica todos os transdutores que estão no prédio e cria uma \textit{thread} para cada um, objetivando paralelismo na coleta de dados. Segundo Tanembaum \cite{tanenbaum_2007}, as \textit{threads} são entidades escalonadas para a execução sobre a CPU, permitindo que múltiplas execuções ocorram no mesmo ambiente de um processo, com um grande grau de independência uma da outra.
 
-Em cada \textit{thread} é identificado o modelo TR4020 para o transdutor, o qual possui as informações sobre os protocolos Modbus-RTU e UDP. A classe ModbusRTU prepara todas as mensagens que deverão ser lidas pelo equipamento, uma para cada grandeza energética e para cada fase. As mensagens seriais criadas são recebidas pela classe UdpProtocol, que irá tentar realizar a comunicação com o aparelho. Os pacotes são enviados e recebidos, um por um, até que todos sejam recebidos corretamente. Com os pacotes recebidos, são extraídas suas cargas úteis, que basicamente correspondem às medições de cada grandeza, logo após, as mesmas são lidas, utilizando a classe ModbusRTU. Por fim, a classe DataCollector recebe as medições e as salva.
+Em cada \textit{thread} é identificado o modelo TR4020 para o transdutor, o qual possui as informações sobre os protocolos Modbus-RTU e UDP. A classe \textit{ModbusRTU} prepara todas as mensagens que deverão ser lidas pelo equipamento, uma para cada grandeza energética e para cada fase. As mensagens seriais criadas são recebidas pela classe \textit{UdpProtocol}, que irá tentar realizar a comunicação com o aparelho. Os pacotes são enviados e recebidos, um por um, até que todos sejam recebidos corretamente. Com os pacotes recebidos, são extraídas suas cargas úteis, que basicamente correspondem às medições de cada grandeza, logo após, elas são lidas, utilizando a classe \textit{ModbusRTU}. Por fim, a classe \textit{DataCollector} recebe as medições e as salva.
 
-A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios é realizada pela ferramenta \textit{cron} \cite{paul_cron}, presente em sistemas UNIX. O \textit{cron} é \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é programa que é executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \textit{cron} utiliza o \textit{crontab} para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário. Um arquivo mantido pelo \textit{crontab} deve seguir a estrutura do Algoritmo \ref{crontab}
+A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios utiliza a ferramenta \textit{cron} \cite{paul_cron}, presente em sistemas UNIX. O \textit{cron} é um \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é um programa executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \textit{cron} utiliza o \textit{crontab} para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário. Um arquivo mantido pelo \textit{crontab} deve seguir a estrutura do Algoritmo \ref{crontab}.
 
 \begin{python}[caption={Estrutura de um arquivo mantido pelo \textit{crontab}.}, captionpos=b, label={crontab}]
 minuto hora dia_mes mes dia_semana comando_para_execucao
 # Linha em banco para deixar cron valido
 \end{python}
 
-Adicionou-se um novo comando para aplicação, chamado \textit{runcrons}. Esse comando é definido pela ferramenta django-cron\footnote{\url{http://django-cron.readthedocs.io/en/latest/}} e basicamente executa um código que possua como base a classe \textit{CronJobBase}. Esse código, após ser executado, é bloqueado até que o tempo de espera para outra execução seja atingido, como uma espécie de cronômetro.
+Adicionou-se um novo comando para a aplicação, chamado \textit{runcrons}. Esse comando é definido pela ferramenta django-cron\footnote{\url{http://django-cron.readthedocs.io/en/latest/}} e basicamente executa um código que possua como base a classe \textit{CronJobBase}. Esse código, após ser executado, é bloqueado até que o tempo de espera para outra execução seja atingido, como uma espécie de cronômetro.
 
-Criou-se a classe DataCollectCronJob, Algoritmo \ref{data_collect}, objetivando invocar o DataCollector para realizar a coleta de dados. O arquivo mantido pelo crontab para realizar a coleta, periodicamente a cada 1 minuto, foi definido conforme o Algoritmo \ref{cron_slave}.
+Criou-se a classe \textit{DataCollectCronJob}, Algoritmo \ref{data_collect}, objetivando invocar o \textit{DataCollector} para realizar a coleta de dados. O arquivo mantido pelo crontab para realizar a coleta, periodicamente a cada 1 minuto, foi definido conforme o Algoritmo \ref{cron_slave}.
 
-\begin{python}[caption={Classe DataCollectCronJob.}, captionpos=b, label={data_collect}]
+\begin{python}[caption={Classe \textit{DataCollectCronJob}.}, captionpos=b, label={data_collect}]
 class DataCollectCronJob(CronJobBase):
     RUN_EVERY_MINS = 0
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
@@ -202,33 +204,36 @@ O \textit{Hypertext Transfer Protocol} (HTTP), é um protocolo \textit{web} pres
 A API utilizada no projeto baseou-se no Django REST Framework \cite{django_rest}. O \textit{Representational State Transfer} (REST) \cite{fielding_2000} é um estilo arquitetural para projetar sistemas distribuídos e apresenta as seguintes características:
 
 \begin{itemize}
-    \item Estado e funcionalidade são divididos em recursos distribuídos.
-    \item Todo recurso é exclusivamente endereçável, usando um conjunto uniforme e mínimo de comandos.
+    \item Estado e funcionalidade são divididos em recursos distribuídos;
+    \item Todo recurso é exclusivamente endereçável, usando um conjunto uniforme e mínimo de comandos;
     \item O protocolo é cliente/servidor, sem estado, em camadas e suporta armazenamento em \textit{cache}.
 \end{itemize}
 
-O Django REST Framework utiliza alguns métodos HTTP para mapear as operações CRUD (criar, resgatar, atualizar e deletar) nas requisições HTTP, sendo esses:
+O Django REST Framework utiliza alguns métodos HTTP para mapear as operações CRUD (criar, resgatar, atualizar e deletar) nas requisições HTTP, sendo estes:
 
 \begin{itemize}
-    \item GET: recuperar informações de uma entidade.
-    \item POST: criar ou atualizar uma entidade.
-    \item PUT: criar ou atualizar uma entidade. O método PUT é idempotente, ou seja, se uma operação for realizada duas vezes sobre o mesmo objetivo, não haverá efeito.
-    \item PATCH: modificar parcialmente uma entidade.
+    \item GET: recuperar informações de uma entidade;
+    \item POST: criar ou atualizar uma entidade;
+    \item PUT: criar ou atualizar uma entidade. O método PUT é idempotente, ou seja, se uma operação for realizada duas vezes sobre o mesmo objetivo, não haverá efeito;
+    \item PATCH: modificar parcialmente uma entidade;
     \item DELETE: deletar uma entidade.
 \end{itemize}
 
-O conceito de \textit{endpoints} é utilizado pelo Django REST Framework, objetivando a interação com a API do lado do servidor, pois especificam onde os recursos podem ser acessados, por meio da classe padrão ModelViewSet.
+O conceito de \textit{endpoints} é utilizado pelo Django REST Framework, objetivando a interação com a API do lado do servidor, pois especificam onde os recursos podem ser acessados, por meio de uma das classes padrão \textit{ModelViewSet}.
 
-A sincronia de dados é realizada pela classe EnergyMeasurementSynchronizer, presente no \textit{app} \textit{api}, Figura \ref{api}. Em linhas gerais, essa classe realiza duas requisições HTTP para cada servidor escravo. Na primeira requisição são consumidas as medições de energia mais recentes de cada transdutor, via API. Com as medições resgatadas, atualiza-se o horário da última coleta de dados de cada transdutor, no servidor mestre. Após atualizados os horários no mestre, realiza-se a segunda requisição, que atualiza o horário de todos os transdutores presentes no escravo.
+A sincronia de dados é realizada pela classe \textit{EnergyMeasurementSynchronizer}, presente no \textit{app} \textit{api}, Figura \ref{api}. Em linhas gerais, essa classe realiza duas requisições HTTP para cada servidor escravo. Na primeira requisição são consumidas as medições de energia mais recentes de cada transdutor, via API. Com as medições resgatadas, atualiza-se o horário da última coleta de dados de cada transdutor, no servidor mestre. Após atualizados os horários no mestre, realiza-se a segunda requisição, que atualiza o horário de todos os transdutores presentes no escravo.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.55]{figuras/api.eps}
-    \caption{Diagrama de classes para \textit{app} api.}
+    \caption{Diagrama de Classes para \textit{app} \textit{api}.}
     \label{api}
 \end{figure}
 
-O \textit{cron} para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe MeasurementsSyncCronJob, Algoritmo \ref{measu_sync}.
+O \textit{cron} para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe \textit{MeasurementsSyncCronJob}, Algoritmo \ref{measu_sync}.
+
+A API realizada foi um protótipo
+Segurança API
 
 \begin{python}[caption={\textit{Cron} para execução da sincronia dos dados de energia.}, captionpos=b, label={cron_master}]
 0 * * * * python3 /SMI-UnB/manage.py runcrons \
@@ -248,7 +253,7 @@ class MeasurementsSyncCronJob(CronJobBase):
 \end{python}
 
 \section{Segurança}
-Realizou-se um sistema de login por meio de email, para facilitar os usuários na hora de se autenticarem no sistema. O django já possui um módulo de autenticação bem definido, que realiza tanto a autenticação quanto a autorização de um usuário. Como esse módulo realizava login por meio do nome de usuário, algumas mudanças foram implementadas para ser possível o login por meio de email. Para isso, criou-se o \textit{app} authentication, Figura \ref{authentication}, o qual define a classe EmailBackend, que por sua vez realiza a autenticação por email.
+Realizou-se um sistema de \textit{login} por meio de e-mail, para facilitar os usuários a se autenticarem no sistema. O Django já possui um módulo de autenticação bem definido, que realiza tanto a autenticação quanto a autorização de um usuário. Como esse módulo realizava \textit{login} por meio do nome de usuário, algumas mudanças foram implementadas para ser possível o \textit{login} por meio de e-mail. Para isso, criou-se o \textit{app} \textit{authentication}, Figura \ref{authentication}, o qual define a classe \textit{EmailBackend}, que por sua vez realiza a autenticação por e-mail.
 
 \begin{figure}[!h]
     \centering
@@ -257,31 +262,31 @@ Realizou-se um sistema de login por meio de email, para facilitar os usuários n
     \label{authentication}
 \end{figure}
 
-Vale ressaltar que o Django realiza. TERMINAR TEXTO sobre segurana de passwords no django.
+Ressalta-se que o Django realiza a criptografia das senhas registradas no banco de dados automaticamente, utilizando como base a \textit{secret\_key} do projeto. Por esse motivo, essa \textit{secret\_key} é gerada randomicamente, conforme o Algoritmo \ref{secret_key}.
 
-\begin{python}[caption={Corpo do método authenticate, classe EmailBackend.}, captionpos=b]
-class EmailBackend(ModelBackend):
-    def authenticate(self, username=None, password=None, **kwargs):
-        UserModel = get_user_model()
-        try:
-            user = UserModel.objects.get(email=username)
-        except UserModel.DoesNotExist:
-            return None
-        else:
-            if getattr(
-                user, 'is_active', False
-            ) and user.check_password(password):
-                return user
-        return None
+\begin{python}[caption={Criação automática da \textit{secret\_key} do projeto.}, captionpos=b,label={secret_key}]
+try:
+    with open(secrete_key_path, 'r') as F:
+        SECRET_KEY = F.read()
+except FileNotFoundError:
+    print('Creating a new SECRET_KEY at security/secret_key.dat')
+
+    # Create directory, if it does not exist
+    if not os.path.exists(security_path):
+        os.mkdir(security_path)
+
+    chars = ''.join([string.ascii_letters, string.digits, string.punctuation])
+    SECRET_KEY = ''.join([choice(chars) for i in range(50)])
+
+    with open(secrete_key_path, 'w') as F:
+        SECRET_KEY = F.write(SECRET_KEY)
 \end{python}
 
 Os transdutores e prédios presentes no sistema não podem ser excluídos, tendo em vista a importância de se deixar registrado suas medições realizadas. Para isso acontecer, alguns botões de habilitar e desabilitar foram adicionados à aplicação e um atributo referente a ativo foi adicionado aos seus modelos.
 
-Sincronia
+O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo o mestre realiza uma verificação a nível de formulário com o escravo, Algoritmo \ref{energy_form}. Essa verificação é feita por meio de uma requisição HTTP, utilizando o método GET. Caso o código de resposta recebido seja válido, o mestre tenta realizar uma sincronização com escravo pela API, utilizando a classe \textit{SyncManager}, Algoritmo \ref{build_sync}. Ressalta-se que esta solução ainda deve ser aperfeiçoada, buscando aceitar requisições mais seguras, por meio do protocolo HTTPS.
 
-O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre tenta comunicar-se com o escravo, por meio de uma requisição HTTP, utilizando o método GET. Vale ressaltar que esta solução ainda deve ser aperfeiçoada, buscando aceitar, também, requisições Https.
-
-\begin{python}[caption={Corpo do método is\_valid, classe EnergyForm.}, captionpos=b]
+\begin{python}[caption={Corpo do método \textit{is\_valid}, classe \textit{EnergyForm}.}, captionpos=b, label={energy_form}]
 class EnergyForm(forms.ModelForm):
     ...
 
@@ -294,21 +299,35 @@ class EnergyForm(forms.ModelForm):
         except:
             self.add_error(
                 None,
-                _('Unable to communicate with Building server.')
+                _('Unable to communicate with building server.')
             )
             return False
 \end{python}
 
-Definiram-se, inicialmente, duas permissões para os usuários: gerencia de prédios e de transdutores. Cada uma dessas permite ao usuário os direitos de incluir, modificar e habilitar/desabilitar. A gerência de usuários e definição das permissões são realizadas pelo \textit{app} users, Figura \ref{app_users}.
+\begin{python}[caption={Sincronização realizada durante a criação de um prédio.}, captionpos=b, label={build_sync}]
+def new_building(request, campus_string):
+    ...
+
+    building.synchronized = SyncManager.sync_building(
+        building, new=True)
+
+    building.save()
+
+    ...
+\end{python}
+
+Definiu-se, inicialmente, duas permissões para os usuários: gerência de prédios e de transdutores. Cada uma dessas fornece ao usuário os direitos de incluir, modificar e habilitar/desabilitar. A gerência de usuários e definição das permissões são realizadas pelo \textit{app} \textit{users}, Figura \ref{app_users}.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.8]{figuras/app_users.eps}
-    \caption{Diagrama de classes para \textit{App} users.}
+    \caption{Diagrama de Classes para \textit{App} \textit{users}.}
     \label{app_users}
 \end{figure}
 
-\begin{python}[caption={Permissões presentes na classe UserPermissions.}, captionpos=b]
+As permissões dos usuários são definidas pela classe \textit{UserPermissions}, Algoritmo \ref{user_perm}.
+
+\begin{python}[caption={Permissões presentes na classe \textit{UserPermissions}.}, captionpos=b,label={user_perm}]
 class UserPermissions(models.Model):
     ...
 
@@ -319,12 +338,10 @@ class UserPermissions(models.Model):
         )
 \end{python}
 
-Secret key gerada automaticamente
-
 \section{Gerência de Configuração}
 Utilizou-se o Docker \cite{docker} para que fosse possível criar um ambiente unificado para o sistema, visando evitar futuros problemas de implantação.
 
-O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \ref{container}, possui empacotado tudo que é necessário para se executar um software completo ou parte dele. Diferente das máquinas virtuais, os contêiners são executados em uma mesma máquina, compartilhando o kernel do seu sistema operacional, sendo que cada um terá seu processo isolado no espaço de usuário.
+O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \ref{container}, possui empacotado tudo que é necessário para se executar um software completo ou parte dele. Diferente das máquinas virtuais, os contêiners são executados em uma mesma máquina, compartilhando o \textit{kernel} do seu sistema operacional, sendo que cada um terá seu processo isolado no espaço de usuário.
 
 \begin{figure}[!h]
     \centering
@@ -333,41 +350,111 @@ O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \re
     \label{container}
 \end{figure}
 
-Para Tanenbaum \cite{tanenbaum_2007}, o sistema operacional é a peça mais básica de software e opera em modo núcleo, possuindo acesso completo a todo o hardware e ao conjunto de instruções oferecidos pela máquina. O resto do software opera em modo usuário, onde é disponível para execução apenas um conjunto de instruções da máquina.
+Para Tanenbaum \cite{tanenbaum_2007}, o sistema operacional é a peça mais básica de software e opera em modo núcleo, possuindo acesso completo a todo o \textit{hardware} e ao conjunto de instruções oferecidos pela máquina. O resto do software opera em modo usuário, onde é disponível apenas um conjunto de instruções da máquina para execução.
 
-Criaram-se duas configurações para os ambientes referêntes ao mestre e escravo, onde suas diferenciações baseavam-se basicamente no cron que seria executado em cada um. Para realizar essas configurações utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners. Os serviços definidos para a aplicação foram:
-
-Linkar os containers.
+Criaram-se duas configurações para os ambientes referentes ao mestre e escravo, onde suas diferenciações baseavam-se no \textit{crontab} que seria executado em cada um. Para realizar essas configurações, utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners, com uma possibilidade de ligação entre eles. Os serviços definidos para a aplicação foram:
 
 \begin{itemize}
-    \item nginx: fornecimento dos arquivos estáticos.
-    \item web: fornecimento da aplicação em Django.
-    \item postgres: armazenamento das informações.
-    \item redis: \textit{cache} da aplicação.
+    \item nginx: fornecimento dos arquivos estáticos;
+    \item web: fornecimento da aplicação em Django;
+    \item postgres: armazenamento das informações;
+    \item redis: \textit{cache} da aplicação;
     \item data: armazenamento do banco de dados.
 \end{itemize}
 
-O serviço nginx
+A configuração para o servidor mestre é representada pelo Algoritmo \ref{compose_docker}.
 
-Http
+\begin{python}[caption={Serviços providos pelo Docker Compose.}, captionpos=b, label={compose_docker}]
+version: '2'
+services:
+  nginx:
+    restart: always
+    build: ./docker/nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/collect/static/:/var/www/static/
+    volumes_from:
+      - web
+    links:
+      - web:web
 
-WSGI
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.master
+    expose:
+      - "8000"
+    links:
+      - postgres:postgres
+      - redis:redis
+    env_file: ./docker/env
+    volumes:
+      - ./src/:/app/src/
 
-O script de integração contínua do projeto, Figura \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do Postgresql, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}.
+  postgres:
+    restart: always
+    image: postgres:latest
+    volumes_from:
+      - data
+    volumes:
+      - ./docker/postgres/docker-entrypoint-initdb.d: \
+         /docker-entrypoint-initdb.d
+    env_file:
+      - ./docker/env
+    expose:
+      - "5432"
 
-\begin{figure}[!h]
-    \centering
-    \includegraphics[keepaspectratio=true,scale=0.65]{figuras/integracao.eps}
-    \caption{\textit{Script} para integração contínua do projeto.}
-    \label{integracao}
-\end{figure}
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"
 
-Tasks
+  data:
+    restart: always
+    image: alpine
+    volumes:
+      - /var/lib/postgresql
+    command: "true"
+\end{python}
 
-Fixtures
+O serviço nginx utiliza um servidor nginx\footnote{\url{https://nginx.org/en}} para lidar primeiramente com requisições externas e fornecer os arquivos estáticos da aplicação. O nginx consiste em um servidor HTTP e \textit{proxy} reverso. Servidores \textit{proxy} reverso utilizam um servidor \textit{proxy} para atuar como um intermediadores entre uma requisição realizada por um cliente e o servidor que a atenderá. Um servidor \textit{proxy} é uma entidade de rede que satisfaz solicitações HTTP em nome de um cliente, possuindo seu próprio armazenamento em disco e mantendo cópias de objetos recentemente solicitados \cite{kurose_2002}.
+
+Requisições que precisam ser geradas dinamicamente são tratadas pelo serviço \textit{web}, que as direcionam para um servidor Gunicorn\footnote{\url{http://gunicorn.org/}}. O Gunicorn é um servidor Python \textit{Web Server Gateway Interface} (WSGI) HTTP. O WSGI é uma especificação para uma interface simples e universal entre servidores \textit{web} e aplicações \textit{web} ou \textit{frameworks} para a linguagem de programação Python \cite{pep_333}.
+
+O serviço \textit{postgres} utiliza o banco de dados PostgreSQL para realizar o armazenamento das informações. Quando é iniciado, executa um \textit{script} para popular o banco com os câmpus da UnB e os modelos de transdutores.
+
+Para acelerar as requisições de páginas \textit{web} do SMI-UnB, utilizou-se o serviço \textit{redis}, responsável por executar um servidor Redis\footnote{\url{https://redis.io/}}. O \textit{Cache} é um componente de \textit{hardware} ou software que armazena dados, objetivando uma maior rapidez para pedidos futuros. Os dados armazenados em um \textit{cache} podem ser o resultado de uma computação executada anteriormente ou da duplicação de dados presentes em um outro lugar \cite{hennessy_2011}.
+
+O serviço \textit{data} foi utilizado para gerenciar a persistência de dados, objetivando não arriscar qualquer exclusão acidental durante, por exemplo, uma atualização no contêiner do PostgreSQL.
+
+O script de integração contínua do projeto, Algoritmo \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do Postgresql, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instalação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}.
+
+\begin{python}[caption={\textit{Script} para integração contínua do projeto.}, captionpos=b, label={integracao}]
+image: "python:3.5"
+
+services:
+  - postgres:latest
+
+variables:
+  POSTGRES_DB: smiunbtest
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: ""
+
+test:
+    script:
+        - apt-get update -qq
+        - apt-get install python3-pip -y -qq
+        - pip3 install -e .[dev]
+        - flake8 src/ --exclude migrations
+        - coverage run manage.py test smi_unb \
+          --settings=smi_unb.settings_runner
+        - coverage report
+\end{python}
 
 \section{Apresentação das Informações}
-O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Os ícones utilizados foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre os mesmos.
+O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Os ícones presentes foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre eles.
 
 Javascripts usados
 

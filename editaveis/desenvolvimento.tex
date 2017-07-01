@@ -1,40 +1,40 @@
 \chapter{Ciclo de Vida do Sistema}
 \section{Definição da Abordagem e Metodologia}
-Definiu-se a utilização de uma abordagem de desenvolvimento ágil \cite{beck2001agile} para o contexto inicial do projeto, levando em conta que o o processo de desenvolvimento seria realizado pelo próprio autor, a disponibilidade do cliente ser mais abrangente e o projeto for evoluido aos poucos, com entregas contínuas de pequenos incrementos.
+Definiu-se a utilização de uma abordagem de desenvolvimento ágil \cite{beck2001agile} para o contexto inicial do projeto, levando-se em conta que o processo de desenvolvimento seria realizado pelo próprio autor, a disponibilidade do cliente seria mais abrangente e o projeto evoluiria aos poucos, com entregas contínuas de pequenos incrementos de software.
 
-A metodologia utilizada baseou-se no Kanban \cite{radigan_2015} com algumas práticas do \textit{Extreme Programming}, visto que ambos atendiam de maneira adequada o fluxo de trabalho contínuo previsto pela abordagem escolhida.
+A metodologia utilizada baseou-se no Kanban \cite{radigan_2015}, com algumas práticas do \textit{Extreme Programming}, visto que ambos atendiam de maneira adequada ao fluxo de trabalho contínuo, previsto pela abordagem escolhida.
 
-Para auxiliar nas \textit{releases} do projeto, utilizou-se o conceito de \textit{sprints}, provinda do \textit{Scrum} \cite{scrum_guide}. As \textit{sprints} são pequenos intervalos de tempo, de um mês ou menos, durante o qual uma versão incremental potencialmente utilizável do produto é criada. Uma nova Sprint inicia imediatamente após a conclusão da Sprint anterior.
+Para auxiliar nas \textit{releases} do projeto, utilizou-se o conceito de \textit{sprints}, provinda do \textit{Scrum} \cite{scrum_guide}. As \textit{sprints} são pequenos intervalos de tempo, de um mês ou menos, durante o qual uma versão incremental potencialmente utilizável do produto é criada. Uma nova Sprint se inicia imediatamente após a conclusão da Sprint anterior.
 
 \section{Contexto e Necessidades}
 Por questões de disponibilizade e quantidade de equipamentos de medição adquiridos, definiu-se o campus UnB Gama como ambiente de teste para a primeira parte do projeto.
 
 Dois professores doutores, Alex Reis e Loana Nunes Valesco, do campus UnB Gama, foram designados pela Prefeitura de Campus a darem suporte às necessidades energéticas que o sistema deveria atender.
 
-Tendo como problema a falta de monitoramento energético adequado na Universidade de Brasília, foi realizado um estudo mais aprofundado sobre o contexto para identificar as necessidades do cliente. Tal estudo abordava o entendimento de fatores energéticos cruciais, como por exemplo energia trifásica, horários de ponta e fora de ponta, tensão, corrente, resistência e afins.
+Tendo como problema a falta de monitoramento energético adequado na Universidade de Brasília, foi realizado um estudo mais aprofundado sobre o contexto para identificar as necessidades do cliente. Tal estudo abordava o entendimento de fatores energéticos cruciais, como por exemplo, energia trifásica, horários de ponta e fora de ponta, tensão, corrente, resistência e afins.
 
-A energia elétrica trifásica é dos métodos mais comuns para se gerar, transmitir e distribuir corrente elétrica alternada. Baseia-se em um sistema denominado polifásico e empresas elétricas de todo o mundo o utilizam como meio de transmissão de energia \cite{stevenson_1962}.
+A energia elétrica trifásica é um dos métodos mais comuns para se gerar, transmitir e distribuir corrente elétrica alternada. Baseia-se em um sistema denominado polifásico e empresas elétricas de todo o mundo o utilizam como meio de transmissão de energia \cite{stevenson_1962}.
 
-A Tarifa Branca sinaliza a variação do valor da energia conforme o dia e o horário do consumo. Nos dias úteis, o valor Tarifa Branca varia em três horários: ponta, intermediário e fora de ponta. Na ponta e no intermediário, a energia é mais cara. Fora de ponta, é mais barata. Nos feriados nacionais e nos fins de semana, o valor é sempre fora de ponta \cite{aneel}.
+A Tarifa Branca sinaliza a variação do valor da energia conforme o dia e o horário do consumo. Nos dias úteis, o valor da Tarifa Branca varia em três horários: ponta, intermediário e fora de ponta. Na ponta e no intermediário, a energia é mais cara. Fora de ponta, é mais barata. Aos feriados nacionais e fins de semana, o valor é sempre fora de ponta \cite{aneel}.
 
-Com um entendimento melhor do contexto e reuniões com os professores, as seguintes necessidade foram encontradas:
+Com um entendimento melhor do contexto e reuniões com os professores, as seguintes necessidades foram encontradas:
 
 \begin{itemize}
-    \item Cada campus da Universidade de Brasília deve ser responsável por realizar seu próprio monitoramento energético.
-    \item O campus Darcy Ribeiro deve funcionar como uma espécie de administração central.
-    \item O registro das medições realizadas deve ser realizado.
+    \item Cada campus da Universidade de Brasília deve ser responsável por realizar seu próprio monitoramento energético;
+    \item O campus Darcy Ribeiro deve funcionar como uma espécie de administração central;
+    \item O registro das medições feitas deve ser realizado.
 \end{itemize}
 
-Inicialmente, o nome do projeto foi definido como Sistema de Monitoramento Energético - Universidade de Brasília (SME-UnB), porém, com algumas reuniões realizadas, percebeu-se a possiblidade de monitoramento, no futuro, de medições de água. Tendo em vista os recursos que seriam monitorados, o nome do projeto foi modificado para Sistema de Monitoramento de Insumos - Universidade de Brasília (SMI-UnB).
+Inicialmente, o nome do projeto foi definido como Sistema de Monitoramento Energético - Universidade de Brasília (SME-UnB), porém, após algumas reuniões realizadas, percebeu-se a possiblidade de monitoramento, no futuro, de medições de água. Tendo em vista os recursos que seriam monitorados, o nome do projeto foi modificado para Sistema de Monitoramento de Insumos - Universidade de Brasília (SMI-UnB).
 
-Foi definido que para o contexto inicial do projeto, seriam enfatizados os dados de energia e que seriam entregues duas \textit{releases}, de aproximadamente 80 dias, sendo essas:
+Foi definido que, para o contexto inicial do projeto, seriam enfatizados os dados de energia e que seriam entregues duas \textit{releases}, de aproximadamente 80 dias, sendo estas:
 
 \begin{itemize}
-    \item Release 1: coleta dos dados de energia.
+    \item Release 1: coleta dos dados de energia;
     \item Release 2: apresentação dos dados e protótipo de comunicação inter-campi.
 \end{itemize}
 
-Foi escolhido o software livre GitLab CE\footnote{\url{https://gitlab.com/gitlab-org/gitlab-ce}} para realiazar a hospedagem do código/documentação do projeto e o controle de mudanças. Já para o controlamento de versão, definiu-se a utilização da ferramenta Git\footnote{\url{https://git-scm.com/}}.
+Foi escolhido o software livre GitLab CE\footnote{\url{https://gitlab.com/gitlab-org/gitlab-ce}} para realizar a hospedagem do código/documentação do projeto e o controle de mudanças. Já para o controle de versão, definiu-se a utilização da ferramenta Git\footnote{\url{https://git-scm.com/}}.
 
 A escolha do GitLab CE se deve pela cultura de software livre, pois o projeto teria um âmbito acadêmico, o compartilhamento de conhecimento poderia ser realizado de maneira mais fácil e a qualidade final não seria comprometida \cite{raymond1999}.
 
@@ -47,13 +47,13 @@ Os requisitos do projeto eram adquiridos através das reuniões e eram mapeados,
 
 Uma \textit{milestone} funciona como um quadro Kanban, tendo as colunas \textit{To Do}, \textit{Doing} e \textit{Done}. Pode possuir uma data início/fim e é composta por um aglomerado de problemas, comumente chamados de \textit{issues}, os quais ficam transitando pelas colunas, conforme necessário.
 
-Vale ressaltar que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, era avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone} etc.
+Ressalta-se que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, foi avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone}, etc.
 
 \section{Visão Geral do Desenvolvimento}
-O desenvolvimento da parte inicial do projeto foi marcado por duas \textit{releases}, sendo essas:
+O desenvolvimento da parte inicial do projeto foi marcado por duas \textit{releases}, sendo estas:
 
 \begin{itemize}
-    \item \textit{Release} 1: 20/07/2016 a 25/11/2016.
+    \item \textit{Release} 1: 20/07/2016 a 25/11/2016;
     \item \textit{Release} 2: 06/03/2017 a 23/06/2017.
 \end{itemize}
 
@@ -74,36 +74,36 @@ A primeira \textit{release} teve início com um estudo aprofundado sobre o equip
     \label{dados01}
 \end{figure}
 
-Foi realizado um guia de instação para o ambiente de desenvolvimento no repositório, utilizando a ferramenta Vagrant\footnote{\url{https://www.vagrantup.com/}}. Este guia objetivava tornar mais acessível o projeto a programadores que estivessem dispostos a realizarem novas contribuições.
+Foi realizado um guia de instação para o ambiente de desenvolvimento no repositório, utilizando a ferramenta Vagrant\footnote{\url{https://www.vagrantup.com/}}. Esse guia objetivava tornar mais acessível o projeto a programadores que estivessem dispostos a realizar novas contribuições.
 
 Uma vez que o código estava sendo escrito na linguagem Python 2.7, procurou-se sempre utilizar suas convenções para boas práticas de programação, definidas pela PEP 8\footnote{\url{https://www.python.org/dev/peps/pep-0008/}}. A ferramenta utilizada para realizar a verificação dessas normas foi o flake8\footnote{\url{https://pypi.python.org/pypi/flake8}}.
 
 Diversos testes unitários foram realizados a cada término de uma funcionalidade, objetivando uma cobertura de no mínimo 90\%. Os testes foram escritos utilizando o módulo \textit{unittest} do próprio Python.
 
-Pequenos erros eram encontrados nas funcionalidades conforme seus testes unitários eram escritos. Após identificado os motivos desses erros, os mesmos eram corrigidos.
+Pequenos erros eram encontrados nas funcionalidades, conforme seus testes unitários eram escritos. Após identificado os motivos desses erros, eles eram corrigidos.
 
-Utilizou-se a biblioteca \textit{mock}, do \textit{unittest}, para que fosse possível definir determinados comportamentos em métodos que utilizassem um outro método, objetivando um maior desempenho na hora de executar a suíte de testes e unitariedade dos métodos.
+Utilizou-se a biblioteca \textit{mock}, do \textit{unittest}, para que fosse possível definir determinados comportamentos em métodos que utilizassem um outro método durante sua execução, objetivando um maior desempenho na hora de executar a suíte de testes e unitariedade dos métodos.
 
-Com o auxílio do serviço Gitlab CI, foi possível realizar de maneira fácil a integração contínua do projeto. Esse serviço utiliza como princípio um \textit{Runner}, que basicamente baseia-se em uma máquina virtual isolada, responsável por realizar um \textit{Job}. Um \textit{Job} consiste na execução de comandos pré-definidos no arquivo padrão \textit{.gitlab-ci.yml}.
+Com o auxílio do serviço Gitlab CI, foi possível realizar de maneira fácil a integração contínua do projeto. Esse serviço utiliza como princípio um \textit{Runner}, que se baseia em uma máquina virtual isolada, responsável por realizar um \textit{Job}. Um \textit{Job} consiste na execução de comandos pré-definidos no arquivo padrão \textit{.gitlab-ci.yml}.
 
-Diversas decisões arquiteturas foram realizas conforme o decorrer da \textit{release} e conforme as necessidades de implementação iam surgindo, objetivando cada vez mais modularizar e trazer maior robustez ao sistema.
+Diversas decisões arquiteturais foram realizadas no decorrer da \textit{release}, conforme as necessidades de implementação iam surgindo, objetivando cada vez mais modularizar e trazer maior robustez ao sistema.
 
-Com o auxílio da ferramenta \textit{crontab}, foi possível realizar a coleta de dados de forma temporizada.
+Com o auxílio da ferramenta \textit{cron}, foi possível realizar a coleta de dados de forma temporizada.
 
-Um ponto importante a se destacar, referente a primeira \textit{release}, foi o da colaboração provinda por alunos de duas disciplinas aplicadas pelo curso de Engenharia de Software no campus UnB-Gama: Gestão de Projetos e Portfólio de Software e Métodos de Desenvolvimento de Software. As disciplinas em questão eram includentes e realizadas em conjunto. Os incrementos de software providenciados ao projeto foram, em sua grande parte, referentes à gerência de usuários e autenticação.
+Um ponto importante a se destacar, referente à primeira \textit{release}, foi o da colaboração provinda por alunos de duas disciplinas aplicadas pelo curso de Engenharia de Software no campus UnB-Gama: Gestão de Projetos e Portfólio de Software e Métodos de Desenvolvimento de Software. As disciplinas em questão eram includentes e realizadas em conjunto. Os incrementos de software providenciados ao projeto foram, em sua grande parte, referentes à gerência de usuários e autenticação.
 
 \subsection{\textit{Release} 2}
-A segunda \textit{release} teve início com uma forte refatoração sobre os incrementos de software provindos das equipes de GPP e MDS. Em conjunto, visto que o projeto estava em Python 2.7, definiu-se realizar uma mudança para Python 3.5.
+A segunda \textit{release} teve início com uma forte refatoração sobre os incrementos de software provindos das equipes de GPP e MDS. Em conjunto, visto que o projeto estava em Python 2.7, realizou-se uma mudança para Python 3.5.
 
-Com o projeto em Python 3.5, a autenticação do sistema foi modificada para ser realizada por email, ao invés de nome de usuário.
+Com o projeto em Python 3.5, a autenticação do sistema foi modificada para ser realizada por e-mail, ao invés de nome de usuário.
 
 Realizou-se um novo \textit{layout} para o sistema, visto que o anterior não estava esteticamente agradável.
 
-Um gráfico de linhas foi realizado, utilizando a biblioteca Matplotlib\footnote{\url{https://matplotlib.org/}}, para que fosse possível visualizar as medições, de um período específico, de maneira mais fácil.
+Um gráfico de linhas foi realizado, utilizando a biblioteca Matplotlib\footnote{\url{https://matplotlib.org/}}, para que fosse possível visualizar as medições de um período específico de maneira mais fácil.
 
 A gerência de usuários foi aprimorada, com a adição de algumas permissões, para que fosse possível ter diferentes níveis de acesso na aplicação.
 
-Por fim, foi realizado um protótipo de API para que fosse possível realizar a comunição inter-campi e adicionado o conceito de containerização ao projeto, por meio do Docker.
+Por fim, foi realizado um protótipo de API para realizar a comunição inter-campi e adicionado o conceito de conteinerização ao projeto, por meio do Docker.
 
 \section{Implantação - Devops}
 Mesmo após finalizada a fase inicial desenvolvimento, muitas partes do sistema ainda precisavam ser implementadas, para que fosse possível colocá-lo em produção.
