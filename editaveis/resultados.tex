@@ -67,7 +67,44 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
         \item \textit{Cyclic Redundancy Check} (CRC): 4 \textit{bytes} para verificação de erros.
     \end{itemize}
 
-    EXEMPLO DE MENSAGEM MODBUSRTU.
+    \subsubsection{Leitura utilizando equipamento TR4020}
+    Para ler e compor um valor em ponto flutuante \cite{ieee754} se deve realizar a leitura de 2 registros Modbus (16 \textit{bits} cada). Por exemplo, para ler o valor de tensão na fase A (endereços 68 e 69), escreve-se na comunicação a sequência de \textit{bytes}, conforme o Algoritmo \ref{request_tr4020}.
+
+    \begin{python}[caption={Requisição para leitura de tensão na fase A, utilizando TR4020.}, captionpos=b, label={request_tr4020}]
+    01h # Identificador do aparelho
+    03h # Codigo de funcao (Leitura)
+    00h # Primeiro byte do endereco 68
+    44h # Segundo byte do Endereco 68
+    00h # Bytes a serem lidos
+    02h # Bytes a serem lidos (total: 2 bytes)
+    84h # CRC
+    1Eh # CRC
+    \end{python}
+
+    Tem-se como resultado, por exemplo, a responsta contida no Algoritmo \ref{response_tr4020}.
+
+    \begin{python}[caption={Resposta para leitura de tensão na fase A, utilizando TR4020.}, captionpos=b, label={response_tr4020}]
+    01h # Identificador do Aparelho
+    03h # Codigo de funcao (Leitura)
+    04h # Tamanho do payload (4 bytes)
+    38h # Primeiro byte do valor para tensao na fase A
+    88h # Segundo byte do valor para tensao na fase A
+    43h # Terceiro byte do valor para tensao na fase A
+    59h # Quarto byte do valor para tensao na fase A
+    C7h # CRC
+    87h # CRC
+    \end{python}
+
+    Utiliza-se os conceitos de uma arquitetura \textit{little endian} \cite{tanenbaum_1998} para organizar os \textit{bytes} do valor para tensão na fase A, Algoritmo \ref{little_endian} . Essa arquitetura define que a organização dos \textit{bytes} de uma palavra deve começar dos \textit{bits} menos significativos para os mais significativos.
+
+    \begin{python}[caption={Organização do valor para tensão na fase A, utilizando uma arquitetura \textit{little endian}.}, captionpos=b, label={little_endian}]
+    88h # Antigo segundo byte
+    38h # Antigo primeiro byte
+    59h # Antigo quarto byte
+    43h # Antigo terceiro byte
+    \end{python}
+
+    O valor 217.220 é obtido para tensão na fase A após a leitura.
 
     \subsection{UDP}
     O protocolo \textit{User Datagram Protocol} (UDP) é um protocolo da camada de transporte, não orientado a conexões. Seu cabeçalho, Figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
@@ -219,7 +256,7 @@ O Django REST Framework utiliza alguns métodos HTTP para mapear as operações 
     \item DELETE: deletar uma entidade.
 \end{itemize}
 
-O conceito de \textit{endpoints} é utilizado pelo Django REST Framework, objetivando a interação com a API do lado do servidor, pois especificam onde os recursos podem ser acessados, por meio de uma das classes padrão \textit{ModelViewSet}.
+O conceito de \textit{endpoints} é utilizado pelo Django REST Framework, objetivando a interação com a API do lado do servidor, pois especificam onde os recursos podem ser acessados. Uma das classes padrão utilizada no projeto foi a \textit{ModelViewSet}. Além disso, o Django REST Framework utiliza serializadores. Os serializadores permitem que dados complexos, como \textit{querysets} e instâncias de modelos, sejam convertidos em tipos de dados Python nativos que podem ser facilmente processados em JSON, XML ou outros tipos de conteúdo. Os serializadores também fornecem desserialização, permitindo que os dados analisados sejam convertidos novamente em tipos complexos, após realizada uma validação dos dados recebidos \cite{django_rest}.
 
 A sincronia de dados é realizada pela classe \textit{EnergyMeasurementSynchronizer}, presente no \textit{app} \textit{api}, Figura \ref{api}. Em linhas gerais, essa classe realiza duas requisições HTTP para cada servidor escravo. Na primeira requisição são consumidas as medições de energia mais recentes de cada transdutor, via API. Com as medições resgatadas, atualiza-se o horário da última coleta de dados de cada transdutor, no servidor mestre. Após atualizados os horários no mestre, realiza-se a segunda requisição, que atualiza o horário de todos os transdutores presentes no escravo.
 
@@ -230,10 +267,9 @@ A sincronia de dados é realizada pela classe \textit{EnergyMeasurementSynchroni
     \label{api}
 \end{figure}
 
-O \textit{cron} para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe \textit{MeasurementsSyncCronJob}, Algoritmo \ref{measu_sync}.
+O \textit{crontab} para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe \textit{MeasurementsSyncCronJob}, Algoritmo \ref{measu_sync}.
 
-A API realizada foi um protótipo
-Segurança API
+A base da API foi realizada com sucesso, para que no futuro haja apenas aprimoramentos. Ressalta-se que essa foi um protótipo, não possuindo nenhum tipo de autenticação e não sendo hiperlincada, conforme recomendado pelo Django REST Framework.
 
 \begin{python}[caption={\textit{Cron} para execução da sincronia dos dados de energia.}, captionpos=b, label={cron_master}]
 0 * * * * python3 /SMI-UnB/manage.py runcrons \
@@ -284,7 +320,7 @@ except FileNotFoundError:
 
 Os transdutores e prédios presentes no sistema não podem ser excluídos, tendo em vista a importância de se deixar registrado suas medições realizadas. Para isso acontecer, alguns botões de habilitar e desabilitar foram adicionados à aplicação e um atributo referente a ativo foi adicionado aos seus modelos.
 
-O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo o mestre realiza uma verificação a nível de formulário com o escravo, Algoritmo \ref{energy_form}. Essa verificação é feita por meio de uma requisição HTTP, utilizando o método GET. Caso o código de resposta recebido seja válido, o mestre tenta realizar uma sincronização com escravo pela API, utilizando a classe \textit{SyncManager}, Algoritmo \ref{build_sync}. Ressalta-se que esta solução ainda deve ser aperfeiçoada, buscando aceitar requisições mais seguras, por meio do protocolo HTTPS.
+O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre realiza uma verificação, a nível de formulário, com o escravo, Algoritmo \ref{energy_form}. Essa verificação é feita por meio de uma requisição HTTP, utilizando o método GET. Caso o código de resposta recebido seja válido, o mestre tenta realizar uma sincronização com escravo pela API, utilizando a classe \textit{SyncManager}, Algoritmo \ref{build_sync}. Ressalta-se que esta solução ainda deve ser aperfeiçoada, buscando aceitar requisições mais seguras, por meio do protocolo HTTPS.
 
 \begin{python}[caption={Corpo do método \textit{is\_valid}, classe \textit{EnergyForm}.}, captionpos=b, label={energy_form}]
 class EnergyForm(forms.ModelForm):
@@ -339,19 +375,8 @@ class UserPermissions(models.Model):
 \end{python}
 
 \section{Gerência de Configuração}
-Utilizou-se o Docker \cite{docker} para que fosse possível criar um ambiente unificado para o sistema, visando evitar futuros problemas de implantação.
 
-O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \ref{container}, possui empacotado tudo que é necessário para se executar um software completo ou parte dele. Diferente das máquinas virtuais, os contêiners são executados em uma mesma máquina, compartilhando o \textit{kernel} do seu sistema operacional, sendo que cada um terá seu processo isolado no espaço de usuário.
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/container.eps}
-    \caption{Exemplo de contêiners providos pelo Docker. Fonte: \cite{docker} }
-    \label{container}
-\end{figure}
-
-Para Tanenbaum \cite{tanenbaum_2007}, o sistema operacional é a peça mais básica de software e opera em modo núcleo, possuindo acesso completo a todo o \textit{hardware} e ao conjunto de instruções oferecidos pela máquina. O resto do software opera em modo usuário, onde é disponível apenas um conjunto de instruções da máquina para execução.
-
+\subsection{Docker}
 Criaram-se duas configurações para os ambientes referentes ao mestre e escravo, onde suas diferenciações baseavam-se no \textit{crontab} que seria executado em cada um. Para realizar essas configurações, utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners, com uma possibilidade de ligação entre eles. Os serviços definidos para a aplicação foram:
 
 \begin{itemize}
@@ -421,14 +446,98 @@ services:
 
 O serviço nginx utiliza um servidor nginx\footnote{\url{https://nginx.org/en}} para lidar primeiramente com requisições externas e fornecer os arquivos estáticos da aplicação. O nginx consiste em um servidor HTTP e \textit{proxy} reverso. Servidores \textit{proxy} reverso utilizam um servidor \textit{proxy} para atuar como um intermediadores entre uma requisição realizada por um cliente e o servidor que a atenderá. Um servidor \textit{proxy} é uma entidade de rede que satisfaz solicitações HTTP em nome de um cliente, possuindo seu próprio armazenamento em disco e mantendo cópias de objetos recentemente solicitados \cite{kurose_2002}.
 
-Requisições que precisam ser geradas dinamicamente são tratadas pelo serviço \textit{web}, que as direcionam para um servidor Gunicorn\footnote{\url{http://gunicorn.org/}}. O Gunicorn é um servidor Python \textit{Web Server Gateway Interface} (WSGI) HTTP. O WSGI é uma especificação para uma interface simples e universal entre servidores \textit{web} e aplicações \textit{web} ou \textit{frameworks} para a linguagem de programação Python \cite{pep_333}.
+Requisições que precisam ser geradas dinamicamente são tratadas pelo serviço \textit{web}, que são enviadas para um servidor Gunicorn\footnote{\url{http://gunicorn.org/}}. O Gunicorn é um servidor Python \textit{Web Server Gateway Interface} (WSGI) HTTP. O WSGI é uma especificação para uma interface simples e universal entre servidores \textit{web} e aplicações \textit{web} ou \textit{frameworks} para a linguagem de programação Python \cite{pep_333}.
 
-O serviço \textit{postgres} utiliza o banco de dados PostgreSQL para realizar o armazenamento das informações. Quando é iniciado, executa um \textit{script} para popular o banco com os câmpus da UnB e os modelos de transdutores.
+Quando o serviço \textit{web} é iniciado, executa-se um \textit{script}, Algoritmo \ref{script_start}, responsável por criar um arquivo contendo as variáveis de ambiente, popular o banco de dados com os câmpus da UnB e os modelos de transdutor base, inicializar o \textit{daemon} \textit{cron} e o servidor Gunicorn.
+
+\begin{python}[caption={\textit{Script} \textit{start.sh}.}, captionpos=b, label={script_start}]
+#!/bin/bash
+
+# Creating file with environment variables to use in crontab
+env | sed 's/^\(.*\)$/ \1/g' > /root/env
+
+# Populating database and initializing cron and gunicorn
+python3 manage.py makemigrations && \
+python3 manage.py migrate && \
+python3 manage.py loaddata src/smi_unb/fixtures/initial_data.json && \
+cron && \
+gunicorn smi_unb.wsgi -b 0.0.0.0:8000
+\end{python}
+
+A criação do arquivo contendo as variáveis de ambiente é necessária, pois o \textit{crontab} de um contêiner não possui acesso a elas. Os \textit{crontabs} dos servidores mestres e escravo realizam uma exportação das variáveis antes de executarem seus devidos comandos. O Algoritmo \ref{crontab_master} ilustra o \textit{crontab} do servidor mestre.
+
+\begin{python}[caption={\textit{Crontab} do servidor mestre.}, captionpos=b, label={crontab_master}]
+0 * * * * export $(cat /root/env | xargs) && \
+python3 /app/manage.py runcrons \
+smi_unb.api.cronjob.MeasurementsSyncCronJob
+# Necessary line at end of file to make cron valid
+\end{python}
+
+O serviço \textit{postgres} utiliza uma imagen banco de dados PostgreSQL para realizar o armazenamento das informações.
 
 Para acelerar as requisições de páginas \textit{web} do SMI-UnB, utilizou-se o serviço \textit{redis}, responsável por executar um servidor Redis\footnote{\url{https://redis.io/}}. O \textit{Cache} é um componente de \textit{hardware} ou software que armazena dados, objetivando uma maior rapidez para pedidos futuros. Os dados armazenados em um \textit{cache} podem ser o resultado de uma computação executada anteriormente ou da duplicação de dados presentes em um outro lugar \cite{hennessy_2011}.
 
 O serviço \textit{data} foi utilizado para gerenciar a persistência de dados, objetivando não arriscar qualquer exclusão acidental durante, por exemplo, uma atualização no contêiner do PostgreSQL.
 
+Criou-se um \textit{script}, Algoritmo \ref{script_postgres}, responsável por criar um arquivo contendo as variáveis de ambiente referentes ao banco de dados.
+
+\begin{python}[caption={\textit{Script} \textit{db\_initial\_data.sh}.}, captionpos=b, label={script_postgres}]
+#!/bin/bash
+echo "Collecting data to create the database..."
+
+read -p "Enter the database name: " db_name
+
+read -p "Enter the database user: " db_user
+
+while true; do
+    read -s -p "Enter the database password: " db_pass
+    echo
+    read -s -p "Confirm the database password: " db_pass_confirm
+    [ "$db_pass" = "$db_pass_confirm" ] && break
+    echo -e "\nPasswords don't match. Please try again...\n"
+done
+
+file="./docker/env"
+
+if [ -f "$file" ]
+then
+    rm "$file"
+fi
+
+printf "DB_NAME=$db_name\nDB_USER=$db_user\nDB_PASS=$db_pass
+        \nDB_SERVICE=postgres\nDB_PORT=5432" >> "$file"
+
+echo -e "\nDatabase configuration created succefully!"
+\end{python}
+
+Algumas \textit{tasks} foram adicionadas ao projeto, com auxílio da ferramenta Invoke\footnote{\url{http://www.pyinvoke.org/}}, para facilitarem na execução de comandos longos e serviços do SMI-UnB. Por exemplo, para criar um ambiente de produção do servidor mestre seria necessário seguir os seguintes passos:
+
+\begin{itemize}
+    \item Executar \textit{script} para variáveis de ambiente do banco de dados;
+    \item Montar os contêiners do SMI-UnB;
+    \item Iniciar os contêiners.
+\end{itemize}
+
+Ao invés de executar os comandos individualmente, esses são agrupados em uma \textit{task} chamada \textit{install\_master}, Algoritmo \ref{task_install_master}, responsável por executá-los sequêncialmente.
+
+\begin{python}[caption={\textit{Task} \textit{install\_master}, presente no arquivo \textit{tasks.py}.}, captionpos=b, label={task_install_master}]
+# Docker Tasks
+@task
+def install_master(ctx):
+    print('Installing Master Docker')
+
+    # Database configuration
+    subprocess.call(['./scripts/db_initial_data.sh'])
+
+    # Building docker containers
+    run('docker-compose -f docker-compose-master.yml build
+         --force-rm')
+
+    # Initializing containers
+    run('docker-compose -f docker-compose-master.yml up -d')
+\end{python}
+
+\subsection{Integração Contínua}
 O script de integração contínua do projeto, Algoritmo \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do Postgresql, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instalação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}.
 
 \begin{python}[caption={\textit{Script} para integração contínua do projeto.}, captionpos=b, label={integracao}]
@@ -454,26 +563,125 @@ test:
 \end{python}
 
 \section{Apresentação das Informações}
-O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Os ícones presentes foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre eles.
+O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Utilizou-se o jQuery\footnote{\url{https://jquery.com/}} para facilitar o uso de \textit{javascripts} na aplicação. Os ícones presentes foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre eles.
 
-Javascripts usados
+Ressalta-se que não foi realizado nenhum teste de usabilidade para a aplicação. Os princípios de usabilidade utilizados partiram de conhecimentos do próprio autor, adquiridos através de conceitos da literatura e experiências pessoais.
 
-Imagens da aplicação
+A página inicial do SMI-UnB, Figura \ref{main_page}, utiliza uma imagem livre do site \textit{FreeImages}\footnote{\url{http://pt.freeimages.com}}, disponibilizada sob sua licença\footnote{\url{http://pt.freeimages.com/license}}. O \textit{site} e o criador, Friedrich Plechschmidt, possuem todos os direitos de propriedade intelectual sobre a imagem.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.35]{figuras/main_page.eps}
+    \caption{Página inicial do SMI-UnB.}
+    \label{main_page}
+\end{figure}
+
+Com o painel de controle, Figura \ref{dashboard}, é possível acessar os principais recursos do sistema de maneira fácil e intuitiva.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.35]{figuras/dashboard.eps}
+    \caption{Página do painel de controle do SMI-UnB.}
+    \label{dashboard}
+\end{figure}
+
+Os botões da aplicação, Figuras \ref{buttons} e \ref{buttons_2}, possuem cores e nomes significativos, para auxiliar os usuários realizarem as funções do sistema.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{figuras/buttons.eps}
+    \caption{Botões presentes na página de um campus.}
+    \label{buttons}
+\end{figure}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{figuras/buttons_2.eps}
+    \caption{Botões presentes na página de um transdutor.}
+    \label{buttons_2}
+\end{figure}
+
+As páginas do sistema possuem \textit{links} para páginas anteriores e informam a página presente, Figura \ref{links}, evitando que o usuário se perca na aplicação e possa facilmente voltar para onde quiser.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.7]{figuras/links.eps}
+    \caption{\textit{Links} de todas as páginas até transdutor específico.}
+    \label{links}
+\end{figure}
+
+As operações de criar, atualizar, habilitar ou desabilitar necessitam de uma confirmação, Figura \ref{block}, para que possam ser efetuadas. Ressalta-se que a apresentação da caixa de confirmação precisa ser aperfeiçoada.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.7]{figuras/block.eps}
+    \caption{Confirmação necessária para se habilitar um prédio.}
+    \label{block}
+\end{figure}
+
+As demais imagens do SMI-UnB encontram-se em Anexo.
+
+\subsection{Gráfico de Linhas}
+Realizou-se um gráfico de linhas com auxílio do app \textit{report}, Figura \ref{app_report}. A biblioteca utilizada para criar o gráfico foi a \textit{matplotlib} \footnote{\url{https://matplotlib.org/}}. Utilizou-se o \textit{plugin} \textit{mpld3}\footnote{\url{http://mpld3.github.io/}} para apresentação e dinamicidade do gráfico.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.6]{figuras/app_report.eps}
+    \caption{Diagrama de Classes para \textit{App} \textit{report}.}
+    \label{app_report}
+\end{figure}
+
+Foram definidas quatro importantes classes no \textit{app} \textit{report}, sendo estas:
+
+\begin{itemize}
+    \item \textit{GraphDateManager}: realiza o tratamento e manipulação de datas, utilizadas para indicar um determinado período de medição no gráfico;
+    \item \textit{GraphPlotManager}: realiza a plotagem de todos os elementos do gráfico;
+    \item \textit{GraphDataManager}: realiza cálculos com os valores que serão apresentados no gráfico;
+    \item \textit{GraphUtils}: indica quais serão os tipos de medições apresentados no gráfico.
+\end{itemize}
+
+Definiu-se que o período máximo para apresentação de informações seria de 1 semana. Além disso, o máximo de pontos apresentados em um gráfico foi definido como 200, para que esse não demorasse muito a ser gerado. Para isso, definiu-se as seguintes médias:
+
+\begin{itemize}
+    \item Até 2 horas: gráfico com médias de 1 em 1 minuto;
+    \item Entre 2 e 6 horas: gráfico com médias de 5 em 5 minutos;
+    \item Entre 6 e 24 horas: gráfico com médias de 10 em 10 minutos;
+    \item Entre 1 dia e 7 dias: gráfico com médias de 1 em 1 hora.
+\end{itemize}
+
+Para se gerar um gráfico basta selecionar um transdutor, o tipo de medição e uma opção para o período de coleta, Figura \ref{graph_options}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true, scale=0.7]{figuras/graph_options.eps}
+    \caption{Opções apresentadas para se gerar um gráfico de linhas.}
+    \label{graph_options}
+\end{figure}
+
+A Figura \ref{graph_1} ilustra o gráfico de linhas com medições reais de tensão realizadas em um ambiente de teste no campus UnB-Gama, refentes ao dia 25/06/2017.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/graph_1.eps}
+    \caption{Medições de tensão realizadas em ambiente de testes, referentes ao dia 25/06/2017.}
+    \label{graph_1}
+\end{figure}
+
+Outro exemplo, Figura \ref{graph_2}, ilustra o gráfico de linhas gerado com medições de corrente, referentes ao dia 19/06/2017. Percebe-se nesse gráfico que houve períodos sem medições, representados pelos retângulos amarelos. Outro ponto importante a se destacar refere-se à capacidade da aplicação de continuar realizando a coleta de dados do transdutor, mesmo possuindo períodos sem realizar efetivamente uma medição.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/graph_2.eps}
+    \caption{Medições de corrente realizadas em ambiente de testes, referentes ao dia 19/06/2017.}
+    \label{graph_2}
+\end{figure}
+
 \section{Métricas}
 Codeclimate
 
 sloccount
 
-\section{Visão Geral do Sistema}
-    \subsection{Diagrama de Classes por \textit{App}}
-    Interessante para quem quer entender o sistema (Software livre)
-
-    Apresentar diagrama
-    \subsection{Testes}
-    Testes unitários com Mock
-
-    Cobertura
-    \section{Requisitos Mínimos}
+\section{Requisitos Mínimos}
     Rodar linux
 
     Rede?

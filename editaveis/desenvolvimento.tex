@@ -6,6 +6,8 @@ A metodologia utilizada baseou-se no Kanban \cite{radigan_2015}, com algumas pr�
 
 Para auxiliar nas \textit{releases} do projeto, utilizou-se o conceito de \textit{sprints}, provinda do \textit{Scrum} \cite{scrum_guide}. As \textit{sprints} são pequenos intervalos de tempo, de um mês ou menos, durante o qual uma versão incremental potencialmente utilizável do produto é criada. Uma nova Sprint se inicia imediatamente após a conclusão da Sprint anterior.
 
+Ressalta-se que os próximos tópicos do ciclo de vida não foram completamente realizados em sequência, visto que esses acabavam se intercalando em determinados momentos, como previsto em uma abordagem ágil.
+
 \section{Contexto e Necessidades}
 Por questões de disponibilizade e quantidade de equipamentos de medição adquiridos, definiu-se o campus UnB Gama como ambiente de teste para a primeira parte do projeto.
 
@@ -47,7 +49,14 @@ Os requisitos do projeto eram adquiridos através das reuniões e eram mapeados,
 
 Uma \textit{milestone} funciona como um quadro Kanban, tendo as colunas \textit{To Do}, \textit{Doing} e \textit{Done}. Pode possuir uma data início/fim e é composta por um aglomerado de problemas, comumente chamados de \textit{issues}, os quais ficam transitando pelas colunas, conforme necessário.
 
-Ressalta-se que as \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, foi avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone}, etc.
+As \textit{milestones} e \textit{issues} foram criadas acompanhando o decorrer do projeto, ou seja, a cada \textit{sprint}, foi avaliado se ocorreram mudanças de escopo, quais seriam as \textit{issues} da próxima \textit{sprint}, se era necessário criar ou atualizar uma determinada \textit{milestone}, etc. As \textit{milestones} do projeto são apresentadas pela Figura \ref{milestones}.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.51]{figuras/milestones.eps}
+    \caption{\textit{Milestones} realizadas durante as duas \textit{releases} do projeto.}
+    \label{milestones}
+\end{figure}
 
 \section{Visão Geral do Desenvolvimento}
 O desenvolvimento da parte inicial do projeto foi marcado por duas \textit{releases}, sendo estas:
@@ -92,6 +101,8 @@ Com o auxílio da ferramenta \textit{cron}, foi possível realizar a coleta de d
 
 Um ponto importante a se destacar, referente à primeira \textit{release}, foi o da colaboração provinda por alunos de duas disciplinas aplicadas pelo curso de Engenharia de Software no campus UnB-Gama: Gestão de Projetos e Portfólio de Software e Métodos de Desenvolvimento de Software. As disciplinas em questão eram includentes e realizadas em conjunto. Os incrementos de software providenciados ao projeto foram, em sua grande parte, referentes à gerência de usuários e autenticação.
 
+A cobertura total de código obtida ao fim da \textit{release} 1 foi de 95\%.
+
 \subsection{\textit{Release} 2}
 A segunda \textit{release} teve início com uma forte refatoração sobre os incrementos de software provindos das equipes de GPP e MDS. Em conjunto, visto que o projeto estava em Python 2.7, realizou-se uma mudança para Python 3.5.
 
@@ -103,17 +114,26 @@ Um gráfico de linhas foi realizado, utilizando a biblioteca Matplotlib\footnote
 
 A gerência de usuários foi aprimorada, com a adição de algumas permissões, para que fosse possível ter diferentes níveis de acesso na aplicação.
 
-Por fim, foi realizado um protótipo de API para realizar a comunição inter-campi e adicionado o conceito de conteinerização ao projeto, por meio do Docker.
+Realizou-se um protótipo de API para realizar a comunição inter-campi e adicionado o conceito de conteinerização ao projeto, por meio do Docker.
 
-\section{Implantação - Devops}
-Mesmo após finalizada a fase inicial desenvolvimento, muitas partes do sistema ainda precisavam ser implementadas, para que fosse possível colocá-lo em produção.
+A cobertura total de código obtida ao fim da \textit{release} 2 foi de 93\%.
 
-Vale ressaltar que mesmo após o período de desenvolvimento ter sido finalizado, muitos incrementos de software ainda precisam ser realizados. O sistema ainda não está pronto para ser utilizado em produção, porém, algumas de suas funções importantes foram implementadas com sucesso.
+\section{Implantação}
+Não foi possível colocar o SMI-UnB em produção, visto que muitas funcionalidades importantes ainda precisam ser desenvolvidas, porém, algumas de suas funções importantes foram implementadas com sucesso.
 
-Contínuo, desenvolvimento com implantação.
+Utilizou-se alguns dos conhecimento provindos do \textit{Devops} para auxiliar na distribuição do SMI-UnB. O \textit{Devops} é um processo de desenvolvimento de software que valoriza comunicação e colaboração entre gerentes de produto, desenvolvedores de software e outros profissionais. O \textit{DevOps} também automatiza os processos de integração de software, testes, implantação e mudanças de infraestrutura \cite{loukides_2012}.
 
-Filosofia, nível de automatização alto.
+Utilizou-se o Docker \cite{docker} para que fosse possível criar um ambiente unificado para o sistema, visando evitar futuros problemas de implantação.
 
-Tasks
+O Docker é uma plataforma de contêiners de software. Um contêiner, Figura \ref{container}, possui empacotado tudo que é necessário para se executar um software completo ou parte dele. Diferente das máquinas virtuais, os contêiners são executados em uma mesma máquina, compartilhando o \textit{kernel} do seu sistema operacional, sendo que cada um terá seu processo isolado no espaço de usuário.
 
-Containers utilizados.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.8]{figuras/container.eps}
+    \caption{Exemplo de contêiners providos pelo Docker. Fonte: \cite{docker} }
+    \label{container}
+\end{figure}
+
+Para Tanenbaum \cite{tanenbaum_2007}, o sistema operacional é a peça mais básica de software e opera em modo núcleo, possuindo acesso completo a todo o \textit{hardware} e ao conjunto de instruções oferecidos pela máquina. O resto do software opera em modo usuário, onde é disponível apenas um conjunto de instruções da máquina para execução.
+
+Realizou-se um ambiente para testes no campus UnB-Gama, que possuía o SMI-UnB instalado como um serviço, objetivando averiguar o que havia sido implementado.
