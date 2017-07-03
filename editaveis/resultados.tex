@@ -311,7 +311,9 @@ except FileNotFoundError:
     if not os.path.exists(security_path):
         os.mkdir(security_path)
 
-    chars = ''.join([string.ascii_letters, string.digits, string.punctuation])
+    chars = ''.join(
+        [string.ascii_letters, string.digits, string.punctuation]
+    )
     SECRET_KEY = ''.join([choice(chars) for i in range(50)])
 
     with open(secrete_key_path, 'w') as F:
@@ -601,15 +603,6 @@ Os botões da aplicação, Figuras \ref{buttons} e \ref{buttons_2}, possuem core
     \label{buttons_2}
 \end{figure}
 
-As páginas do sistema possuem \textit{links} para páginas anteriores e informam a página presente, Figura \ref{links}, evitando que o usuário se perca na aplicação e possa facilmente voltar para onde quiser.
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[scale=0.7]{figuras/links.eps}
-    \caption{\textit{Links} de todas as páginas até transdutor específico.}
-    \label{links}
-\end{figure}
-
 As operações de criar, atualizar, habilitar ou desabilitar necessitam de uma confirmação, Figura \ref{block}, para que possam ser efetuadas. Ressalta-se que a apresentação da caixa de confirmação precisa ser aperfeiçoada.
 
 \begin{figure}[!h]
@@ -617,6 +610,15 @@ As operações de criar, atualizar, habilitar ou desabilitar necessitam de uma c
     \includegraphics[scale=0.7]{figuras/block.eps}
     \caption{Confirmação necessária para se habilitar um prédio.}
     \label{block}
+\end{figure}
+
+As páginas do sistema possuem \textit{links} para páginas anteriores e informam a página presente, Figura \ref{links}, evitando que o usuário se perca na aplicação e possa facilmente voltar para onde quiser.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.7]{figuras/links.eps}
+    \caption{\textit{Links} de todas as páginas até transdutor específico.}
+    \label{links}
 \end{figure}
 
 As demais imagens do SMI-UnB encontram-se em Anexo.
@@ -634,7 +636,7 @@ Realizou-se um gráfico de linhas com auxílio do app \textit{report}, Figura \r
 Foram definidas quatro importantes classes no \textit{app} \textit{report}, sendo estas:
 
 \begin{itemize}
-    \item \textit{GraphDateManager}: realiza o tratamento e manipulação de datas, utilizadas para indicar um determinado período de medição no gráfico;
+    \item \textit{GraphDateManager}: realiza o tratamento e manipulação de datas, utilizadas para indicar um determinado período de medição do gráfico;
     \item \textit{GraphPlotManager}: realiza a plotagem de todos os elementos do gráfico;
     \item \textit{GraphDataManager}: realiza cálculos com os valores que serão apresentados no gráfico;
     \item \textit{GraphUtils}: indica quais serão os tipos de medições apresentados no gráfico.
@@ -653,7 +655,7 @@ Para se gerar um gráfico basta selecionar um transdutor, o tipo de medição e 
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[keepaspectratio=true, scale=0.7]{figuras/graph_options.eps}
+    \includegraphics[keepaspectratio=true, scale=0.5]{figuras/graph_options.eps}
     \caption{Opções apresentadas para se gerar um gráfico de linhas.}
     \label{graph_options}
 \end{figure}
