@@ -1,41 +1,35 @@
 \chapter{Introdução}
 O crescimento no consumo de energia elétrica vem aumentando com o passar dos anos. No
-ano de 2014, o Brasil consumiu 531.1 TWh, o que corresponde a um aumento de 2.9\% comparado à 2013. Cerca de 2.4\% deste total é consumido por prédios públicos \cite{balanco_energetico}. No ano de 2015, foi realizado um reajuste tarifário da energia elétrica correspondente à 33\% para clientes residenciais e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}. Tendo em vista este cenário, é interessante a administração pública viabilizar políticas para o uso mais racional da energia elétrica.
+ano de 2014, o Brasil consumiu 531.1 TWh, o que corresponde a um aumento de 2.9\% comparado a 2013. Cerca de 2.4\% deste total é consumido por prédios públicos \cite{balanco_energetico}. No ano de 2015, foi realizado um reajuste tarifário da energia elétrica correspondente a 33\% para residências e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}. Tendo em vista esse cenário, é interessante a administração pública viabilizar políticas para o uso mais racional da energia elétrica.
 
-Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de gerenciamento energético da própria Universidade, objetivando que cada Campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar seu próprio monitoramento de energia e enviar essas informações coletadas para a administração central. O objetivo do presente trabalho é desenvolver um Sistema de Monitoramento Energético (SME-UnB) utilizando tecnologias \textit{web} e disponibilizado sobre uma licença livre. Tal sistema criaria subsídios para a administração gerenciar a energia utilizada com o intuito de reduzir gastos e promover a sustentabilidade.
+Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de monitoramento energético da própria Universidade, objetivando que cada campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar seu próprio monitoramento de energia e enviar essas informações para a administração central. Um sistema \textit{web} poderia tornar possível o monitoramento temporal dos insumos da Universidade, provendo subsídios para a administração ter conhecimento de como a energia está sendo utilizada, com o intuito de reduzir gastos e promover a sustentabilidade.
 
-O desenvolvimento do sistema deve se basear nos princípios estabelecidos pela Engenharia de Software para obter, de maneira econômica e sustentável, software confiável e eficiente \cite{naur_1969}. Em uma definição mais formal, Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software'' \cite{ieee_glossary}.
+A Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software'' \cite{ieee_glossary}, sendo capaz de providenciar, de maneira econômica e sustentável, software confiável e eficiente \cite{naur_1969}.
 
-Este trabalho inspira-se na filosofia e em procedimentos dos denominados métodos ágeis \cite{beck2001agile} e entende que estas metodologias seriam as mais eficazes para a solução de software proposta. Dentre as práticas de desenvolvimento adotadas utilizou-se alguns princípios empíricos de \textit{Extreme Programming} \cite{beck_2004} e \textit{Scrum} \cite{scrum_guide}.
+Procedimentos denominados métodos ágeis \cite{beck2001agile} guiam o ciclo de vida de um software de maneira iterativa e incremental, procurando sempre trazer software funcional e com qualidade em curtos períodos de tempo. Atrelado a essa abordagem, adotar boas práticas de desenvolvimento, como o Kanban \cite{radigan_2015} e \textit{Extreme Programming} \cite{beck_2004}, direciona as equipes auto-gerenciáveis, de maneira mais eficiente, a produzirem software que atenda as expectativas de seus clientes.
 
-Tendo em vista o curto período para desenvolvimento e requisitos inicialmente difusos, foi necessário utilizar boas práticas de Gerência de Configuração de Software \cite{SWEBOK2014} para garantir a manutenibilidade, confiabilidade e qualidade do sistema.
-
-Finalmente, adotou-se uma implementação \textit{web}, pois esses sistemas oferecem diversos benefícios ao cliente \cite{pressman_2009}. O fato dos equipamentos eletrônicos, responsáveis por realizar a leitura dos dados de energia, estarem conectados na rede da Universidade pressupõem conectividade. Sistemas \textit{web} não necessitam de instalação por parte do usuário final facilitando bastante o processo de implantação e podem ser acessados a partir de qualquer lugar e em qualquer plataforma. Com o passar dos anos, sistemas web evoluíram em sofisticadas ferramentas de computação, as quais fornecem não apenas funções autônomas ao usuário final, mas também integram-se com bancos de dados corporativos e aplicativos de negócios.
+O processo de desenvolvimento de software \textit{Devops} \cite{loukides_2012}, em conjunto com a Gerência de Configuração de Software \cite{SWEBOK2014}, busca automatizar e distribuir um sistema, garantindo que esse seja manutenível, confiável e tenha qualidade.
 
 \section{Objetivo Geral}
-Desenvolver sistema \textit{web} capaz de monitorar, em tempo real, medições de energia coletadas por transdutores\footnote{Dispositivo capaz de converter um tipo de energia de entrada em outro de saída.}
-instalados em quadros de energia da Universidade de Brasília.
+Desenvolver parte inicial de um sistema \textit{web} capaz de monitorar temporalmente insumos da Universidade de Brasília, com auxílio de conhecimentos e métodos da Engenharia de Software.
 
 \subsection{Objetivos Específicos}
-O sistema deve ser capaz de:
+
 \begin{itemize}
-    \item Cadastrar/Editar/Remover transdutores.
-    \item Utilizar rede da Universidade para comunicar-se com transdutores.
-    \item Realizar a coleta de dados de forma automatizada e temporizada.
-    \item Mostrar aos usuários os dados de energia coletados.
+    \item Tornar possível a coleta de informações energéticas;
+    \item Realizar protótipo para comunicação entre uma administração central e os câmpus da UnB.
 \end{itemize}
 
 \section{Metodologia Utilizada}
-A metodologia abordada neste trabalho teve como base o desenvolvimento de um software livre \footnote{\url{http://www.gnu.org/philosophy/free-sw.pt-br.html}} utilizando-se dos princípios empíricos de desenvolvimento ágil de software\footnote{\url{http://agilemanifesto.org/}} juntamente com algumas práticas do Scrum \footnote{\url{http://www.scrumguides.org/}} e \textit{Extreme Programming} \footnote{\url{http://www.extremeprogramming.org/}}.
+A metodologia abordada neste trabalho teve como base o desenvolvimento de um software livre, utilizando-se os princípios empíricos de desenvolvimento ágil de software juntamente com o Kanban e algumas práticas do \textit{Extreme Programming}.
 
 \section{Estruturação do Trabalho}
-O trabalho encontra-se estruturado da seguinte maneira:
+O trabalho se encontra estruturado da seguinte maneira:
 
 \begin{itemize}
-    \item Capítulo 2: aborda os métodos empíricos em engenharia de software utilizados para
+    \item Capítulo 2: aborda os métodos empíricos da Engenharia de Software utilizados para
     auxiliar no desenvolvimento do sistema.
-    \item Capítulo 3: aborda como estruturou-se a gerência de configuração.
-    \item Capítulo 4: aborda as principais tecnologias \textit{web} e protocolos de comunicação utilizados.
-    \item Capítulo 5: aborda a evolução do desenvolvimento do sistema, relatando o que foi realizado durante cada \textit{sprint}.
-    \item Capitulo 6: aborda possíveis trabalhos futuros.
+    \item Capítulo 3: aborda como foi o ciclo de vida do sistema.
+    \item Capítulo 4: aborda as característias do sistema.
+    \item Capitulo 5: aborda possíveis trabalhos futuros.
 \end{itemize}

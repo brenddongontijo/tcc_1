@@ -475,7 +475,7 @@ smi_unb.api.cronjob.MeasurementsSyncCronJob
 # Necessary line at end of file to make cron valid
 \end{python}
 
-O serviço \textit{postgres} utiliza uma imagen banco de dados PostgreSQL para realizar o armazenamento das informações.
+O serviço \textit{postgres} utiliza uma imagem banco de dados PostgreSQL para realizar o armazenamento das informações.
 
 Para acelerar as requisições de páginas \textit{web} do SMI-UnB, utilizou-se o serviço \textit{redis}, responsável por executar um servidor Redis\footnote{\url{https://redis.io/}}. O \textit{Cache} é um componente de \textit{hardware} ou software que armazena dados, objetivando uma maior rapidez para pedidos futuros. Os dados armazenados em um \textit{cache} podem ser o resultado de uma computação executada anteriormente ou da duplicação de dados presentes em um outro lugar \cite{hennessy_2011}.
 
@@ -569,7 +569,7 @@ O \textit{framework} Bootstrap foi utilizado como base para se realizar o \texti
 
 Ressalta-se que não foi realizado nenhum teste de usabilidade para a aplicação. Os princípios de usabilidade utilizados partiram de conhecimentos do próprio autor, adquiridos através de conceitos da literatura e experiências pessoais.
 
-A página inicial do SMI-UnB, Figura \ref{main_page}, utiliza uma imagem livre do site \textit{FreeImages}\footnote{\url{http://pt.freeimages.com}}, disponibilizada sob sua licença\footnote{\url{http://pt.freeimages.com/license}}. O \textit{site} e o criador, Friedrich Plechschmidt, possuem todos os direitos de propriedade intelectual sobre a imagem.
+A página inicial do SMI-UnB, Figura \ref{main_page}, utiliza uma imagem gratuita do site \textit{FreeImages}\footnote{\url{http://pt.freeimages.com}}, disponibilizada sob sua licença\footnote{\url{http://pt.freeimages.com/license}}. O \textit{site} e o criador, Friedrich Plechschmidt, possuem todos os direitos de propriedade intelectual sobre a imagem.
 
 \begin{figure}[!h]
     \centering
@@ -679,11 +679,50 @@ Outro exemplo, Figura \ref{graph_2}, ilustra o gráfico de linhas gerado com med
 \end{figure}
 
 \section{Métricas}
-Codeclimate
+Foram utilizadas as ferramentas \textit{Codeclimate}\footnote{\url{https://codeclimate.com}} e SLOCCount \cite{sloccount} para extrair algumas métricas do SMI-UnB.
 
-sloccount
+\subsection{\textit{Codeclimate}}
+O \textit{Codeclimate} realiza uma análise dos arquivos de um projeto e disponibiliza sua média de pontuação (GPA). Dentro de cada classe, módulo e arquivo, são atribuídas notas com uma letra (de A a F), baseando-se nas métricas que o próprio \textit{site} utiliza (por exemplo, duplicação e complexidade). Por fim, todas as notas são calculadas, resumidas e aplicadas a um valor entre 0.0 a 4.0. A Tabela \ref{gpa} apresenta o quão boa uma nota é.
 
-\section{Requisitos Mínimos}
-    Rodar linux
+\begin{table}[]
+\centering
+\caption{Notas para uma GPA.}
+\label{gpa}
+\begin{tabular}{|l|l|l|}
+\hline
+Performance & Letra & Nota \\ \hline
+Excelente   & A     & 4.0  \\ \hline
+Boa         & B     & 3.0  \\ \hline
+Regular     & C     & 2.0  \\ \hline
+Ruim        & D     & 1.0  \\ \hline
+Muito Ruim  & E     & 0.0  \\ \hline
+\end{tabular}
+\end{table}
 
-    Rede?
+A análise feita sobre o SMI-UnB, Figura \ref{code_climate}, resultou em uma GPA de 3.5, concluindo que o projeto estava relativamente bem implementado, conforme os padrões do \textit{Codeclimate}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/codeclimate.eps}
+    \caption{Análise do SMI-UnB utilizando \textit{Codeclimate}.}
+    \label{code_climate}
+\end{figure}
+
+\subsection{\textit{SLOCCount}}
+O \textit{SLOCCount} realiza a contagem das linhas de código fonte físicas (SLOC) de um projeto. Ele determina automaticamente quais arquivos são de código-fonte suas linguagens de programação utilizadas. Com os resultados obtidos, são apresentas estimativas de esforço, tempo de desenvolvimento, quantidade de desenvolvedores e custo. A Figura \ref{sloc} apresenta o resultado obtido pelo SMI-UnB.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.7]{figuras/sloc.eps}
+    \caption{Análise do SMI-UnB utilizando \textit{SLOCCount}.}
+    \label{sloc}
+\end{figure}
+
+Com os resultados obtidos, observa-se que o projeto realizado teria um custo de 193,496 dólares e seria realizado em um período de aproximadamente 7 meses, com o apoio de 2 desenvolvedores. Além disso, a estimativa de tempo se aproximou ao período de 5.7 meses, refente às duas \textit{releases} do projeto.
+
+\section{Requisitos Mínimos para utilizar o SMI-UnB}
+    \subsection{Processamento}
+    Rodar debian.
+    \subsection{Armazenamento}
+    Possuir espaço para os contêiners do docker + espaço para registros na aplicação.
+    \subsection{Rede}

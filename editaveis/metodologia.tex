@@ -169,9 +169,23 @@ Segundo a ISO 9126 \cite{iso9126}, o conceito de usabilidade, em um contexto de 
     \item Seguraça: refere-se a prevenção para que o usuário não cometa erros. Uma aplicação deve conter botões de desfazer, botões de edição, pedidos de confirmação de ação antes de ser realizada e dicas de como proceder em determinadas situações.
 \end{itemize}
 
-\section{Qualidade de Software}
+\section{Métricas de Software}
+Desenvolver ou selecionar produtos de software de alta qualidade é de primordial importância. A especificação abrangente e a avaliação da qualidade do produto do software são um fator chave para garantir uma qualidade adequada. Isso pode ser alcançado definindo características de qualidade apropriadas, levando em consideração a finalidade do uso do produto de software. É importante que todas as características relevantes da qualidade do produto de software sejam especificadas e avaliadas, sempre que possível usando métricas validadas ou amplamente aceitas \cite{iso9126}.
 
-\subsection{Métricas de Software}
-% Developing or selecting high quality software products is therefore of prime importance. Comprehensive specification and evaluation of software product quality is a key factor in ensuring adequate quality. This can be achieved by defining appropriate quality characteristics, taking account of the purpose of usage of the software product. It is important that every relevant software product quality characteristic is specified and evaluated, whenever possible using validated or widely accepted metrics.
+O paradigma \textit{Goal/Question/Metric} (GQM) \cite{basili_1984} é uma das técnicas para identificação de métricas significativas durante qualquer parte do processo de software. O GQM enfatiza as seguintes necessidades
 
-% As quality characteristics and associated metrics can be useful not only for evaluating a software product but also for defining quality requirements and other usage, ISO/IEC 9126 (1991) has been replaced by two related multipart standards: ISO/IEC 9126 (Software product quality) and ISO/IEC 14598 (Software product evaluation). The software product quality characteristics defined in this part of ISO/IEC 9126 can be used to specify both functional and non-functional customer and user requirements.
+\begin{itemize}
+    \item Estabelecer um objetivo de medição específico da atividade do processo ou da característica do produto que deve ser avaliado;
+    \item Definir um conjunto de questões que devem ser respondidas para atingir o objetivo;
+    \item Identificar métricas bem formuladas que ajudem a responder essas questões
+\end{itemize}
+
+Dentre os inúmeros tipos de métricas existentes, algumas comumente presentes em aplicações que utilizam uma abordagem orientada a objetos, segundo Pressman\cite{pressman_2009}, são:
+
+\begin{itemize}
+    \item Tamanho: total de classes ou operações, linhas presentes em um método e afins;
+    \item Complexidade: quão uma classe está inter-relacionada com outra(s);
+    \item Acoplamento: quão uma classe depende de outra para realizar suas funções;
+    \item Coesão: quão uma classe realiza apenas suas responsabilidades específicas;
+    \item Similiridade: quão duas ou mais classes são similares com suas estruturas, funções, comportamentos ou propósitos.
+\end{itemize}

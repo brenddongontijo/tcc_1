@@ -1,24 +1,34 @@
 \chapter{Conclusão}
 
 \section{Trabalhos Futuros}
-Vale ressaltar que mesmo após o período de desenvolvimento ter sido finalizado, muitos incrementos de software ainda precisam ser realizados. O sistema ainda não está pronto para ser utilizado em produção, porém, algumas de suas funções importantes foram implementadas com sucesso.
 
-O presente trabalho consiste na primeira etapa de um estudo realizado em 2 semestres. Para a segunda etapa do Trabalho de Conclusão de Curso espera-se implementar algumas funcionalidades adicionais para aumentar o escopo do projeto:
 \begin{itemize}
-    \item Envio de dados em tempo real para a central;
-    \item Utilização do bando de dados HDF para armazenar dados númericos em alta performance;
-    \item Criação de \textit{managers} para extrair mensagens não enviadas para o servidor;
-    \item Permitir registro de transdutores para cada campus da Universidade;
-    \item Calcular médias mensais, semanais e diárias utilizando os pacotes \textit{numpy} e {pandas};
-    \item Gerar relatórios que supram as necessidades específicas do projeto.
+    \item Aperfeiçoar textit{layout da aplicação}
+    \item Aprimorar segunça e sincronização da API;
+    \item Automatizar ainda mais as tasks para o Docker;
+    \item Criar receitas para a aplicação;
+    \item Realizar testes funcionais e de integração;
+    \item Realizar testes de usabilidade com usuários finais;
+    \item Realizar sistema de \textit{log} que informe as ações realizadas pelos usuários;
+    \item Realizar um sistema de \textit{backup};
+    \item Realizar a funcionalidade para esquecimento de senhas, via e-mail.
+    \item Subir a imagem do serviço \textit{web} no Docker Hub;
+    \item Utilizar apenas pacotes utilizados pelo SMI-UnB no serviço \textit{web}, visto que a imagem Python 3.5 ocupa muito armazenamento;
 \end{itemize}
 
 \section{Cronograma}
-Para a realização do cronograma do projeto, figura \ref{cronograma}, utilizou-se a ferramenta \textit{Gantter}. Esta ferramenta aborda como dividiram-se as sprints e atividades realizadas no decorrer do desenvolvimento do SME-UnB.
+Para a realização do cronograma do projeto, figuras \ref{cronograma} \ref{cronograma_2}, utilizou-se a ferramenta \textit{Gantter}. Esta ferramenta aborda como dividiram-se as sprints e atividades realizadas no decorrer do desenvolvimento do SME-UnB.
 
 \begin{figure}[!htpb]
     \centering
     \includegraphics[keepaspectratio=true,scale=0.5]{figuras/cronograma.eps}
-    \caption{Cronograma do Projeto.}
+    \caption{Cronograma da \textit{release} 1.}
     \label{cronograma}
+\end{figure}
+
+\begin{figure}[!htpb]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/cronograma_2.eps}
+    \caption{Cronograma da \textit{release} 2.}
+    \label{cronograma_2}
 \end{figure}
