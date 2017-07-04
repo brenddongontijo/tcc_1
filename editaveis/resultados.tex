@@ -621,7 +621,7 @@ As páginas do sistema possuem \textit{links} para páginas anteriores e informa
     \label{links}
 \end{figure}
 
-As demais imagens do SMI-UnB encontram-se em Anexo.
+As demais imagens do SMI-UnB encontram-se em anexo.
 
 \subsection{Gráfico de Linhas}
 Realizou-se um gráfico de linhas com auxílio do app \textit{report}, Figura \ref{app_report}. A biblioteca utilizada para criar o gráfico foi a \textit{matplotlib} \footnote{\url{https://matplotlib.org/}}. Utilizou-se o \textit{plugin} \textit{mpld3}\footnote{\url{http://mpld3.github.io/}} para apresentação e dinamicidade do gráfico.
@@ -721,8 +721,20 @@ O \textit{SLOCCount} realiza a contagem das linhas de código fonte físicas (SL
 Com os resultados obtidos, observa-se que o projeto realizado teria um custo de 193,496 dólares e seria realizado em um período de aproximadamente 7 meses, com o apoio de 2 desenvolvedores. Além disso, a estimativa de tempo se aproximou ao período de 5.7 meses, refente às duas \textit{releases} do projeto.
 
 \section{Requisitos Mínimos para utilizar o SMI-UnB}
-    \subsection{Processamento}
-    Rodar debian.
-    \subsection{Armazenamento}
-    Possuir espaço para os contêiners do docker + espaço para registros na aplicação.
-    \subsection{Rede}
+    Para utilizar o SMI-UnB é necessário possuir uma configuração que possa executar o sistema operacional debian, sendo esta:
+
+    \begin{itemize}
+        \item Processador de 1GHz \textit{Pentium};
+        \item Memória RAM de 512MB;
+    \end{itemize}
+
+    Como o projeto utiliza imagens do docker, Figura \ref{docker_size}, é necessário ter um espaço em disco de 2.6 GB, além de um espaço adicional para armazenar os registros realizados na aplicação.
+
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.55]{figuras/docker_size.eps}
+        \caption{Tamanho dos contêiners do Docker.}
+        \label{docker_size}
+    \end{figure}
+
+    Como o \textit{timeout} para as requisições UDP é configurável, os requisitos para velocidades de conexão são variádos. Considerando que o \textit{timeout} seja de 1 segundo e que um transdutor esteja a 100 metros de distância de um servidor,
