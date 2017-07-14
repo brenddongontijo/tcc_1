@@ -1,35 +1,41 @@
 \chapter{Introdução}
-O crescimento no consumo de energia elétrica vem aumentando com o passar dos anos. No
-ano de 2014, o Brasil consumiu 531.1 TWh, o que corresponde a um aumento de 2.9\% comparado a 2013. Cerca de 2.4\% deste total é consumido por prédios públicos \cite{balanco_energetico}. No ano de 2015, foi realizado um reajuste tarifário da energia elétrica correspondente a 33\% para residências e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}. Tendo em vista esse cenário, é interessante a administração pública viabilizar políticas para o uso mais racional da energia elétrica.
+O consumo de energia elétrica vem aumentando com o passar dos anos. No ano de 2014, o Brasil consumiu 531.1 TWh, o que corresponde a um aumento de 2.9\% comparado a 2013. Cerca de 2.4\% deste total é consumido por prédios públicos \cite{balanco_energetico}. No ano de 2015, foi realizado um reajuste tarifário da energia elétrica correspondente a 33\% para residências e 32,5\% para empresas, indústrias e comércios \cite{aumento_energia}. Tendo em vista esse cenário, é interessante a administração pública viabilizar políticas para o uso mais racional da energia elétrica.
 
-Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de monitoramento energético da própria Universidade, objetivando que cada campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar seu próprio monitoramento de energia e enviar essas informações para a administração central. Um sistema \textit{web} poderia tornar possível o monitoramento temporal dos insumos da Universidade, provendo subsídios para a administração ter conhecimento de como a energia está sendo utilizada, com o intuito de reduzir gastos e promover a sustentabilidade.
+Em Maio de 2016, a Prefeitura de Campus da Universidade de Brasília (UnB) aprovou um projeto de monitoramento energético da própria Universidade, objetivando que cada campus da instituição (Asa Norte, Ceilândia, Gama e Planaltina) seja responsável por realizar seu próprio monitoramento de energia e enviar essas informações para a administração central.
 
-A Engenharia de Software baseia-se na ``aplicação de uma abordagem sistemática, disciplinada e quantificável para o desenvolvimento, operação e manutenção de software'' \cite{ieee_glossary}, sendo capaz de providenciar, de maneira econômica e sustentável, software confiável e eficiente \cite{naur_1969}.
+O presente trabalho consiste no desenvolvimento de um sistema web capaz de unificar, de forma setorial, os insumos utilizados pelos \textit{campi} da UnB, com o intuito de reduzir gastos e promover a sustentabilidade. Inicialmente foi realizado a coleta de grandezas energéticas, porém, o projeto possui a possibilidade de extensão para outros insumos. Os monitoramentos realizados foram efetivados por meio de equipamentos eletrônicos denominados transdutores, que foram instalados nos quadros de energia para transmitir suas informações para o sistema através da rede de um campus.
 
-Procedimentos denominados métodos ágeis \cite{beck2001agile} guiam o ciclo de vida de um software de maneira iterativa e incremental, procurando sempre trazer software funcional e com qualidade em curtos períodos de tempo. Atrelado a essa abordagem, adotar boas práticas de desenvolvimento, como o Kanban \cite{radigan_2015} e \textit{Extreme Programming} \cite{beck_2004}, direciona as equipes auto-gerenciáveis, de maneira mais eficiente, a produzirem software que atenda as expectativas de seus clientes.
+A apresentação das grandezas energéticas monitoradas por um transdutor foi realizada por meio de um gráfico de linhas, tornando possível que usuários do sistema consigam visualizar de maneira simples e fácil as medições de um período de tempo específico.
 
-O processo de desenvolvimento de software \textit{Devops} \cite{loukides_2012}, em conjunto com a Gerência de Configuração de Software \cite{SWEBOK2014}, busca automatizar e distribuir um sistema, garantindo que esse seja manutenível, confiável e tenha qualidade.
+O desenvolvimento do sistema teve como base fundamentos e metodologias presentes na Engenharia de \textit{Software}, com o objetivo de se obter um \textit{software} confiável e eficiente de maneira econômica e sustentável.
+
+Procedimentos denominados métodos ágeis guiaram o ciclo de vida do sistema de maneira iterativa e incremental, procurando trazer \textit{software} funcional e com qualidade em curtos períodos de tempo. Atrelado a essa abordagem, adotou-se boas práticas de desenvolvimento, referentes ao Kanban e \textit{Extreme Programming}. Essas práticas se adequavam ao contexto vigente e auxiliaram na entrega de um produto que atendeu as expectativas do cliente.
+
+Foi necessário utilizar os conhecimentos da Gerência de Configuração de \textit{Software} para que o sistema respondesse às volatilidades presentes no decorrer do desenvolvimento de \textit{software}, garantindo, assim, sua manutenibilidade, confiabilidade e qualidade.
+
+Algumas filosofias do processo de desenvolvimento de \textit{software} Devops foram utilizadas no decorrer do projeto, buscando facilitar sua automatização e distribuição.
 
 \section{Objetivo Geral}
-Desenvolver parte inicial de um sistema \textit{web} capaz de monitorar temporalmente insumos da Universidade de Brasília, com auxílio de conhecimentos e métodos da Engenharia de Software.
+Desenvolver parte inicial de um sistema \textit{web} capaz de monitorar temporalmente insumos da Universidade de Brasília, com auxílio de conhecimentos e métodos da Engenharia de \textit{Software}.
 
 \subsection{Objetivos Específicos}
 
 \begin{itemize}
-    \item Tornar possível a coleta de informações energéticas;
-    \item Realizar protótipo para comunicação entre uma administração central e os câmpus da UnB.
+    \item Coleta, armazenamento e análise de informações energéticas;
+    \item API de comunicação com sistemas externos;
+    \item Realizar protótipo para comunicação entre uma administração central e os \textit{campi} da UnB.
 \end{itemize}
 
 \section{Metodologia Utilizada}
-A metodologia abordada neste trabalho teve como base o desenvolvimento de um software livre, utilizando-se os princípios empíricos de desenvolvimento ágil de software juntamente com o Kanban e algumas práticas do \textit{Extreme Programming}.
+A metodologia abordada neste trabalho teve como base o desenvolvimento de \textit{software} livre, utilizando-se os princípios empíricos de desenvolvimento ágil de \textit{software} juntamente com o Kanban e algumas práticas do \textit{Extreme Programming}.
 
 \section{Estruturação do Trabalho}
 O trabalho se encontra estruturado da seguinte maneira:
 
 \begin{itemize}
-    \item Capítulo 2: aborda os métodos empíricos da Engenharia de Software utilizados para
+    \item Capítulo 2: métodos empíricos da Engenharia de \textit{Software} utilizados para
     auxiliar no desenvolvimento do sistema.
-    \item Capítulo 3: aborda como foi o ciclo de vida do sistema.
-    \item Capítulo 4: aborda as característias do sistema.
-    \item Capitulo 5: aborda possíveis trabalhos futuros.
+    \item Capítulo 3: ciclo de vida.
+    \item Capítulo 4: características e tecnologias adotadas no sistema.
+    \item Capitulo 5: conclusão e trabalhos futuros.
 \end{itemize}

@@ -1,9 +1,11 @@
 \chapter{Características do SMI-UnB}
+\section{Visão Geral}
+O SMI-UnB se baseia um sistema \textit{web} para armazenamento e coleta, setorial e temporal, dos insumos da Universidade de Brasília. Tem como base a existência de uma administração central e prédios contidos nos \textit{campi} da UnB. A administração central é expressa por um servidor mestre e realiza a gerência de todo o sistema, ou seja, todos os prédios, usuários e afins são cadastrados nela. Os prédios dos \textit{campi} são representados por servidores escravos e são responsáveis por coletar e armazenar seus insumos consumidos. O insumo escolhido para monitoramento, em um primeiro momento, foi o de energia.
+
+De tempos em tempos, o servidor mestre realiza uma sincronização de informações com todos os servidores escravos, objetivando unificar os insumos da Universidade na administração central.
 
 \section{Tecnologias Escolhidas}
-Definiu-se a utilização do \textit{framework} Django \cite{django_project} como estrutura base do SMI-UnB, visto que o sistema consistiria em uma aplicação \textit{web} e que o período para desenvolvimento seria curto.
-
-O banco de dados PostgreSQL foi escolhido como um serviço necessário para SMI-UnB, visto que ele seria capaz de atender o alto volume de informações armazenadas. Além disso, pelo Django e o PostgreSQL se tratarem de softwares livres, suas escolhas foram mais adequadas ao projeto, que por sua vez, também é livre.
+Definiu-se a utilização do \textit{framework} Django \cite{django_project} como estrutura base do SMI-UnB, visto que o sistema consistiria em uma aplicação \textit{web} e não haveria nenhuma limitação que impedisse a utilização desse.
 
     \subsection{Django}
     O Django é um \textit{framework} para desenvolvimento \textit{web} implementado na linguagem Python\footnote{\url{https://www.python.org/}}. Sua arquitetura se inspira no modelo tradicional MVC (\textit{Model} \textit{View} \textit{Controller}), porém, com algumas especificidades. A comunidade \textit{Django} adota o acrônimo MTV (\textit{Model} \textit{Template} \textit{View}), onde os papéis de \textit{model}, \textit{view} e \textit{controller} são redefinidos como:
@@ -27,7 +29,7 @@ O banco de dados PostgreSQL foi escolhido como um serviço necessário para SMI-
 \section{Protocolos Utilizados}
 Antes de começar o desenvolvimento, foi necessário realizar um profundo estudo sobre o equipamento para medição de dados de energia, comumente chamado de transdutor, visto que esse já havia sido pré-designado para utilização, devido a contratos realizados anteriormente pela Universidade de Brasília.
 
-O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul \cite{embrasul}. Segundo seu manual, possui frequência de amostragem a cada 50ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidades de 10M/100Mbps em sistemas Ethernet, utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs-RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
+O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pela empresa Embrasul \cite{embrasul}. Segundo seu manual, possui período de amostragem a cada 50 ms, comunica-se utilizando o protocolo de comunicação Modbus, no modo RTU, com velocidades de 10M/100Mbps em sistemas Ethernet, utilizando o protocolo UDP como transporte. No datagrama UDP, no campo de dados, o protocolo ModBUs-RTU é encapsulado, sendo que a porta de comunicação padrão é a 1001. O endereço ModBus dos equipamentos por padrão é 1, onde a diferenciação entre equipamentos se dá pelo número de IP.
 
 \begin{figure}[!h]
     \centering
@@ -68,43 +70,25 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
     \end{itemize}
 
     \subsubsection{Leitura utilizando equipamento TR4020}
-    Para ler e compor um valor em ponto flutuante \cite{ieee754} se deve realizar a leitura de 2 registros Modbus (16 \textit{bits} cada). Por exemplo, para ler o valor de tensão na fase A (endereços 68 e 69), escreve-se na comunicação a sequência de \textit{bytes}, conforme o Algoritmo \ref{request_tr4020}.
+    O transdutor TR4020 possui valores em inteiro ou ponto flutuante para os registros armazenados em seus registradores. Para ler e compor um valor em inteiro, deve-se realizar a leitura de 1 registro Modbus (16 \textit{bits}), sendo que esse registro possui 2 \textit{bytes} concatenados em sequência como \textit{Byte}-A e \textit{Byte}-B, sendo o \textit{Byte}-A mais significativo. Para valores em ponto flutuante \cite{ieee754}, é realizada a leitura de 2 registros Modbus (16 \textit{bits} cada). Esse registro possui 4 \textit{bytes} concatenados em sequência como \textit{Byte}-A, \textit{Byte}-B, \textit{Byte}-C e \textit{Byte}-D. Por exemplo, para ler um valor em ponto flutuante que expressa a tensão na fase A (endereços 68 e 69), escreve-se na comunicação a sequência de \textit{bytes}, conforme a Figura \ref{request_tr4020}.
 
-    \begin{python}[caption={Requisição para leitura de tensão na fase A, utilizando TR4020.}, captionpos=b, label={request_tr4020}]
-    01h # Identificador do aparelho
-    03h # Codigo de funcao (Leitura)
-    00h # Primeiro byte do endereco 68
-    44h # Segundo byte do Endereco 68
-    00h # Bytes a serem lidos
-    02h # Bytes a serem lidos (total: 2 bytes)
-    84h # CRC
-    1Eh # CRC
-    \end{python}
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.8]{figuras/request_tr4020.eps}
+        \caption{Requisição para leitura de tensão na fase A, utilizando TR4020.}
+        \label{request_tr4020}
+    \end{figure}
 
-    Tem-se como resultado, por exemplo, a responsta contida no Algoritmo \ref{response_tr4020}.
+    Tem-se como resultado, por exemplo, a resposta contida na Figura \ref{request_tr4020}.
 
-    \begin{python}[caption={Resposta para leitura de tensão na fase A, utilizando TR4020.}, captionpos=b, label={response_tr4020}]
-    01h # Identificador do Aparelho
-    03h # Codigo de funcao (Leitura)
-    04h # Tamanho do payload (4 bytes)
-    38h # Primeiro byte do valor para tensao na fase A
-    88h # Segundo byte do valor para tensao na fase A
-    43h # Terceiro byte do valor para tensao na fase A
-    59h # Quarto byte do valor para tensao na fase A
-    C7h # CRC
-    87h # CRC
-    \end{python}
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.8]{figuras/response_tr4020.eps}
+        \caption{Resposta para leitura de tensão na fase A, utilizando TR4020. O exemplo representa um valor de 217.220 para a leitura da tensão.}
+        \label{request_tr4020}
+    \end{figure}
 
-    Utiliza-se os conceitos de uma arquitetura \textit{little endian} \cite{tanenbaum_1998} para organizar os \textit{bytes} do valor para tensão na fase A, Algoritmo \ref{little_endian} . Essa arquitetura define que a organização dos \textit{bytes} de uma palavra deve começar dos \textit{bits} menos significativos para os mais significativos.
-
-    \begin{python}[caption={Organização do valor para tensão na fase A, utilizando uma arquitetura \textit{little endian}.}, captionpos=b, label={little_endian}]
-    88h # Antigo segundo byte
-    38h # Antigo primeiro byte
-    59h # Antigo quarto byte
-    43h # Antigo terceiro byte
-    \end{python}
-
-    O valor 217.220 é obtido para tensão na fase A após a leitura.
+    O procolo utiliza o padrão \textit{big endian} \cite{tanenbaum_1998} para representação de números inteiros, enquanto a maioria das máquinas atualmente utiliza o padrão \textit{little endian}, assim, é necessário inverter a ordem dos \textit{bytes} para transmitir os valores de tensão. O padrão \textit{little endian} define que a organização dos \textit{bytes} de uma palavra deve começar dos \textit{bits} menos significativos para os mais significativos, enquanto o \textit{big endian} utiliza a ordem reversa.
 
     \subsection{UDP}
     O protocolo \textit{User Datagram Protocol} (UDP) é um protocolo da camada de transporte, não orientado a conexões. Seu cabeçalho, Figura \ref{udp_header}, possui 8 \textit{bytes}, seguido de uma carga útil. As portas apresentadas no cabeçalho representam as máquinas de origem e destino \cite{tanenbaum_2002}.
@@ -116,18 +100,18 @@ O equipamento em questão foi o TR 4020, Figura \ref{tr4020}, disponibilizado pe
         \label{udp_header}
     \end{figure}
 
-    Para Tanembaum, a camada de transporte é o núcleo de toda a hierarquia de protocolos. Sua função é promover uma transferência de dados confiável e econômica entre a máquina de origem e a máquina de destino, independente das redes físicas em uso no momento.
+    Para Tanenbaum, a camada de transporte é o núcleo de toda a hierarquia de protocolos. Sua função é promover uma transferência de dados confiável e econômica entre a máquina de origem e a máquina de destino, independente das redes físicas em uso no momento.
 
     Nas redes de acesso empresarial, uma rede de área local (LAN) é usada para conectar um sistema final a um roteador de borda. Existem muitos tipos diferentes de tecnologias LAN. No entanto, a \textit{Ethernet} é a tecnologia de acesso mais prevalente nas redes corporativas. A \textit{Ethernet} opera 10 Mbps ou 100Mbps e utiliza cabos par trançado para conectar uma série de sistemas finais uns com os outros e com um roteador de borda. O roteador de borda é responsável por rotear pacotes que tenham destinos fora dessa LAN. A \textit{Ethernet} usa um meio compartilhado para que os usuários finais compartilhem a taxa de transmissão da LAN \cite{kurose_2002}.
 
     O protocolo de camada de rede da Internet se chama ``Protocolo da Internet'', ou IP. O IP fornece comunicação lógica entre hosts, possuindo um modelo de entrega de melhor esforço. Isso significa que o IP realiza seu ``melhor esforço'' para fornecer segmentos entre hosts comunicantes, mas não oferece garantias. Em particular, não garante a entrega do segmento, não garante a entrega ordenada de segmentos e garante a integridade dos dados nos segmentos \cite{kurose_2002}.
 
 \section{Armazenamento das Informações}
-Definiu-se que os câmpus da UnB seriam divididos por região administrativa, cada campus teria um conjunto de edifícios, cada edifício poderia possuir diversos transdutores e os transdutores teriam diversas medições. Para que isso fosse possível, criaram-se os \textit{apps} \textit{campuses}, \textit{buildings} e \textit{transductor}.
+Definiu-se que os \textit{campi} da UnB seriam divididos por região administrativa, cada campus teria um conjunto de edifícios, cada edifício poderia possuir diversos transdutores e os transdutores realizariam diversas medições. Para que isso fosse possível, criou-se os \textit{apps} \textit{campuses}, \textit{buildings} e \textit{transductor}.
 
-A ferramenta utilizada para realizar os diagramas de classes dos \textit{apps} do SMI-UnB foi a StarUML\footnote{\url{http://staruml.io/}}. Além disso, não foram expressas nos diagramas as classes referentes as \textit{views} e \textit{forms}, objetivando uma menor poluição visual.
+A ferramenta utilizada para realizar os diagramas de classes dos \textit{apps} do SMI-UnB foi a StarUML\footnote{\url{http://staruml.io/}}. Além disso, não foram expressas nos diagramas as classes referentes as \textit{views} e formulários (\textit{forms}), objetivando uma menor poluição visual.
 
-No \textit{app} \textit{campuses}, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os câmpus em si.
+No \textit{app} \textit{campuses}, Figura \ref{campuses}, são definidos os modelos para uma região administrativa e os \textit{campi} em si.
 
 \begin{figure}[!h]
     \centering
@@ -145,7 +129,8 @@ Seguindo o mesmo princípio, o \textit{app} \textit{buildings}, Figura \ref{buil
     \label{buildings}
 \end{figure}
 
-As medições de energia iriam seguir o esquema de um sistema trifásico, onde suas fases foram representadas como A, B e C. As grandezas energéticas definidas para serem coletadas foram:
+As medições de energia iriam seguir o esquema de um sistema trifásico, onde suas fases foram representadas como A, B e C. Os parâmetros afetos ao suprimento de energia elétrica
+definidos para serem coletados foram:
 
 \begin{itemize}
     \item Tensão;
@@ -155,7 +140,7 @@ As medições de energia iriam seguir o esquema de um sistema trifásico, onde s
     \item Potência Aparente.
 \end{itemize}
 
-Os transdutores e suas medições são definidos no \textit{app} \textit{transductor}, Figura \ref{transductor}. Uma das peculariedas presente nos transdutores é a necessidade de um modelo de transdutor. Esses modelos, definidos pela classe \textit{TransductorModel}, possuem toda a informação necessária para que seja possível realizar a coleta de dados, definindo o endereço e o tipo (\textit{int} ou \textit{float}) dos registradores que serão lidos, além dos protocolos seriais e de transporte utilizados.
+Os transdutores e suas medições são definidos no \textit{app} \textit{transductor}, Figura \ref{transductor}. Uma das peculariedades presente nos transdutores é a necessidade de um modelo de transdutor. Esses modelos, definidos pela classe \textit{TransductorModel}, possuem toda a informação necessária para que seja possível realizar a coleta de dados, definindo o endereço e o tipo (\textit{int} ou \textit{float}) dos registradores que serão lidos, além dos protocolos seriais e de transporte utilizados.
 
 \begin{figure}[!h]
     \centering
@@ -167,7 +152,7 @@ Os transdutores e suas medições são definidos no \textit{app} \textit{transdu
 As classes \textit{Transductor} e \textit{Measurements} são \textit{Polymorphic Models}\footnote{\url{https://django-polymorphic.readthedocs.io/en/stable/}} e possuem alguns métodos base. Com essas classes é possível extrair com mais facilidade e rapidez todas as suas classes filhas, que no caso seriam as representações dos recursos monitorados pela UnB. As especializações criadas foram referentes aos transdutores de energia e medições de energia, representados pelas classes \textit{EnergyTransductor} e \textit{Energymeasurements}. Além disso, existe uma classe auxiliar, chamada \textit{EnergyOperations}, responsável por realizar cálculos matemáticos com os dados de energia coletados.
 
 \section{Coleta de dados}
-Definiu-se que existirão dois tipos de servidores para ser possível realizar a coleta de dados inter-campi: mestre e escravo. O servidor mestre seria a representação da administração central e os escravos seriam prédios, espalhados pelos câmpus da UnB, que realizariam a coleta de dados de seus transdutores, presentes na sua mesma rede.
+Definiu-se que existirão dois tipos de servidores para ser possível realizar a coleta de dados inter-campi: mestre e escravo. O servidor mestre seria a representação da administração central e os escravos seriam prédios, espalhados pelos \textit{campi} da UnB, que realizariam a coleta de dados de seus transdutores, presentes na sua mesma rede.
 
 O tempo para coleta das informações foi definido da seguinte maneira:
 
@@ -199,14 +184,16 @@ A coleta de dados para cada prédio, com base no equipamento TR4020, é ilustrad
 
 Inicialmente, a classe \textit{DataCollector} identifica todos os transdutores que estão no prédio e cria uma \textit{thread} para cada um, objetivando paralelismo na coleta de dados. Segundo Tanembaum \cite{tanenbaum_2007}, as \textit{threads} são entidades escalonadas para a execução sobre a CPU, permitindo que múltiplas execuções ocorram no mesmo ambiente de um processo, com um grande grau de independência uma da outra.
 
-Em cada \textit{thread} é identificado o modelo TR4020 para o transdutor, o qual possui as informações sobre os protocolos Modbus-RTU e UDP. A classe \textit{ModbusRTU} prepara todas as mensagens que deverão ser lidas pelo equipamento, uma para cada grandeza energética e para cada fase. As mensagens seriais criadas são recebidas pela classe \textit{UdpProtocol}, que irá tentar realizar a comunicação com o aparelho. Os pacotes são enviados e recebidos, um por um, até que todos sejam recebidos corretamente. Com os pacotes recebidos, são extraídas suas cargas úteis, que basicamente correspondem às medições de cada grandeza, logo após, elas são lidas, utilizando a classe \textit{ModbusRTU}. Por fim, a classe \textit{DataCollector} recebe as medições e as salva.
+Em cada \textit{thread} é identificado o modelo TR4020 para o transdutor, o qual possui as informações sobre os protocolos Modbus-RTU e UDP. A classe \textit{ModbusRTU} prepara todas as mensagens que deverão ser lidas pelo equipamento, uma para cada grandeza energética e para cada fase. As mensagens seriais criadas são recebidas pela classe \textit{UdpProtocol}, que tentará realizar a comunicação com o aparelho. Os pacotes são enviados e recebidos, um por um, até que todos sejam recebidos corretamente. Com os pacotes recebidos, são extraídas suas cargas úteis, que basicamente correspondem às medições de cada grandeza, logo após, elas são lidas, utilizando a classe \textit{ModbusRTU}. Por fim, a classe \textit{DataCollector} recebe as medições e as salva.
 
-A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios utiliza a ferramenta \textit{cron} \cite{paul_cron}, presente em sistemas UNIX. O \textit{cron} é um \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é um programa executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \textit{cron} utiliza o \textit{crontab} para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário. Um arquivo mantido pelo \textit{crontab} deve seguir a estrutura do Algoritmo \ref{crontab}.
+A coleta temporizada, a cada 1 minuto, das medições energéticas realizadas pelos prédios utiliza a ferramenta \verb|cron| \cite{paul_cron}, presente em sistemas UNIX. O \verb|cron| é um \textit{daemon} para executar comandos de agendamento. Um \textit{daemon} é um programa executado em segundo plano e visa estar sempre em execução, caso seja iniciado. Além disso, o \verb|cron| utiliza o \verb|crontab| para manter os arquivos, que possuem instruções a serem executadas periodicamente, de cada usuário. Um arquivo mantido pelo \verb|crontab| deve seguir a estrutura da Figura \ref{crontab_12}.
 
-\begin{python}[caption={Estrutura de um arquivo mantido pelo \textit{crontab}.}, captionpos=b, label={crontab}]
-minuto hora dia_mes mes dia_semana comando_para_execucao
-# Linha em banco para deixar cron valido
-\end{python}
+\begin{figure}[!h]
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.7]{figuras/crontab.eps}
+    \caption{Estrutura de um arquivo mantido pelo \textit{crontab}.}
+    \label{crontab_12}
+\end{figure}
 
 Adicionou-se um novo comando para a aplicação, chamado \textit{runcrons}. Esse comando é definido pela ferramenta django-cron\footnote{\url{http://django-cron.readthedocs.io/en/latest/}} e basicamente executa um código que possua como base a classe \textit{CronJobBase}. Esse código, após ser executado, é bloqueado até que o tempo de espera para outra execução seja atingido, como uma espécie de cronômetro.
 
@@ -230,9 +217,9 @@ smi_unb.data_reader.cronjob.DataCollectCronJob
 \end{python}
 
 \subsection{Servidor Mestre}
-O servidor mestre não realiza nenhuma coleta de dados, sendo esse responsável por realizar uma sincronização com os dados coletados pelos servidores escravos por meio de uma API \textit{web}.
+O servidor mestre é responsável por realizar uma sincronização de entidades e medições de energias utilizando uma API \textit{web}. Ressalta-se que a sincronização de entidades será explicada na próxima sessão.
 
-\textit{Application Programming Interface} (API) é um conjunto de requisitos que regem como um aplicativo pode conversar com outro. As APIs realizam isso expondo algumas das funções internas de um programa para o mundo exterior de forma limitada, possibilitando que os aplicativos compartilhem dados e tomem ações em nome do outro, sem exigir que os desenvolvedores compartilhem todo o código do software \cite{brian_api}.
+\textit{Application Programming Interface} (API) é um conjunto de requisitos que regem como um aplicativo pode conversar com outro. As APIs realizam isso expondo algumas das funções internas de um programa para o mundo exterior de forma limitada, possibilitando que os aplicativos compartilhem dados e tomem ações em nome do outro, sem exigir que os desenvolvedores compartilhem todo o código do \textit{software} \cite{brian_api}.
 
 Quando usado no contexto do desenvolvimento \textit{web}, uma API é tipicamente definida como um conjunto de requisições do protocolo HTTP, juntamente com uma definição da estrutura de mensagens de resposta, geralmente utilizando as linguagens \textit{Extensible Markup Language} (XML) ou \textit{JavaScript Object Notation} (JSON) \cite{benslimane_2008}.
 
@@ -258,7 +245,7 @@ O Django REST Framework utiliza alguns métodos HTTP para mapear as operações 
 
 O conceito de \textit{endpoints} é utilizado pelo Django REST Framework, objetivando a interação com a API do lado do servidor, pois especificam onde os recursos podem ser acessados. Uma das classes padrão utilizada no projeto foi a \textit{ModelViewSet}. Além disso, o Django REST Framework utiliza serializadores. Os serializadores permitem que dados complexos, como \textit{querysets} e instâncias de modelos, sejam convertidos em tipos de dados Python nativos que podem ser facilmente processados em JSON, XML ou outros tipos de conteúdo. Os serializadores também fornecem desserialização, permitindo que os dados analisados sejam convertidos novamente em tipos complexos, após realizada uma validação dos dados recebidos \cite{django_rest}.
 
-A sincronia de dados é realizada pela classe \textit{EnergyMeasurementSynchronizer}, presente no \textit{app} \textit{api}, Figura \ref{api}. Em linhas gerais, essa classe realiza duas requisições HTTP para cada servidor escravo. Na primeira requisição são consumidas as medições de energia mais recentes de cada transdutor, via API. Com as medições resgatadas, atualiza-se o horário da última coleta de dados de cada transdutor, no servidor mestre. Após atualizados os horários no mestre, realiza-se a segunda requisição, que atualiza o horário de todos os transdutores presentes no escravo.
+Realiza-se a sincronia de dados por meio da classe \textit{EnergyMeasurementSynchronizer}, presente no \textit{app} \textit{api}, Figura \ref{api}. Em linhas gerais, essa classe realiza duas requisições HTTP para cada servidor escravo. Na primeira requisição são consumidas as medições de energia mais recentes de cada transdutor, via API. Com as medições resgatadas, atualiza-se o horário da última coleta de dados de cada transdutor, no servidor mestre. Após atualizados os horários no mestre, realiza-se a segunda requisição, que atualiza o horário da última coleta de dados de todos os transdutores presentes no escravo.
 
 \begin{figure}[!h]
     \centering
@@ -267,9 +254,9 @@ A sincronia de dados é realizada pela classe \textit{EnergyMeasurementSynchroni
     \label{api}
 \end{figure}
 
-O \textit{crontab} para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe \textit{MeasurementsSyncCronJob}, Algoritmo \ref{measu_sync}.
+O \verb|crontab| para se realizar a sincronia das medições, a cada 1 hora, é expresso pelo Algoritmo \ref{cron_master} e utiliza a classe \textit{MeasurementsSyncCronJob}, Algoritmo \ref{measu_sync}.
 
-A base da API foi realizada com sucesso, para que no futuro haja apenas aprimoramentos. Ressalta-se que essa foi um protótipo, não possuindo nenhum tipo de autenticação e não sendo hiperlincada, conforme recomendado pelo Django REST Framework.
+A base da API foi realizada com sucesso, para que no futuro haja apenas aprimoramentos, como a sua autenticação e hiperlincamento, conforme recomendado pelo Django REST Framework.
 
 \begin{python}[caption={\textit{Cron} para execução da sincronia dos dados de energia.}, captionpos=b, label={cron_master}]
 0 * * * * python3 /SMI-UnB/manage.py runcrons \
@@ -288,7 +275,7 @@ class MeasurementsSyncCronJob(CronJobBase):
         e_synchronizer.perform_all_measurements_sync()
 \end{python}
 
-\section{Segurança}
+\section{Segurança em Geral}
 Realizou-se um sistema de \textit{login} por meio de e-mail, para facilitar os usuários a se autenticarem no sistema. O Django já possui um módulo de autenticação bem definido, que realiza tanto a autenticação quanto a autorização de um usuário. Como esse módulo realizava \textit{login} por meio do nome de usuário, algumas mudanças foram implementadas para ser possível o \textit{login} por meio de e-mail. Para isso, criou-se o \textit{app} \textit{authentication}, Figura \ref{authentication}, o qual define a classe \textit{EmailBackend}, que por sua vez realiza a autenticação por e-mail.
 
 \begin{figure}[!h]
@@ -298,61 +285,9 @@ Realizou-se um sistema de \textit{login} por meio de e-mail, para facilitar os u
     \label{authentication}
 \end{figure}
 
-Ressalta-se que o Django realiza a criptografia das senhas registradas no banco de dados automaticamente, utilizando como base a \textit{secret\_key} do projeto. Por esse motivo, essa \textit{secret\_key} é gerada randomicamente, conforme o Algoritmo \ref{secret_key}.
-
-\begin{python}[caption={Criação automática da \textit{secret\_key} do projeto.}, captionpos=b,label={secret_key}]
-try:
-    with open(secrete_key_path, 'r') as F:
-        SECRET_KEY = F.read()
-except FileNotFoundError:
-    print('Creating a new SECRET_KEY at security/secret_key.dat')
-
-    # Create directory, if it does not exist
-    if not os.path.exists(security_path):
-        os.mkdir(security_path)
-
-    chars = ''.join(
-        [string.ascii_letters, string.digits, string.punctuation]
-    )
-    SECRET_KEY = ''.join([choice(chars) for i in range(50)])
-
-    with open(secrete_key_path, 'w') as F:
-        SECRET_KEY = F.write(SECRET_KEY)
-\end{python}
-
 Os transdutores e prédios presentes no sistema não podem ser excluídos, tendo em vista a importância de se deixar registrado suas medições realizadas. Para isso acontecer, alguns botões de habilitar e desabilitar foram adicionados à aplicação e um atributo referente a ativo foi adicionado aos seus modelos.
 
-O servidor mestre é responsável por realizar todo o registro/edição de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre realiza uma verificação, a nível de formulário, com o escravo, Algoritmo \ref{energy_form}. Essa verificação é feita por meio de uma requisição HTTP, utilizando o método GET. Caso o código de resposta recebido seja válido, o mestre tenta realizar uma sincronização com escravo pela API, utilizando a classe \textit{SyncManager}, Algoritmo \ref{build_sync}. Ressalta-se que esta solução ainda deve ser aperfeiçoada, buscando aceitar requisições mais seguras, por meio do protocolo HTTPS.
-
-\begin{python}[caption={Corpo do método \textit{is\_valid}, classe \textit{EnergyForm}.}, captionpos=b, label={energy_form}]
-class EnergyForm(forms.ModelForm):
-    ...
-
-    def is_valid(self):
-        ...
-
-        url = 'http://' + self.instance.building.server_ip_address
-        try:
-            request = requests.get(url, timeout=3)
-        except:
-            self.add_error(
-                None,
-                _('Unable to communicate with building server.')
-            )
-            return False
-\end{python}
-
-\begin{python}[caption={Sincronização realizada durante a criação de um prédio.}, captionpos=b, label={build_sync}]
-def new_building(request, campus_string):
-    ...
-
-    building.synchronized = SyncManager.sync_building(
-        building, new=True)
-
-    building.save()
-
-    ...
-\end{python}
+O servidor mestre é responsável por realizar todo o registro, edição, ativação e desativação de transdutores e prédios. Assim, sempre que se tenta realizar uma operação desse tipo, o mestre realiza uma verificação, a nível de formulário, com o escravo. Essa verificação é feita por meio de uma requisição HTTP, utilizando o método GET e possui um \textit{timeout} configurável. Caso o código de resposta recebido seja válido, o mestre tenta realizar uma sincronização com escravo via API, utilizando a classe \textit{SyncManager}, Figura \ref{api}. Ressalta-se que esta solução é um protótipo e deve ser aperfeiçoada, buscando aceitar requisições mais seguras, por meio do protocolo HTTPS.
 
 Definiu-se, inicialmente, duas permissões para os usuários: gerência de prédios e de transdutores. Cada uma dessas fornece ao usuário os direitos de incluir, modificar e habilitar/desabilitar. A gerência de usuários e definição das permissões são realizadas pelo \textit{app} \textit{users}, Figura \ref{app_users}.
 
@@ -363,23 +298,10 @@ Definiu-se, inicialmente, duas permissões para os usuários: gerência de préd
     \label{app_users}
 \end{figure}
 
-As permissões dos usuários são definidas pela classe \textit{UserPermissions}, Algoritmo \ref{user_perm}.
-
-\begin{python}[caption={Permissões presentes na classe \textit{UserPermissions}.}, captionpos=b,label={user_perm}]
-class UserPermissions(models.Model):
-    ...
-
-    class Meta:
-        permissions = (
-            ("manager_buildings", "Manager Buildings"),
-            ("manager_transductors", "Manager Transductors"),
-        )
-\end{python}
-
 \section{Gerência de Configuração}
 
 \subsection{Docker}
-Criaram-se duas configurações para os ambientes referentes ao mestre e escravo, onde suas diferenciações baseavam-se no \textit{crontab} que seria executado em cada um. Para realizar essas configurações, utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners, com uma possibilidade de ligação entre eles. Os serviços definidos para a aplicação foram:
+Criaram-se duas configurações para os ambientes referentes ao mestre e escravo, onde suas diferenciações baseavam-se no \verb|crontab| que seria executado em cada um. Para realizar essas configurações, utilizou-se a ferramenta Docker Compose, tornando mais fácil a definição e execução de múltiplos contêiners, com uma possibilidade de ligação entre eles. Os serviços definidos para a aplicação foram:
 
 \begin{itemize}
     \item nginx: fornecimento dos arquivos estáticos;
@@ -450,7 +372,7 @@ O serviço nginx utiliza um servidor nginx\footnote{\url{https://nginx.org/en}} 
 
 Requisições que precisam ser geradas dinamicamente são tratadas pelo serviço \textit{web}, que são enviadas para um servidor Gunicorn\footnote{\url{http://gunicorn.org/}}. O Gunicorn é um servidor Python \textit{Web Server Gateway Interface} (WSGI) HTTP. O WSGI é uma especificação para uma interface simples e universal entre servidores \textit{web} e aplicações \textit{web} ou \textit{frameworks} para a linguagem de programação Python \cite{pep_333}.
 
-Quando o serviço \textit{web} é iniciado, executa-se um \textit{script}, Algoritmo \ref{script_start}, responsável por criar um arquivo contendo as variáveis de ambiente, popular o banco de dados com os câmpus da UnB e os modelos de transdutor base, inicializar o \textit{daemon} \textit{cron} e o servidor Gunicorn.
+Quando o serviço \textit{web} é iniciado, executa-se um \textit{script}, Algoritmo \ref{script_start}, responsável por criar um arquivo contendo as variáveis de ambiente, popular o banco de dados com os \textit{campi} da UnB e os modelos de transdutor base, inicializar o \textit{daemon} \verb|cron| e o servidor Gunicorn.
 
 \begin{python}[caption={\textit{Script} \textit{start.sh}.}, captionpos=b, label={script_start}]
 #!/bin/bash
@@ -466,7 +388,7 @@ cron && \
 gunicorn smi_unb.wsgi -b 0.0.0.0:8000
 \end{python}
 
-A criação do arquivo contendo as variáveis de ambiente é necessária, pois o \textit{crontab} de um contêiner não possui acesso a elas. Os \textit{crontabs} dos servidores mestres e escravo realizam uma exportação das variáveis antes de executarem seus devidos comandos. O Algoritmo \ref{crontab_master} ilustra o \textit{crontab} do servidor mestre.
+A criação do arquivo contendo as variáveis de ambiente é necessária, pois o \verb|crontab| de um contêiner não possui acesso a elas. Os \textit{crontabs} dos servidores mestres e escravo realizam uma exportação das variáveis antes de executarem seus devidos comandos. O Algoritmo \ref{crontab_master} ilustra o \verb|crontab| do servidor mestre.
 
 \begin{python}[caption={\textit{Crontab} do servidor mestre.}, captionpos=b, label={crontab_master}]
 0 * * * * export $(cat /root/env | xargs) && \
@@ -477,7 +399,7 @@ smi_unb.api.cronjob.MeasurementsSyncCronJob
 
 O serviço \textit{postgres} utiliza uma imagem banco de dados PostgreSQL para realizar o armazenamento das informações.
 
-Para acelerar as requisições de páginas \textit{web} do SMI-UnB, utilizou-se o serviço \textit{redis}, responsável por executar um servidor Redis\footnote{\url{https://redis.io/}}. O \textit{Cache} é um componente de \textit{hardware} ou software que armazena dados, objetivando uma maior rapidez para pedidos futuros. Os dados armazenados em um \textit{cache} podem ser o resultado de uma computação executada anteriormente ou da duplicação de dados presentes em um outro lugar \cite{hennessy_2011}.
+Para acelerar as requisições de páginas \textit{web} do SMI-UnB, utilizou-se o serviço \textit{redis}, responsável por executar um servidor Redis\footnote{\url{https://redis.io/}}. O \textit{Cache} é um componente de \textit{hardware} ou \textit{software} que armazena dados, objetivando uma maior rapidez para pedidos futuros. Os dados armazenados em um \textit{cache} podem ser o resultado de uma computação executada anteriormente ou da duplicação de dados presentes em um outro lugar \cite{hennessy_2011}.
 
 O serviço \textit{data} foi utilizado para gerenciar a persistência de dados, objetivando não arriscar qualquer exclusão acidental durante, por exemplo, uma atualização no contêiner do PostgreSQL.
 
@@ -520,10 +442,9 @@ Algumas \textit{tasks} foram adicionadas ao projeto, com auxílio da ferramenta 
     \item Iniciar os contêiners.
 \end{itemize}
 
-Ao invés de executar os comandos individualmente, esses são agrupados em uma \textit{task} chamada \textit{install\_master}, Algoritmo \ref{task_install_master}, responsável por executá-los sequêncialmente.
+Em vez de executar os comandos individualmente, esses são agrupados em uma \textit{task} chamada \textit{install\_master}, Algoritmo \ref{task_install_master}, responsável por executá-los sequêncialmente.
 
 \begin{python}[caption={\textit{Task} \textit{install\_master}, presente no arquivo \textit{tasks.py}.}, captionpos=b, label={task_install_master}]
-# Docker Tasks
 @task
 def install_master(ctx):
     print('Installing Master Docker')
@@ -539,8 +460,10 @@ def install_master(ctx):
     run('docker-compose -f docker-compose-master.yml up -d')
 \end{python}
 
+Além da \textit{task} explicada anteriormente, outras \textit{tasks} referentes à inicialização/encerramento do Docker Compose e do ambiente de desenvolvimento também foram realizadas.
+
 \subsection{Integração Contínua}
-O script de integração contínua do projeto, Algoritmo \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do Postgresql, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instalação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}.
+O script de integração contínua do projeto, Algoritmo \ref{integracao}, utiliza imagens oficiais do Python 3.5 e do PostgreSQL, presentes no Docker-Hub\footnote{\url{https://hub.docker.com/}}, que é repositório oficial de imagens do Docker. Todas as imagens do docker-hub já estão prontas para serem executadas em contêiners. Após os contêiners serem iniciados e vinculados, é realizada a instalação dos pacotes utilizados pelo SMI-UnB. Com a instalação dos pacotes, inicia-se verificação das normas da PEP8, com a ferramenta flake8 e por fim, são executados todos os testes do sistema e exibida a cobertura total, por meio da ferramenta Coverage\footnote{\url{https://pypi.python.org/pypi/coverage/}}. A \textit{build} da integração contínua irá falhar caso ocorra qualquer erro nos procedimentos informados.
 
 \begin{python}[caption={\textit{Script} para integração contínua do projeto.}, captionpos=b, label={integracao}]
 image: "python:3.5"
@@ -565,7 +488,7 @@ test:
 \end{python}
 
 \section{Apresentação das Informações}
-O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Utilizou-se o jQuery\footnote{\url{https://jquery.com/}} para facilitar o uso de \textit{javascripts} na aplicação. Os ícones presentes foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. Tanto o Boostrap quanto o Font Awesome são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referêcia sobre eles.
+O \textit{framework} Bootstrap foi utilizado como base para se realizar o \textit{layout} da aplicação, por possuir estruturas bem definidas e fáceis de serem utilizadas. Utilizou-se o jQuery\footnote{\url{https://jquery.com/}} para facilitar o uso de \textit{javascripts} na aplicação. Os ícones presentes foram provenientes do Font Awesome\footnote{\url{http://fontawesome.io/}}. As três bibliotecas são disponilizados sobre uma licença livre e podem ser utilizados em qualquer projeto, contanto que haja uma referência sobre elas.
 
 Ressalta-se que não foi realizado nenhum teste de usabilidade para a aplicação. Os princípios de usabilidade utilizados partiram de conhecimentos do próprio autor, adquiridos através de conceitos da literatura e experiências pessoais.
 
@@ -578,7 +501,7 @@ A página inicial do SMI-UnB, Figura \ref{main_page}, utiliza uma imagem gratuit
     \label{main_page}
 \end{figure}
 
-Com o painel de controle, Figura \ref{dashboard}, é possível acessar os principais recursos do sistema de maneira fácil e intuitiva.
+Foram definidas duas páginas principais para o SMI-UnB: painel de controle e ``minha conta''. O painel de controle, Figura \ref{dashboard}, possui como intuito unir os principais recursos do sistema de uma maneira fácil e rápida, para que o usuário não perca muito tempo até encontrá-los. A página ``minha conta'', Figura \ref{my_account}, possui as opções para o gerenciamento das informações de um usuário específico, como a alteração das informações básicas e mudança de senha.
 
 \begin{figure}[!h]
     \centering
@@ -587,7 +510,14 @@ Com o painel de controle, Figura \ref{dashboard}, é possível acessar os princi
     \label{dashboard}
 \end{figure}
 
-Os botões da aplicação, Figuras \ref{buttons} e \ref{buttons_2}, possuem cores e nomes significativos, para auxiliar os usuários realizarem as funções do sistema.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.35]{figuras/my_account.eps}
+    \caption{Página para gerenciamento de informações de um usuário.}
+    \label{my_account}
+\end{figure}
+
+Os botões da aplicação, Figuras \ref{buttons} e \ref{buttons_2}, possuem cores e nomes bem significativos, auxiliando o usuário a realizar uma operação com maior segurança. Por exemplo, a cor verde para um botão indica que um registro/ativação será realizado, a cor amarela indica uma alteração e a vermelha uma desativação. Além disso, as operações de criar, atualizar, habilitar ou desabilitar necessitam de uma confirmação provinda do usuário, objetivando essas não sejam realizadas de maneira indevida.
 
 \begin{figure}[!h]
     \centering
@@ -603,28 +533,19 @@ Os botões da aplicação, Figuras \ref{buttons} e \ref{buttons_2}, possuem core
     \label{buttons_2}
 \end{figure}
 
-As operações de criar, atualizar, habilitar ou desabilitar necessitam de uma confirmação, Figura \ref{block}, para que possam ser efetuadas. Ressalta-se que a apresentação da caixa de confirmação precisa ser aperfeiçoada.
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[scale=0.7]{figuras/block.eps}
-    \caption{Confirmação necessária para se habilitar um prédio.}
-    \label{block}
-\end{figure}
-
-As páginas do sistema possuem \textit{links} para páginas anteriores e informam a página presente, Figura \ref{links}, evitando que o usuário se perca na aplicação e possa facilmente voltar para onde quiser.
+As páginas do sistema possuem \textit{breadcrumbs}\footnote{Elemento de controle gráfico usado como ajuda de navegação em interfaces de usuário.}, Figura \ref{links}, que mapeiam onde o usuário se encontra e quais são as páginas anteriores a essa. Assim, dificilmente o usuário irá se perder na aplicação.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.7]{figuras/links.eps}
-    \caption{\textit{Links} de todas as páginas até transdutor específico.}
+    \caption{\textit{Breadcrumbs} para página de um transdutor específico.}
     \label{links}
 \end{figure}
 
-As demais imagens do SMI-UnB encontram-se em anexo.
+As demais imagens do SMI-UnB encontram-se no apêndice.
 
 \subsection{Gráfico de Linhas}
-Realizou-se um gráfico de linhas com auxílio do app \textit{report}, Figura \ref{app_report}. A biblioteca utilizada para criar o gráfico foi a \textit{matplotlib} \footnote{\url{https://matplotlib.org/}}. Utilizou-se o \textit{plugin} \textit{mpld3}\footnote{\url{http://mpld3.github.io/}} para apresentação e dinamicidade do gráfico.
+Realizou-se um gráfico de linhas com auxílio do app \textit{report}, Figura \ref{app_report}, para que fosse possível apresentar as informações energéticas ao usuário de maneira prática e intuitiva. A biblioteca utilizada para criar o gráfico foi a \textit{matplotlib}\footnote{\url{https://matplotlib.org/}}. Utilizou-se o \textit{plugin} \textit{mpld3}\footnote{\url{http://mpld3.github.io/}} para apresentação e dinamicidade do gráfico.
 
 \begin{figure}[!h]
     \centering
@@ -642,7 +563,7 @@ Foram definidas quatro importantes classes no \textit{app} \textit{report}, send
     \item \textit{GraphUtils}: indica quais serão os tipos de medições apresentados no gráfico.
 \end{itemize}
 
-Definiu-se que o período máximo para apresentação de informações seria de 1 semana. Além disso, o máximo de pontos apresentados em um gráfico foi definido como 200, para que esse não demorasse muito a ser gerado. Para isso, definiu-se as seguintes médias:
+Foi definido que o máximo de pontos apresentados em um gráfico seria de 200, objetivando uma geração rápida e pouca espera do usuário. Para isso, definiu-se que o período máximo para apresentação de informações seria de 1 semana e suas médias seriam realizadas da seguinte maneira:
 
 \begin{itemize}
     \item Até 2 horas: gráfico com médias de 1 em 1 minuto;
@@ -650,6 +571,7 @@ Definiu-se que o período máximo para apresentação de informações seria de 
     \item Entre 6 e 24 horas: gráfico com médias de 10 em 10 minutos;
     \item Entre 1 dia e 7 dias: gráfico com médias de 1 em 1 hora.
 \end{itemize}
+
 
 Para se gerar um gráfico basta selecionar um transdutor, o tipo de medição e uma opção para o período de coleta, Figura \ref{graph_options}
 
@@ -660,7 +582,7 @@ Para se gerar um gráfico basta selecionar um transdutor, o tipo de medição e 
     \label{graph_options}
 \end{figure}
 
-A Figura \ref{graph_1} ilustra o gráfico de linhas com medições reais de tensão realizadas em um ambiente de teste no campus UnB-Gama, refentes ao dia 25/06/2017.
+A Figura \ref{graph_1} ilustra o gráfico de linhas com medições reais de tensão realizadas em um ambiente de teste no campus UnB-Gama, refentes ao dia 25/06/2017. É perceptível que durante a madrugada ocorrem os menores índices para tensão e os maiores durante o horário de ponta.
 
 \begin{figure}[!h]
     \centering
@@ -679,37 +601,8 @@ Outro exemplo, Figura \ref{graph_2}, ilustra o gráfico de linhas gerado com med
 \end{figure}
 
 \section{Métricas}
-Foram utilizadas as ferramentas \textit{Codeclimate}\footnote{\url{https://codeclimate.com}} e SLOCCount \cite{sloccount} para extrair algumas métricas do SMI-UnB.
-
-\subsection{\textit{Codeclimate}}
-O \textit{Codeclimate} realiza uma análise dos arquivos de um projeto e disponibiliza sua média de pontuação (GPA). Dentro de cada classe, módulo e arquivo, são atribuídas notas com uma letra (de A a F), baseando-se nas métricas que o próprio \textit{site} utiliza (por exemplo, duplicação e complexidade). Por fim, todas as notas são calculadas, resumidas e aplicadas a um valor entre 0.0 a 4.0. A Tabela \ref{gpa} apresenta o quão boa uma nota é.
-
-\begin{table}[]
-\centering
-\caption{Notas para uma GPA.}
-\label{gpa}
-\begin{tabular}{|l|l|l|}
-\hline
-Performance & Letra & Nota \\ \hline
-Excelente   & A     & 4.0  \\ \hline
-Boa         & B     & 3.0  \\ \hline
-Regular     & C     & 2.0  \\ \hline
-Ruim        & D     & 1.0  \\ \hline
-Muito Ruim  & E     & 0.0  \\ \hline
-\end{tabular}
-\end{table}
-
-A análise feita sobre o SMI-UnB, Figura \ref{code_climate}, resultou em uma GPA de 3.5, concluindo que o projeto estava relativamente bem implementado, conforme os padrões do \textit{Codeclimate}.
-
-\begin{figure}[!h]
-    \centering
-    \includegraphics[keepaspectratio=true,scale=0.5]{figuras/codeclimate.eps}
-    \caption{Análise do SMI-UnB utilizando \textit{Codeclimate}.}
-    \label{code_climate}
-\end{figure}
-
 \subsection{\textit{SLOCCount}}
-O \textit{SLOCCount} realiza a contagem das linhas de código fonte físicas (SLOC) de um projeto. Ele determina automaticamente quais arquivos são de código-fonte suas linguagens de programação utilizadas. Com os resultados obtidos, são apresentas estimativas de esforço, tempo de desenvolvimento, quantidade de desenvolvedores e custo. A Figura \ref{sloc} apresenta o resultado obtido pelo SMI-UnB.
+O \textit{SLOCCount}\cite{sloccount} realiza a contagem das linhas de código fonte físicas (SLOC) de um projeto. Ele determina automaticamente quais arquivos são de código-fonte suas linguagens de programação utilizadas. A ferramenta não realizada a contagem de códigos em \textit{javascript} ou HTML. Com os resultados obtidos, são apresentas estimativas de esforço, tempo de desenvolvimento, quantidade de desenvolvedores e custo. A Figura \ref{sloc} apresenta o resultado obtido pelo SMI-UnB.
 
 \begin{figure}[!h]
     \centering
@@ -718,10 +611,10 @@ O \textit{SLOCCount} realiza a contagem das linhas de código fonte físicas (SL
     \label{sloc}
 \end{figure}
 
-Com os resultados obtidos, observa-se que o projeto realizado teria um custo de 193,496 dólares e seria realizado em um período de aproximadamente 7 meses, com o apoio de 2 desenvolvedores. Além disso, a estimativa de tempo se aproximou ao período de 5.7 meses, refente às duas \textit{releases} do projeto.
+Após realizada uma análise com a ferramenta, foi possível observar que o projeto teria um custo de 193,496 dólares e seria realizado em um período de aproximadamente 7 meses, com o apoio de 2 desenvolvedores. Além disso, a estimativa de tempo se aproximou ao período de 5.7 meses, refente às duas \textit{releases} do projeto.
 
-\section{Requisitos Mínimos para utilizar o SMI-UnB}
-    Para utilizar o SMI-UnB é necessário possuir uma configuração que possa executar o sistema operacional debian, sendo esta:
+\section{Requisitos para Utilizar o SMI-UnB}
+    Para utilizar o SMI-UnB é necessário possuir, em cada servidor, uma configuração que possa executar o sistema operacional debian, sendo esta:
 
     \begin{itemize}
         \item Processador de 1GHz \textit{Pentium};
@@ -737,4 +630,4 @@ Com os resultados obtidos, observa-se que o projeto realizado teria um custo de 
         \label{docker_size}
     \end{figure}
 
-    Como o \textit{timeout} para as requisições UDP é configurável, os requisitos para velocidades de conexão são variádos. Considerando que o \textit{timeout} seja de 1 segundo e que um transdutor esteja a 100 metros de distância de um servidor,
+    É necessária uma conexão à \textit{internet} para que seja possível realizar uma coleta de dados (protocolo UDP), sincronia de entidades (protocolo HTTP) ou prover páginas \textit{web} da aplicação.
